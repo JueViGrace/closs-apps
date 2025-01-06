@@ -1,0 +1,51 @@
+CREATE TABLE IF NOT EXISTS closs_salesman(
+    user_id TEXT NOT NULL PRIMARY KEY,
+    codigo TEXT NOT NULL DEFAULT '',
+    username TEXT NOT NULL DEFAULT '',
+    nombre TEXT NOT NULL DEFAULT '',
+    email TEXT NOT NULL UNIQUE DEFAULT '',
+    telefono TEXT NOT NULL DEFAULT '',
+    telefonos TEXT NOT NULL DEFAULT '',
+    supervpor TEXT NOT NULL DEFAULT '',
+    sector TEXT NOT NULL DEFAULT '',
+    subsector TEXT NOT NULL DEFAULT '',
+    ult_sinc TEXT NOT NULL DEFAULT '1000-01-01 00:00:00',
+    version TEXT NOT NULL DEFAULT '',
+    created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES closs_user(id)
+);
+
+findSalesmenByUser:
+SELECT *
+FROM closs_salesman
+WHERE user_id = :id;
+
+findSalesmanByCode:
+SELECT *
+FROM closs_salesman
+WHERE codigo = :code AND user_id = :id;
+
+insert:
+INSERT OR REPLACE INTO closs_salesman(
+    user_id,
+    codigo,
+    username,
+    nombre,
+    email,
+    telefono,
+    telefonos,
+    supervpor,
+    sector,
+    subsector,
+    ult_sinc,
+    version,
+    created_at,
+    updated_at
+)
+VALUES ?
+RETURNING *;
+
+delete:
+DELETE FROM closs_salesman
+WHERE user_id = :id AND codigo = :code;

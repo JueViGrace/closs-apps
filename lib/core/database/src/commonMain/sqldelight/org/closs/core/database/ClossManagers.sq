@@ -1,0 +1,21 @@
+CREATE TABLE IF NOT EXISTS closs_managers(
+    user_id TEXT NOT NULL PRIMARY KEY ,
+    kng_codgcia TEXT NOT NULL DEFAULT '',
+    kng_codcoord TEXT NOT NULL DEFAULT '',
+    created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES closs_user(id)
+);
+
+insert:
+INSERT OR REPLACE INTO closs_managers(
+    user_id,
+    kng_codgcia,
+    kng_codcoord
+)
+VALUES ?
+RETURNING *;
+
+delete:
+DELETE FROM closs_managers
+WHERE kng_codgcia = :code AND user_id = :id;

@@ -1,0 +1,32 @@
+<resources>
+    <string name="app_name">AC-CLOSS</string>
+    <string name="welcome">Welcome to AC-CLOSS</string>
+    <string name="welcome_back">Welcome back!</string>
+    <string name="please_log_in">Please log in</string>
+    <string name="please_select_an_account">Please select an account</string>
+    <string name="username">Username</string>
+    <string name="password">Password</string>
+    <string name="your_username">Your username...</string>
+    <string name="your_password">Your password...</string>
+    <string name="forgot_password">Forgot password?</string>
+    <string name="log_in">Log in</string>
+    <string name="sign_up">Sign up</string>
+    <string name="dont_have_an_account">Don't have an account?</string>
+    <!--Icon descriptions-->
+    <string name="app_logo">App logo</string>
+    <string name="company_logo">Company logo</string>
+    <string name="username_text_field_icon">Username text field icon</string>
+    <string name="password_text_field_icon">Password text field icon</string>
+    <string name="go_back">Go back</string>
+    <string name="close">Close</string>
+    <string name="show">Show</string>
+    <string name="show_password">Show password</string>
+    <string name="hide_password">Hide password</string>
+    <!--Error messages-->
+    <string name="auth_no_data">No data found for this user.</string>
+    <string name="session_expired">Your session has expired, please log in.</string>
+    <string name="version_error">You have an outdated version of the app, please update to the latest version.</string>
+    <string name="server_error">Internal server error, try again later.</string>
+    <string name="unknown_error">An unknown error occurred, try again later.</string>
+    <string name="unexpected_error">An unexpected error occurred, try again later.</string>
+</resources>

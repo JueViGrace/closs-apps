@@ -1,0 +1,164 @@
+CREATE TABLE IF NOT EXISTS closs_document(
+    user_id TEXT NOT NULL PRIMARY KEY,
+    agencia TEXT NOT NULL DEFAULT '',
+    tipodoc TEXT NOT NULL DEFAULT '',
+    documento TEXT NOT NULL UNIQUE,
+    tipodocv TEXT NOT NULL DEFAULT '',
+    codcliente TEXT NOT NULL DEFAULT '',
+    nombrecli TEXT NOT NULL DEFAULT '',
+    contribesp INTEGER NOT NULL DEFAULT 0,
+    ruta_parme INTEGER NOT NULL DEFAULT 0,
+    tipoprecio INTEGER NOT NULL DEFAULT '1',
+    emision TEXT NOT NULL DEFAULT '1000-01-01',
+    recepcion TEXT NOT NULL DEFAULT '1000-01-01',
+    vence TEXT NOT NULL DEFAULT '1000-01-01',
+    diascred REAL NOT NULL DEFAULT 0.00,
+    estatusdoc INTEGER NOT NULL DEFAULT '0',
+    dtotneto REAL NOT NULL DEFAULT 0.00,
+    dtotimpuest REAL NOT NULL DEFAULT 0.00,
+    dtotalfinal REAL NOT NULL DEFAULT 0.00,
+    dtotpagos REAL NOT NULL DEFAULT 0.00,
+    dtotdescuen REAL NOT NULL DEFAULT 0.00,
+    dFlete REAL NOT NULL DEFAULT 0.00,
+    dtotdev REAL NOT NULL DEFAULT 0.00,
+    dvndmtototal REAL NOT NULL DEFAULT 0.00,
+    dretencion REAL NOT NULL DEFAULT 0.00,
+    dretencioniva REAL NOT NULL DEFAULT 0.00,
+    vendedor TEXT NOT NULL DEFAULT '',
+    codcoord TEXT NOT NULL DEFAULT '',
+    aceptadev INTEGER NOT NULL DEFAULT 1,
+    kti_negesp INTEGER NOT NULL DEFAULT 0,
+    bsiva REAL NOT NULL DEFAULT 0.00,
+    bsflete REAL NOT NULL DEFAULT 0.00,
+    bsretencion REAL NOT NULL DEFAULT 0.00,
+    bsretencioniva REAL NOT NULL DEFAULT 0.00,
+    tasadoc REAL NOT NULL DEFAULT 0.00,
+    mtodcto REAL NOT NULL DEFAULT 0.00,
+    fchvencedcto TEXT NOT NULL DEFAULT '1000-01-01',
+    tienedcto INTEGER NOT NULL DEFAULT 0,
+    cbsret REAL NOT NULL DEFAULT 0.00,
+    cdret REAL NOT NULL DEFAULT 0.00,
+    cbsretiva REAL NOT NULL DEFAULT 0.00,
+    cdretiva REAL NOT NULL DEFAULT 0.00,
+    cbsrparme REAL NOT NULL DEFAULT 0.00,
+    cdrparme REAL NOT NULL DEFAULT 0.00,
+    cbsretflete REAL NOT NULL DEFAULT 0.00,
+    cdretflete REAL NOT NULL DEFAULT 0.00,
+    bsmtoiva REAL NOT NULL DEFAULT 0.00,
+    bsmtofte REAL NOT NULL DEFAULT 0.00,
+    retmun_mto REAL NOT NULL DEFAULT 0.00,
+    dolarflete INTEGER NOT NULL DEFAULT 0,
+    bsretflete REAL NOT NULL DEFAULT 0.00,
+    dretflete REAL NOT NULL DEFAULT 0.00,
+    dretmun_mto REAL NOT NULL DEFAULT 0.00,
+    retivaoblig INTEGER NOT NULL DEFAULT 0,
+    edoentrega INTEGER NOT NULL DEFAULT 0,
+    dmtoiva REAL NOT NULL DEFAULT 0.00,
+    prcdctoaplic REAL NOT NULL DEFAULT 0.00,
+    montodctodol REAL NOT NULL DEFAULT 0.00,
+    montodctobs REAL NOT NULL DEFAULT 0.00,
+    created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES closs_user(id)
+);
+
+findDocuments:
+SELECT *
+FROM closs_document
+WHERE user_id = :id;
+
+findDocumentWithLines:
+SELECT *
+FROM closs_document
+LEFT JOIN closs_document_lines
+ON closs_document.documento = closs_document_lines.documento
+WHERE
+closs_document.user_id = :id AND
+closs_document.documento = :doc;
+
+findDocumentsBySalesman:
+SELECT closs_document.*
+FROM closs_document
+WHERE
+closs_document.user_id = :id AND
+closs_document.vendedor = :code
+ORDER BY
+    closs_document.codcliente ASC, closs_document.emision DESC;
+
+findDocumentsByCustomer:
+SELECT closs_document.*
+FROM closs_document
+WHERE
+closs_document.user_id = :id AND
+closs_document.codcliente = :code
+ORDER BY closs_document.emision DESC;
+
+insert:
+INSERT OR REPLACE INTO closs_document(
+    user_id,
+    agencia,
+    tipodoc,
+    documento,
+    tipodocv,
+    codcliente,
+    nombrecli,
+    contribesp,
+    ruta_parme,
+    tipoprecio,
+    emision,
+    recepcion,
+    vence,
+    diascred,
+    estatusdoc,
+    dtotneto,
+    dtotimpuest,
+    dtotalfinal,
+    dtotpagos,
+    dtotdescuen,
+    dFlete,
+    dtotdev,
+    dvndmtototal,
+    dretencion,
+    dretencioniva,
+    vendedor,
+    codcoord,
+    aceptadev,
+    kti_negesp,
+    bsiva,
+    bsflete,
+    bsretencion,
+    bsretencioniva,
+    tasadoc,
+    mtodcto,
+    fchvencedcto,
+    tienedcto,
+    cbsret,
+    cdret,
+    cbsretiva,
+    cdretiva,
+    cbsrparme,
+    cdrparme,
+    cbsretflete,
+    cdretflete,
+    bsmtoiva,
+    bsmtofte,
+    retmun_mto,
+    dolarflete,
+    bsretflete,
+    dretflete,
+    dretmun_mto,
+    retivaoblig,
+    edoentrega,
+    dmtoiva,
+    prcdctoaplic,
+    montodctodol,
+    montodctobs,
+    created_at,
+    user_id
+)
+VALUES ?
+RETURNING *;
+
+delete:
+DELETE FROM closs_document
+WHERE documento = :doc AND user_id = :id;

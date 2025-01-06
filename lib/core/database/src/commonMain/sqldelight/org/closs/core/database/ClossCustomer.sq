@@ -1,0 +1,92 @@
+CREATE TABLE IF NOT EXISTS closs_customer(
+    user_id TEXT NOT NULL PRIMARY KEY,
+    codigo TEXT NOT NULL UNIQUE DEFAULT '',
+    nombre TEXT NOT NULL DEFAULT '',
+    email TEXT NOT NULL UNIQUE DEFAULT '',
+    direccion TEXT NOT NULL DEFAULT '',
+    telefonos TEXT NOT NULL DEFAULT '',
+    perscont TEXT NOT NULL DEFAULT '',
+    vendedor TEXT NOT NULL DEFAULT '',
+    contribspecial INTEGER NOT NULL DEFAULT 0,
+    status INTEGER NOT NULL DEFAULT 0,
+    sector TEXT NOT NULL DEFAULT '',
+    subsector TEXT NOT NULL DEFAULT '',
+    precio INTEGER NOT NULL DEFAULT 1,
+    kne_activa INTEGER NOT NULL DEFAULT 1,
+    noemifac INTEGER NOT NULL DEFAULT 0,
+    noeminota INTEGER NOT NULL DEFAULT 0,
+    fchultvta TEXT NOT NULL DEFAULT '',
+    mtoultvta REAL NOT NULL DEFAULT 0.0,
+    prcdpagdia REAL NOT NULL DEFAULT 0.0,
+    promdiasp REAL NOT NULL DEFAULT 0.0,
+    riesgocrd REAL NOT NULL DEFAULT 0.0,
+    cantdocs REAL NOT NULL DEFAULT 0.0,
+    totmtodocs REAL NOT NULL DEFAULT 0.0,
+    prommtodoc REAL NOT NULL DEFAULT 0.0,
+    diasultvta REAL NOT NULL DEFAULT 0.0,
+    promdiasvta REAL NOT NULL DEFAULT 0.0,
+    limcred REAL NOT NULL DEFAULT 0.0,
+    fchcrea TEXT NOT NULL DEFAULT '1000-01-01',
+    dolarflete INTEGER NOT NULL DEFAULT 0,
+    nodolarflete INTEGER NOT NULL DEFAULT 0,
+    created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES closs_user(id)
+);
+
+findCustomers:
+SELECT *
+FROM closs_customer
+WHERE
+    user_id = :id AND
+    codigo = :code
+ORDER BY
+    vendedor ASC,
+    nombre ASC;
+
+findCustomersBySalesman:
+SELECT *
+FROM closs_customer
+WHERE closs_customer.vendedor = :code
+ORDER BY
+    closs_customer.nombre ASC;
+
+insert:
+INSERT OR REPLACE INTO closs_customer(
+    user_id,
+    codigo,
+    nombre,
+    email,
+    direccion,
+    telefonos,
+    perscont,
+    vendedor,
+    contribspecial,
+    status,
+    sector,
+    subsector,
+    precio,
+    kne_activa,
+    noemifac,
+    noeminota,
+    fchultvta,
+    mtoultvta,
+    prcdpagdia,
+    promdiasp,
+    riesgocrd,
+    cantdocs,
+    totmtodocs,
+    prommtodoc,
+    diasultvta,
+    promdiasvta,
+    limcred,
+    fchcrea,
+    dolarflete,
+    nodolarflete
+)
+VALUES ?
+RETURNING *;
+
+delete:
+DELETE FROM closs_customer
+WHERE codigo = :code AND user_id = :id;

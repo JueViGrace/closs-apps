@@ -1,0 +1,132 @@
+[versions]
+app-version = "1.0.0"
+server-version = "1.0.0"
+agp = "8.7.3"
+android-compileSdk = "35"
+android-minSdk = "24"
+android-targetSdk = "35"
+androidx-activityCompose = "1.9.3"
+androidx-core-ktx = "1.15.0"
+androidx-espresso-core = "3.6.1"
+androidx-lifecycle = "2.8.4"
+androidx-test-junit = "1.2.1"
+androidx-navigation-compose = "2.8.0-alpha10"
+androidx-app-update = "2.1.0"
+compose-multiplatform = "1.7.1"
+junit = "4.13.2"
+kotlin = "2.1.0"
+kotlinx-coroutines = "1.9.0"
+kotlinx-serialization = "1.7.3"
+koin = "4.0.0"
+kotlinx-datetime = "0.6.1"
+sqldelight = "2.0.2"
+ktor = "2.3.13"
+kbcrypt = "1.0.9"
+logback = "1.5.11"
+sqlite = "3.45.3.0"
+kdotenv = "6.4.2"
+postgres = "42.7.4"
+
+[libraries]
+# [TEST]
+kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
+kotlin-test-junit = { module = "org.jetbrains.kotlin:kotlin-test-junit", version.ref = "kotlin" }
+junit = { group = "junit", name = "junit", version.ref = "junit" }
+androidx-test-junit = { group = "androidx.test.ext", name = "junit", version.ref = "androidx-test-junit" }
+androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "androidx-espresso-core" }
+koin-test = { module = "io.insert-koin:koin-test", version.ref = "koin" }
+koin-test-junit5 = { module = "io.insert-koin:koin-test-junit5", version.ref = "koin" }
+
+# [ANDROID]
+androidx-app-update = { group = "com.google.android.play", name = "app-update", version.ref = "androidx-app-update" }
+androidx-app-update-ktx = { group = "com.google.android.play", name = "app-update-ktx", version.ref = "androidx-app-update" }
+androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "androidx-core-ktx" }
+androidx-activity-compose = { module = "androidx.activity:activity-compose", version.ref = "androidx-activityCompose" }
+androidx-lifecycle-viewmodel = { group = "org.jetbrains.androidx.lifecycle", name = "lifecycle-viewmodel", version.ref = "androidx-lifecycle" }
+androidx-lifecycle-viewmodel-savedstate = { group = "org.jetbrains.androidx.lifecycle", name = "lifecycle-viewmodel-savedstate", version.ref = "androidx-lifecycle" }
+androidx-lifecycle-runtime-compose = { group = "org.jetbrains.androidx.lifecycle", name = "lifecycle-runtime-compose", version.ref = "androidx-lifecycle" }
+
+# [NAVIGATION]
+androidx-navigation-compose = { group = "org.jetbrains.androidx.navigation", name = "navigation-compose", version.ref = "androidx-navigation-compose" }
+
+# [COROUTINES]
+kotlinx-coroutines-swing = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-swing", version.ref = "kotlinx-coroutines" }
+kotlinx-coroutines-core = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-core", version.ref = "kotlinx-coroutines" }
+
+# [TIME]
+kotlinx-datetime = { group = "org.jetbrains.kotlinx", name = "kotlinx-datetime", version.ref = "kotlinx-datetime" }
+
+# [SERIALIZATION]
+kotlinx-serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "kotlinx-serialization" }
+
+# [REFLECT]
+kotlin-reflect = { group = "org.jetbrains.kotlin", name = "kotlin-reflect", version.ref = "kotlin" }
+
+# [DEPENDENCY INJECTION]
+koin-core = { group = "io.insert-koin", name = "koin-core", version.ref = "koin" }
+koin-compose = { group = "io.insert-koin", name = "koin-compose", version.ref = "koin" }
+koin-compose-viewmodel = { group = "io.insert-koin", name = "koin-compose-viewmodel", version.ref = "koin" }
+koin-android = { group = "io.insert-koin", name = "koin-android", version.ref = "koin" }
+koin-androidx-compose = { group = "io.insert-koin", name = "koin-androidx-compose", version.ref = "koin" }
+koin-ktor = { module = "io.insert-koin:koin-ktor", version.ref = "koin" }
+#koin-ktor3 = { module = "io.insert-koin:koin-ktor3", version.ref = "koin" }
+koin-logger = { module = "io.insert-koin:koin-logger-slf4j", version.ref = "koin" }
+
+# [NETWORK: CLIENT]
+ktor-client-core = { group = "io.ktor", name = "ktor-client-core", version.ref = "ktor" }
+ktor-client-cio = { group = "io.ktor", name = "ktor-client-cio", version.ref = "ktor" }
+ktor-client-content-negotiation = { group = "io.ktor", name = "ktor-client-content-negotiation", version.ref = "ktor" }
+ktor-client-logging = { group = "io.ktor", name = "ktor-client-logging", version.ref = "ktor" }
+ktor-client-auth = { module = "io.ktor:ktor-client-auth", version.ref = "ktor" }
+
+# [SERVER]
+ktor-server-core = { module = "io.ktor:ktor-server-core-jvm", version.ref = "ktor" }
+ktor-serialization-kotlinx-json = { module = "io.ktor:ktor-serialization-kotlinx-json-jvm", version.ref = "ktor" }
+ktor-server-content-negotiation = { module = "io.ktor:ktor-server-content-negotiation-jvm", version.ref = "ktor" }
+ktor-server-thymeleaf = { module = "io.ktor:ktor-server-thymeleaf-jvm", version.ref = "ktor" }
+ktor-server-html-builder = { module = "io.ktor:ktor-server-html-builder-jvm", version.ref = "ktor" }
+ktor-server-call-logging = { module = "io.ktor:ktor-server-call-logging-jvm", version.ref = "ktor" }
+ktor-server-call-id = { module = "io.ktor:ktor-server-call-id-jvm", version.ref = "ktor" }
+ktor-server-metrics = { module = "io.ktor:ktor-server-metrics-jvm", version.ref = "ktor" }
+ktor-server-caching-headers = { module = "io.ktor:ktor-server-caching-headers-jvm", version.ref = "ktor" }
+ktor-server-default-headers = { module = "io.ktor:ktor-server-default-headers-jvm", version.ref = "ktor" }
+ktor-server-cors = { module = "io.ktor:ktor-server-cors-jvm", version.ref = "ktor" }
+ktor-server-compression = { module = "io.ktor:ktor-server-compression-jvm", version.ref = "ktor" }
+ktor-server-host-common = { module = "io.ktor:ktor-server-host-common-jvm", version.ref = "ktor" }
+ktor-server-status-pages = { module = "io.ktor:ktor-server-status-pages-jvm", version.ref = "ktor" }
+#ktor-server-sse = { module = "io.ktor:ktor-server-sse-jvm", version.ref = "ktor" }
+ktor-server-auth = { module = "io.ktor:ktor-server-auth-jvm", version.ref = "ktor" }
+ktor-server-auth-jwt = { module = "io.ktor:ktor-server-auth-jwt-jvm", version.ref = "ktor" }
+ktor-server-netty = { module = "io.ktor:ktor-server-netty-jvm", version.ref = "ktor" }
+ktor-server-webjars = { module = "io.ktor:ktor-server-webjars-jvm", version.ref = "ktor" }
+ktor-server-request-validation = { module = "io.ktor:ktor-server-request-validation", version.ref = "ktor" }
+logback-classic = { module = "ch.qos.logback:logback-classic", version.ref = "logback" }
+
+# [BCRYPT]
+kbcrypt = { group = "com.ToxicBakery.library.bcrypt", name = "bcrypt", version.ref = "kbcrypt" }
+
+# [DOTENV]
+kdotenv = { group = "io.github.cdimascio", name = "dotenv-kotlin", version.ref = "kdotenv" }
+
+# [DATABASE]
+sqldelight-android-driver = { group = "app.cash.sqldelight", name = "android-driver", version.ref = "sqldelight" }
+sqldelight-sqlite-driver = { group = "app.cash.sqldelight", name = "sqlite-driver", version.ref = "sqldelight" }
+sqldelight-coroutines-extensions = { group = "app.cash.sqldelight", name = "coroutines-extensions", version.ref = "sqldelight" }
+sqldelight-async-extensions = { group = "app.cash.sqldelight", name = "async-extensions", version.ref = "sqldelight" }
+sqldelight-sqlite-dialect = { group = "app.cash.sqldelight", name = "sqlite-3-35-dialect", version.ref = "sqldelight" }
+sqldelight-postgres-dialect = { group = "app.cash.sqldelight", name = "postgresql-dialect", version.ref = "sqldelight" }
+
+# [DATABASES]
+sqlite = { group = "org.xerial", name = "sqlite-jdbc", version.ref = "sqlite" }
+postgresql = { module = "org.postgresql:postgresql", version.ref = "postgres" }
+
+[plugins]
+androidApplication = { id = "com.android.application", version.ref = "agp" }
+androidLibrary = { id = "com.android.library", version.ref = "agp" }
+composeMultiplatform = { id = "org.jetbrains.compose", version.ref = "compose-multiplatform" }
+composeCompiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
+kotlinMultiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
+sqldelight = { id = "app.cash.sqldelight", version.ref = "sqldelight" }
+kotlinx-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
+ktor = { id = "io.ktor.plugin", version.ref = "ktor" }
+kotlinJvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }

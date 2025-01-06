@@ -1,0 +1,80 @@
+CREATE TABLE IF NOT EXISTS closs_salesman_statistic(
+    user_id TEXT NOT NULL PRIMARY KEY,
+    codcoord TEXT NOT NULL DEFAULT '',
+    nomcoord TEXT NOT NULL DEFAULT '',
+    vendedor TEXT NOT NULL DEFAULT '',
+    nombrevend TEXT NOT NULL DEFAULT '',
+    cntpedidos INTEGER NOT NULL DEFAULT 0,
+    mtopedidos REAL NOT NULL DEFAULT 0.00,
+    cntfacturas INTEGER NOT NULL DEFAULT 0,
+    mtofacturas REAL NOT NULL DEFAULT 0.00,
+    metavend REAL NOT NULL DEFAULT 0.00,
+    prcmeta REAL NOT NULL DEFAULT 0.00,
+    cntclientes INTEGER NOT NULL DEFAULT 0,
+    clivisit INTEGER NOT NULL DEFAULT 0,
+    prcvisitas REAL NOT NULL DEFAULT 0.00,
+    lom_montovtas REAL NOT NULL DEFAULT 0.00,
+    lom_prcvtas REAL NOT NULL DEFAULT 0.00,
+    lom_prcvisit REAL NOT NULL DEFAULT 0.00,
+    rlom_montovtas REAL NOT NULL DEFAULT 0.00,
+    rlom_prcvtas REAL NOT NULL DEFAULT 0.00,
+    rlom_prcvisit REAL NOT NULL DEFAULT 0.00,
+    fecha_estad TEXT NOT NULL DEFAULT '1000-01-01',
+    ppgdol_totneto REAL NOT NULL DEFAULT 0.00,
+    devdol_totneto REAL NOT NULL DEFAULT 0.00,
+    defdol_totneto REAL NOT NULL DEFAULT 0.00,
+    totdolcob REAL NOT NULL DEFAULT 0.00,
+    cntrecl REAL NOT NULL DEFAULT 0.00,
+    mtorecl REAL NOT NULL DEFAULT 0.00,
+    created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES closs_user(id)
+);
+
+findStatisticsByUser:
+SELECT *
+FROM closs_salesman_statistic
+WHERE user_id = :id
+ORDER BY
+    codcoord ASC,
+    nombrevend ASC;
+
+findStatisticByCode:
+SELECT *
+FROM closs_salesman_statistic
+WHERE vendedor = :code AND user_id = :id;
+
+insert:
+INSERT OR REPLACE INTO closs_salesman_statistic(
+    user_id,
+    codcoord,
+    nomcoord,
+    vendedor,
+    nombrevend,
+    cntpedidos,
+    mtopedidos,
+    cntfacturas,
+    mtofacturas,
+    metavend,
+    prcmeta,
+    cntclientes,
+    clivisit,
+    prcvisitas,
+    lom_montovtas,
+    lom_prcvtas,
+    lom_prcvisit,
+    rlom_montovtas,
+    rlom_prcvtas,
+    rlom_prcvisit,
+    fecha_estad,
+    ppgdol_totneto,
+    devdol_totneto,
+    defdol_totneto,
+    totdolcob,
+    cntrecl,
+    mtorecl,
+    created_at,
+    updated_at
+)
+VALUES ?
+RETURNING *;

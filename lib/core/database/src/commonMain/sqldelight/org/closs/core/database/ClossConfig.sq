@@ -1,0 +1,81 @@
+CREATE TABLE IF NOT EXISTS closs_config(
+    cnfg_idconfig TEXT NOT NULL,
+    cnfg_clase TEXT NOT NULL DEFAULT '',
+    cnfg_tipo TEXT NOT NULL,
+    cnfg_valnum REAL NOT NULL DEFAULT 0.00,
+    cnfg_valsino INTEGER NOT NULL DEFAULT 0,
+    cnfg_valtxt TEXT NOT NULL,
+    cnfg_lentxt INTEGER NOT NULL DEFAULT 0,
+    cnfg_valfch TEXt NOT NULL DEFAULT '1000-01-01',
+    cnfg_activa INTEGER NOT NULL DEFAULT 0,
+    cnfg_etiq TEXT NOT NULL,
+    cnfg_ttip TEXT NOT NULL,
+    username TEXT NOT NULL DEFAULT '',
+    user_id TEXT NOT NULL PRIMARY KEY ,
+    created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    UNIQUE (cnfg_idconfig, user_id),
+    FOREIGN KEY (user_id) REFERENCES closs_user(id)
+);
+
+findUserConfigById:
+SELECT *
+FROM closs_config
+WHERE user_id = :id;
+
+findConfigNum:
+SELECT cnfg_valnum
+FROM closs_config
+WHERE
+cnfg_idconfig = :key AND
+cnfg_activa = 1 AND
+user_id = :id;
+
+findConfigBool:
+SELECT cnfg_valsino
+FROM closs_config
+WHERE
+cnfg_idconfig = :key AND
+cnfg_activa = 1 AND
+user_id = :id;
+
+findConfigText:
+SELECT cnfg_valtxt
+FROM closs_config
+WHERE
+cnfg_idconfig = :key AND
+cnfg_activa = 1 AND
+user_id = :id;
+
+findConfigDate:
+SELECT cnfg_valfch
+FROM closs_config
+WHERE
+cnfg_idconfig = :key AND
+cnfg_activa = 1 AND
+user_id = :id;
+
+insert:
+INSERT OR REPLACE INTO closs_config(
+    cnfg_idconfig,
+    cnfg_clase,
+    cnfg_tipo,
+    cnfg_valnum,
+    cnfg_valsino,
+    cnfg_valtxt,
+    cnfg_lentxt,
+    cnfg_valfch,
+    cnfg_activa,
+    cnfg_etiq,
+    cnfg_ttip,
+    username,
+    user_id,
+    created_at,
+    updated_at
+)
+VALUES ?
+RETURNING *;
+
+delete:
+DELETE FROM closs_config
+WHERE user_id = :id;
