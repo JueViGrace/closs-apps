@@ -32,14 +32,15 @@ kotlin {
         }
 
         commonMain.dependencies {
-            // Types: client
-            implementation(projects.lib.core.types)
+            // Types
+            implementation(projects.lib.core.types.shared)
 
             // Api: client
             implementation(projects.lib.core.api)
 
-            // Database: client
-            implementation(projects.lib.core.database)
+            // Database
+            implementation(projects.lib.core.database.shared)
+            implementation(projects.lib.core.database.picking)
 
             // Di: client
             implementation(projects.lib.core.di)
@@ -51,7 +52,8 @@ kotlin {
             implementation(projects.lib.core.resources)
 
             // Auth
-            implementation(projects.lib.auth)
+            implementation(projects.lib.auth.shared)
+            implementation(projects.lib.auth.picking)
 
             // User
             implementation(projects.lib.user)
@@ -94,14 +96,25 @@ kotlin {
 
 android {
     namespace = "org.closs.picking"
-    compileSdk = libs.versions.android.compileSdk.get().toInt()
+    compileSdk =
+        libs.versions.android.compileSdk
+            .get()
+            .toInt()
 
     defaultConfig {
         applicationId = "org.closs.picking"
-        minSdk = libs.versions.android.minSdk.get().toInt()
-        targetSdk = libs.versions.android.targetSdk.get().toInt()
+        minSdk =
+            libs.versions.android.minSdk
+                .get()
+                .toInt()
+        targetSdk =
+            libs.versions.android.targetSdk
+                .get()
+                .toInt()
         versionCode = 1
-        versionName = libs.versions.pickingApp.version.get()
+        versionName =
+            libs.versions.pickingApp.version
+                .get()
     }
     packaging {
         resources {

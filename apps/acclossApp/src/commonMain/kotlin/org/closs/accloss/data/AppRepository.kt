@@ -6,7 +6,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import org.closs.core.api.KtorClient
-import org.closs.core.database.helper.DbHelper
+import org.closs.core.database.shared.helper.DbHelper
 import org.closs.core.resources.resources.generated.resources.Res
 import org.closs.core.resources.resources.generated.resources.session_expired
 import org.closs.core.resources.resources.generated.resources.unexpected_error

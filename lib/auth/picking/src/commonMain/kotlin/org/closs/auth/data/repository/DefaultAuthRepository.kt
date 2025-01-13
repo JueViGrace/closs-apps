@@ -4,8 +4,6 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.emptyFlow
-import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.flowOn
 import org.closs.auth.shared.data.repository.AuthRepository
 import org.closs.core.api.KtorClient
 import org.closs.core.database.helper.PickingDbHelper

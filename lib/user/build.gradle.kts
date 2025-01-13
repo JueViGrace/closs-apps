@@ -28,11 +28,11 @@ kotlin {
         }
 
         commonMain.dependencies {
-            // Types: client
-            implementation(projects.lib.core.types)
+            // Types
+            implementation(projects.lib.core.types.shared)
 
             // Database: client
-            implementation(projects.lib.core.database)
+            implementation(projects.lib.core.database.shared)
 
             // Api: client
             implementation(projects.lib.core.api)

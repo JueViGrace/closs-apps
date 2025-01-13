@@ -28,8 +28,8 @@ kotlin {
         }
 
         commonMain.dependencies {
-            // Types: client
-            implementation(projects.lib.core.types)
+            // Types
+            implementation(projects.lib.core.types.shared)
 
             // Compose Resources
             implementation(projects.lib.core.resources)
@@ -62,10 +62,16 @@ kotlin {
 
 android {
     namespace = "org.closs.core.presentation"
-    compileSdk = libs.versions.android.compileSdk.get().toInt()
+    compileSdk =
+        libs.versions.android.compileSdk
+            .get()
+            .toInt()
 
     defaultConfig {
-        minSdk = libs.versions.android.minSdk.get().toInt()
+        minSdk =
+            libs.versions.android.minSdk
+                .get()
+                .toInt()
     }
 
     compileOptions {

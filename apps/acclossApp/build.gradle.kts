@@ -1,5 +1,4 @@
 import org.jetbrains.compose.desktop.application.dsl.TargetFormat
-import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
@@ -42,14 +41,15 @@ kotlin {
         }
 
         commonMain.dependencies {
-            // Types: client
-            implementation(projects.lib.core.types)
+            // Types
+            implementation(projects.lib.core.types.shared)
 
             // Api: client
             implementation(projects.lib.core.api)
 
-            // Database: client
-            implementation(projects.lib.core.database)
+            // Database
+            implementation(projects.lib.core.database.shared)
+            implementation(projects.lib.core.database.accloss)
 
             // Di: client
             implementation(projects.lib.core.di)
@@ -122,14 +122,25 @@ kotlin {
 
 android {
     namespace = "org.closs.accloss"
-    compileSdk = libs.versions.android.compileSdk.get().toInt()
+    compileSdk =
+        libs.versions.android.compileSdk
+            .get()
+            .toInt()
 
     defaultConfig {
         applicationId = "org.closs.accloss"
-        minSdk = libs.versions.android.minSdk.get().toInt()
-        targetSdk = libs.versions.android.targetSdk.get().toInt()
+        minSdk =
+            libs.versions.android.minSdk
+                .get()
+                .toInt()
+        targetSdk =
+            libs.versions.android.targetSdk
+                .get()
+                .toInt()
         versionCode = 1
-        versionName = libs.versions.acclossApp.version.get()
+        versionName =
+            libs.versions.acclossApp.version
+                .get()
     }
     packaging {
         resources {
@@ -162,7 +173,9 @@ compose {
             nativeDistributions {
                 targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb)
                 packageName = "org.closs.accloss"
-                packageVersion = libs.versions.acclossApp.version.get()
+                packageVersion =
+                    libs.versions.acclossApp.version
+                        .get()
             }
         }
     }

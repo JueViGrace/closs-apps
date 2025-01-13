@@ -21,61 +21,57 @@ include(":apps:pickingApp")
 include(":lib")
 
 // core client library
+
+// network library
 include(":lib:core:api")
-include(":lib:core:database")
+
+// database library
+include(":lib:core:database:shared")
+include(":lib:core:database:picking")
+include(":lib:core:database:accloss")
+
+// dependency injection library
 include(":lib:core:di")
+
+// presentation library
 include(":lib:core:presentation")
+
+// compose resources library
 include(":lib:core:resources")
-include(":lib:core:types")
+
+// types library
+include(":lib:core:types:shared")
+include(":lib:core:types:picking")
+include(":lib:core:types:accloss")
 
 // auth library
-
-//  auth client
 include(":lib:auth:shared")
 include(":lib:auth:accloss")
 include(":lib:auth:picking")
 
 // company library
-
-// company client
 include(":lib:company")
 
 // config library
-
-// config client
 include(":lib:config")
 
 // user library
-
-// user client
 include(":lib:user")
 
 // manager library
-
-// manager client
 include(":lib:manager")
 
 // salesman library
-
-// salesman client
 include(":lib:salesman")
 
 // product library
-
-// product client
 include(":lib:product")
 
 // customer library
-
-// customer client
 include(":lib:customer")
 
 // order library
-
-// order client
 include(":lib:order")
 
 // document library
-
-// document client
 include(":lib:document")

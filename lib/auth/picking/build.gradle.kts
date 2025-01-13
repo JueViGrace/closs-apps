@@ -18,8 +18,6 @@ kotlin {
         }
     }
 
-    jvm()
-
     sourceSets {
         androidMain.dependencies {
             // Koin
@@ -28,11 +26,12 @@ kotlin {
         }
 
         commonMain.dependencies {
-            // Types: client
-            implementation(projects.lib.core.types)
+            // Types
+            implementation(projects.lib.core.types.shared)
 
             // Database: client
-            implementation(projects.lib.core.database)
+            implementation(projects.lib.core.database.shared)
+            implementation(projects.lib.core.database.picking)
 
             // Api: client
             implementation(projects.lib.core.api)
@@ -68,13 +67,6 @@ kotlin {
             implementation(libs.koin.core)
             implementation(libs.koin.compose)
             implementation(libs.koin.compose.viewmodel)
-        }
-
-        jvmMain.dependencies {
-            implementation(compose.desktop.common)
-
-            // Coroutines
-            implementation(libs.kotlinx.coroutines.swing)
         }
     }
 }

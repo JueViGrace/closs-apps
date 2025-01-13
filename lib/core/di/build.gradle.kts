@@ -29,9 +29,6 @@ kotlin {
             // Api: client
             implementation(projects.lib.core.api)
 
-            // Database: client
-            implementation(projects.lib.core.database)
-
             // Presentation: client
             implementation(projects.lib.core.presentation)
 
