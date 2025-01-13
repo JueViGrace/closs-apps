@@ -1,8 +1,8 @@
 package org.closs.core.types.auth
 
-import org.closs.core.database.Closs_session
-import org.closs.core.database.FindAccounts
-import org.closs.core.database.FindActiveAccount
+import org.closs.accloss.database.Closs_session
+import org.closs.accloss.database.FindAccounts
+import org.closs.accloss.database.FindActiveAccount
 import org.closs.core.shared.types.auth.AuthDto
 import org.closs.core.types.user.User
 import org.closs.core.types.user.dtoToDomain

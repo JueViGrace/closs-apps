@@ -2,6 +2,10 @@ package org.closs.core.database.driver
 
 import app.cash.sqldelight.db.SqlDriver
 
-expect class DriverFactory {
+interface DriverFactory {
     suspend fun createDriver(): SqlDriver
 }
+
+expect class ACCLOSSDriver : DriverFactory
+
+expect class PickingDriver : DriverFactory

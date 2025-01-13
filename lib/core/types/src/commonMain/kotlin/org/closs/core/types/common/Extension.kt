@@ -3,10 +3,11 @@ package org.closs.core.types.common
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.text.capitalize
 import androidx.compose.ui.text.intl.Locale
+import kotlinx.datetime.LocalDateTime
 import org.closs.core.resources.resources.generated.resources.Res
 import org.closs.core.resources.resources.generated.resources.ic_avlogo
 import org.closs.core.resources.resources.generated.resources.ic_wokin_logo
-import org.closs.core.shared.types.company.Companies
+import org.closs.core.types.company.Companies
 import org.jetbrains.compose.resources.DrawableResource
 
 @Composable

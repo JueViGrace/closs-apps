@@ -4,16 +4,29 @@ import android.content.Context
 import app.cash.sqldelight.async.coroutines.synchronous
 import app.cash.sqldelight.db.SqlDriver
 import app.cash.sqldelight.driver.android.AndroidSqliteDriver
-import org.closs.core.database.ClossCliDb
+import org.closs.accloss.database.ACCLOSSDB
+import org.closs.picking.database.PickingDB
 
-actual class DriverFactory(
+actual class ACCLOSSDriver(
     private val context: Context
-) {
-    actual suspend fun createDriver(): SqlDriver {
+) : DriverFactory {
+    override suspend fun createDriver(): SqlDriver {
         return AndroidSqliteDriver(
-            schema = ClossCliDb.Schema.synchronous(),
+            schema = ACCLOSSDB.Schema.synchronous(),
             context = context,
-            name = "closs.db"
+            name = "accloss.db"
+        )
+    }
+}
+
+actual class PickingDriver(
+    private val context: Context
+) : DriverFactory {
+    override suspend fun createDriver(): SqlDriver {
+        return AndroidSqliteDriver(
+            schema = PickingDB.Schema.synchronous(),
+            context = context,
+            name = "picking.db"
         )
     }
 }

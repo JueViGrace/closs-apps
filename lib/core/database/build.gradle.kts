@@ -63,10 +63,19 @@ android {
 
 sqldelight {
     databases {
-        create("ClossCliDb") {
-            packageName.set("org.closs.core.database")
+        create("ACCLOSSDB") {
+            packageName.set("org.closs.accloss.database")
+            srcDirs.setFrom("src/commonMain/sqldelight/ACCLOSS")
             dialect(libs.sqldelight.sqlite.dialect)
             generateAsync.set(true)
+            schemaOutputDirectory.set(file("src/commonMain/sqldelight/databases"))
+        }
+        create("PickingDB") {
+            packageName.set("org.closs.picking.database")
+            srcDirs.setFrom("src/commonMain/sqldelight/Picking")
+            dialect(libs.sqldelight.sqlite.dialect)
+            generateAsync.set(true)
+            schemaOutputDirectory.set(file("src/commonMain/sqldelight/databases"))
         }
     }
 }

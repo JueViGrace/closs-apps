@@ -1,4 +1,4 @@
-rootProject.name = "closs-kmp"
+rootProject.name = "closs-apps"
 enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 
 pluginManagement {
@@ -16,7 +16,8 @@ dependencyResolutionManagement {
     }
 }
 
-include(":acclossApp")
+include(":apps:acclossApp")
+include(":apps:pickingApp")
 include(":lib")
 
 // core client library
@@ -30,7 +31,9 @@ include(":lib:core:types")
 // auth library
 
 //  auth client
-include(":lib:auth")
+include(":lib:auth:shared")
+include(":lib:auth:accloss")
+include(":lib:auth:picking")
 
 // company library
 
