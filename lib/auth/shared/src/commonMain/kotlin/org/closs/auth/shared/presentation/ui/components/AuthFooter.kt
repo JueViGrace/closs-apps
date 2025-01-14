@@ -7,10 +7,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import org.closs.core.presentation.ui.components.display.TextComponent
+import org.closs.core.presentation.shared.ui.components.display.TextComponent
 import org.closs.core.resources.resources.generated.resources.Res
 import org.closs.core.resources.resources.generated.resources.app_name
-import org.closs.core.shared.types.Constants
+import org.closs.core.types.shared.common.Constants
 import org.jetbrains.compose.resources.stringResource
 
 @Composable

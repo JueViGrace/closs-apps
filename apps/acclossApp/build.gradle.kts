@@ -6,7 +6,6 @@ plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.composeMultiplatform)
     alias(libs.plugins.composeCompiler)
-    alias(libs.plugins.sqldelight)
 }
 
 group = "org.closs.accloss"
@@ -32,9 +31,6 @@ kotlin {
             implementation(libs.androidx.app.update)
             implementation(libs.androidx.app.update.ktx)
 
-            // Sqldelight
-            implementation(libs.sqldelight.android.driver)
-
             // Koin
             implementation(libs.koin.android)
             implementation(libs.koin.androidx.compose)
@@ -43,6 +39,7 @@ kotlin {
         commonMain.dependencies {
             // Types
             implementation(projects.lib.core.types.shared)
+            implementation(projects.lib.core.types.accloss)
 
             // Api: client
             implementation(projects.lib.core.api)
@@ -55,10 +52,14 @@ kotlin {
             implementation(projects.lib.core.di)
 
             // Presentation: client
-            implementation(projects.lib.core.presentation)
+            implementation(projects.lib.core.presentation.shared)
+            implementation(projects.lib.core.presentation.accloss)
 
             // Resources: client
             implementation(projects.lib.core.resources)
+
+            // App: shared
+            implementation(projects.lib.app)
 
             // Auth
             implementation(projects.lib.auth.accloss)
@@ -72,10 +73,6 @@ kotlin {
 
             // Order
             implementation(projects.lib.order)
-
-            // Sqldelight
-            implementation(libs.sqldelight.coroutines.extensions)
-            implementation(libs.sqldelight.async.extensions)
 
             // Compose
             implementation(compose.runtime)
@@ -106,16 +103,10 @@ kotlin {
         }
 
         desktopMain.dependencies {
-            implementation(compose.desktop.currentOs)
+            implementation(compose.desktop.common)
 
             // Coroutines
             implementation(libs.kotlinx.coroutines.swing)
-
-            // Sqldelight
-            implementation(libs.sqldelight.sqlite.driver)
-
-            // Sqlite
-            implementation(libs.sqlite)
         }
     }
 }

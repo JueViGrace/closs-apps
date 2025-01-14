@@ -30,6 +30,7 @@ kotlin {
         commonMain.dependencies {
             // Types
             implementation(projects.lib.core.types.shared)
+            implementation(projects.lib.core.types.accloss)
 
             // Database: client
             implementation(projects.lib.core.database.shared)
@@ -39,7 +40,8 @@ kotlin {
             implementation(projects.lib.core.api)
 
             // Presentation: client
-            implementation(projects.lib.core.presentation)
+            implementation(projects.lib.core.presentation.shared)
+            implementation(projects.lib.core.presentation.accloss)
 
             // Auth: shared
             implementation(projects.lib.auth.shared)

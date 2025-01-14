@@ -8,7 +8,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import org.closs.core.presentation.ui.components.display.ImageComponent
+import org.closs.core.presentation.shared.ui.components.display.ImageComponent
 import org.closs.core.resources.resources.generated.resources.Res
 import org.closs.core.resources.resources.generated.resources.app_logo
 import org.closs.core.resources.resources.generated.resources.ic_avlogo

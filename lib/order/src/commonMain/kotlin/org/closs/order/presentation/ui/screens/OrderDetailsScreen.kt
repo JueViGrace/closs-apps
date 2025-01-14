@@ -8,7 +8,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import org.closs.core.presentation.ui.components.display.TextComponent
+import org.closs.core.presentation.shared.ui.components.display.TextComponent
 import org.closs.order.presentation.viewmodel.OrderDetailsViewModel
 import org.koin.compose.viewmodel.koinViewModel
 

@@ -7,8 +7,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
-import org.closs.core.presentation.ui.components.display.TextComponent
-import org.closs.core.presentation.ui.components.icons.IconComponent
+import org.closs.core.presentation.shared.ui.components.display.TextComponent
+import org.closs.core.presentation.shared.ui.components.icons.IconComponent
 import org.closs.core.resources.resources.generated.resources.Res
 import org.closs.core.resources.resources.generated.resources.ic_account
 import org.closs.core.resources.resources.generated.resources.username

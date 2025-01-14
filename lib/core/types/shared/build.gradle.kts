@@ -1,4 +1,3 @@
-import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
@@ -9,11 +8,10 @@ plugins {
     alias(libs.plugins.kotlinx.serialization)
 }
 
-group = "org.closs.core.types"
+group = "org.closs.core.types.shared"
 
 kotlin {
     androidTarget {
-        @OptIn(ExperimentalKotlinGradlePluginApi::class)
         compilerOptions {
             jvmTarget.set(JvmTarget.JVM_21)
         }
@@ -26,7 +24,7 @@ kotlin {
         }
 
         commonMain.dependencies {
-            // Database: client
+            // Database
             implementation(projects.lib.core.database.shared)
 
             // Compose Resources
@@ -54,7 +52,7 @@ kotlin {
 }
 
 android {
-    namespace = "org.closs.core.types"
+    namespace = "org.closs.core.types.shared"
     compileSdk = libs.versions.android.compileSdk.get().toInt()
 
     defaultConfig {

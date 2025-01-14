@@ -15,10 +15,11 @@ import androidx.navigation.compose.composable
 import kotlinx.coroutines.launch
 import org.closs.accloss.presentation.navigation.graph.authGraph
 import org.closs.accloss.presentation.navigation.graph.homeGraph
-import org.closs.accloss.presentation.ui.screens.SplashScreen
-import org.closs.core.presentation.navigation.Navigator
-import org.closs.core.presentation.ui.components.buttons.BackArrowButton
-import org.closs.core.presentation.ui.components.layout.TopBarComponent
+import org.closs.app.shared.presentation.ui.screens.SplashScreen
+import org.closs.core.presentation.shared.navigation.Destination
+import org.closs.core.presentation.shared.navigation.Navigator
+import org.closs.core.presentation.shared.ui.components.buttons.BackArrowButton
+import org.closs.core.presentation.shared.ui.components.layout.TopBarComponent
 
 // TODO: limit access to screens
 @Composable
@@ -34,10 +35,12 @@ actual fun AppScaffold(
     Scaffold(
         topBar = {
             when (stack.currentDestination) {
-                org.closs.core.presentation.navigation.Destination.AuthGraph -> {}
-                org.closs.core.presentation.navigation.Destination.Cart -> {}
-                org.closs.core.presentation.navigation.Destination.Checkout -> {}
-                org.closs.core.presentation.navigation.Destination.ForgotPassword -> {
+                Destination.Splash -> {}
+
+                Destination.AuthGraph -> {}
+                Destination.SignIn -> {}
+                Destination.Accounts -> {}
+                Destination.ForgotPassword -> {
                     TopBarComponent(
                         navigationIcon = {
                             BackArrowButton {
@@ -48,21 +51,19 @@ actual fun AppScaffold(
                         }
                     )
                 }
-                org.closs.core.presentation.navigation.Destination.Home -> {}
-                org.closs.core.presentation.navigation.Destination.HomeGraph -> {}
-                org.closs.core.presentation.navigation.Destination.Notifications -> {}
-                is org.closs.core.presentation.navigation.Destination.OrderDetails -> {}
-                org.closs.core.presentation.navigation.Destination.Orders -> {}
-                is org.closs.core.presentation.navigation.Destination.ProductDetails -> {}
-                org.closs.core.presentation.navigation.Destination.Products -> {}
-                org.closs.core.presentation.navigation.Destination.Profile -> {}
-                org.closs.core.presentation.navigation.Destination.Settings -> {}
-                org.closs.core.presentation.navigation.Destination.SignIn -> {}
-                org.closs.core.presentation.navigation.Destination.Accounts -> {}
-                org.closs.core.presentation.navigation.Destination.Splash -> {}
-                is org.closs.core.presentation.navigation.Destination.UserDetails -> {}
-                org.closs.core.presentation.navigation.Destination.Users -> {}
+
+                Destination.HomeGraph -> {}
+                Destination.Home -> {}
+                Destination.Profile -> {}
+                Destination.Settings -> {}
+                Destination.Notifications -> {}
+
+                Destination.Products -> {}
+                is Destination.ProductDetails -> {}
+                Destination.Orders -> {}
+                is Destination.OrderDetails -> {}
                 null -> {}
+                else -> {}
             }
         },
         snackbarHost = {
@@ -74,7 +75,7 @@ actual fun AppScaffold(
             navController = navController,
             startDestination = navigator.startDestination,
         ) {
-            composable<org.closs.core.presentation.navigation.Destination.Splash> {
+            composable<Destination.Splash> {
                 SplashScreen()
             }
             authGraph()

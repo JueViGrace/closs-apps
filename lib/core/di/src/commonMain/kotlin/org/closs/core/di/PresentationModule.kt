@@ -1,11 +1,11 @@
 package org.closs.core.di
 
 import androidx.lifecycle.SavedStateHandle
-import org.closs.core.presentation.messages.DefaultMessages
-import org.closs.core.presentation.messages.Messages
-import org.closs.core.presentation.navigation.DefaultNavigator
-import org.closs.core.presentation.navigation.Destination
-import org.closs.core.presentation.navigation.Navigator
+import org.closs.core.presentation.shared.messages.DefaultMessages
+import org.closs.core.presentation.shared.messages.Messages
+import org.closs.core.presentation.shared.navigation.DefaultNavigator
+import org.closs.core.presentation.shared.navigation.Destination
+import org.closs.core.presentation.shared.navigation.Navigator
 import org.koin.core.module.Module
 import org.koin.dsl.module
 

@@ -1,8 +1,5 @@
 package org.closs.core.api
 
-import org.closs.core.types.response.APIResponse
-import org.closs.core.types.response.ApiOperation
-import org.closs.core.types.state.AppCodes
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.engine.cio.CIO
@@ -25,7 +22,10 @@ import io.ktor.http.contentType
 import io.ktor.serialization.kotlinx.json.json
 import kotlinx.coroutines.ensureActive
 import kotlinx.serialization.json.Json
-import org.closs.core.types.common.log
+import org.closs.core.types.shared.common.log
+import org.closs.core.types.shared.response.APIResponse
+import org.closs.core.types.shared.response.ApiOperation
+import org.closs.core.types.shared.state.AppCodes
 import kotlin.coroutines.coroutineContext
 
 class KtorClient {

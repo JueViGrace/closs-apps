@@ -1,9 +1,9 @@
 package org.closs.order.presentation.viewmodel
 
 import androidx.lifecycle.ViewModel
-import org.closs.order.presentation.state.OrderDetailsState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import org.closs.order.presentation.state.OrderDetailsState
 
 class OrderDetailsViewModel : ViewModel() {
     private val _state = MutableStateFlow(OrderDetailsState())

@@ -11,13 +11,13 @@ import kotlinx.coroutines.launch
 import org.closs.auth.shared.data.repository.AuthRepository
 import org.closs.auth.shared.presentation.events.AccountsListEvents
 import org.closs.auth.shared.presentation.state.AccountsListState
-import org.closs.core.presentation.messages.Messages
-import org.closs.core.presentation.navigation.Destination
-import org.closs.core.presentation.navigation.Navigator
+import org.closs.core.presentation.shared.messages.Messages
+import org.closs.core.presentation.shared.navigation.Destination
+import org.closs.core.presentation.shared.navigation.Navigator
 import org.closs.core.resources.resources.generated.resources.Res
 import org.closs.core.resources.resources.generated.resources.welcome_back
-import org.closs.core.types.state.DataCodes
-import org.closs.core.types.state.RequestState
+import org.closs.core.types.shared.state.DataCodes
+import org.closs.core.types.shared.state.RequestState
 
 class AccountsListViewModel(
     private val navigator: Navigator,

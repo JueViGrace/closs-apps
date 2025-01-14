@@ -34,7 +34,9 @@ include(":lib:core:database:accloss")
 include(":lib:core:di")
 
 // presentation library
-include(":lib:core:presentation")
+include(":lib:core:presentation:shared")
+include(":lib:core:presentation:picking")
+include(":lib:core:presentation:accloss")
 
 // compose resources library
 include(":lib:core:resources")
@@ -44,22 +46,19 @@ include(":lib:core:types:shared")
 include(":lib:core:types:picking")
 include(":lib:core:types:accloss")
 
+// app library
+include(":lib:app")
+
 // auth library
 include(":lib:auth:shared")
 include(":lib:auth:accloss")
 include(":lib:auth:picking")
-
-// company library
-include(":lib:company")
 
 // config library
 include(":lib:config")
 
 // user library
 include(":lib:user")
-
-// manager library
-include(":lib:manager")
 
 // salesman library
 include(":lib:salesman")

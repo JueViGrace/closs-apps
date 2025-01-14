@@ -37,9 +37,6 @@ kotlin {
             // Api: client
             implementation(projects.lib.core.api)
 
-            // Presentation: client
-            implementation(projects.lib.core.presentation)
-
             // Compose Resources
             implementation(projects.lib.core.resources)
 

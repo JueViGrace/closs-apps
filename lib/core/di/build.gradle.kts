@@ -30,7 +30,7 @@ kotlin {
             implementation(projects.lib.core.api)
 
             // Presentation: client
-            implementation(projects.lib.core.presentation)
+            implementation(projects.lib.core.presentation.shared)
 
             // State handle
             implementation(libs.androidx.lifecycle.viewmodel.savedstate)

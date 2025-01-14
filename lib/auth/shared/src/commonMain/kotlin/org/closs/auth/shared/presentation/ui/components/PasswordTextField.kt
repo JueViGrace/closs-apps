@@ -11,8 +11,8 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
-import org.closs.core.presentation.ui.components.display.TextComponent
-import org.closs.core.presentation.ui.components.icons.IconComponent
+import org.closs.core.presentation.shared.ui.components.display.TextComponent
+import org.closs.core.presentation.shared.ui.components.icons.IconComponent
 import org.closs.core.resources.resources.generated.resources.Res
 import org.closs.core.resources.resources.generated.resources.hide_password
 import org.closs.core.resources.resources.generated.resources.ic_eye

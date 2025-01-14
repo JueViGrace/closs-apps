@@ -11,16 +11,16 @@ import org.closs.core.resources.resources.generated.resources.Res
 import org.closs.core.resources.resources.generated.resources.unknown_error
 import org.closs.core.resources.resources.generated.resources.welcome
 import org.closs.core.resources.resources.generated.resources.welcome_back
-import org.closs.core.shared.types.auth.AuthDto
-import org.closs.core.shared.types.auth.ForgotPasswordDto
-import org.closs.core.shared.types.auth.SignInDto
-import org.closs.core.types.auth.Session
-import org.closs.core.types.auth.dtoToDomain
-import org.closs.core.types.auth.sessionToDb
-import org.closs.core.types.response.display
-import org.closs.core.types.state.DataCodes
-import org.closs.core.types.state.RequestState
-import org.closs.core.types.user.domainToDb
+import org.closs.core.types.shared.auth.Session
+import org.closs.core.types.shared.auth.dto.AuthDto
+import org.closs.core.types.shared.auth.dto.ForgotPasswordDto
+import org.closs.core.types.shared.auth.dto.SignInDto
+import org.closs.core.types.shared.auth.dtoToDomain
+import org.closs.core.types.shared.auth.sessionToDb
+import org.closs.core.types.shared.response.display
+import org.closs.core.types.shared.state.DataCodes
+import org.closs.core.types.shared.state.RequestState
+import org.closs.core.types.shared.user.domainToDb
 import kotlin.coroutines.CoroutineContext
 
 class DefaultAuthRepository(

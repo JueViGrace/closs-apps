@@ -1,4 +1,3 @@
-import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
@@ -12,7 +11,6 @@ group = "org.closs.auth"
 
 kotlin {
     androidTarget {
-        @OptIn(ExperimentalKotlinGradlePluginApi::class)
         compilerOptions {
             jvmTarget.set(JvmTarget.JVM_21)
         }
@@ -28,6 +26,7 @@ kotlin {
         commonMain.dependencies {
             // Types
             implementation(projects.lib.core.types.shared)
+            implementation(projects.lib.core.types.picking)
 
             // Database: client
             implementation(projects.lib.core.database.shared)
@@ -37,7 +36,8 @@ kotlin {
             implementation(projects.lib.core.api)
 
             // Presentation: client
-            implementation(projects.lib.core.presentation)
+            implementation(projects.lib.core.presentation.shared)
+            implementation(projects.lib.core.presentation.picking)
 
             // Auth: shared
             implementation(projects.lib.auth.shared)
@@ -73,10 +73,16 @@ kotlin {
 
 android {
     namespace = "org.closs.auth"
-    compileSdk = libs.versions.android.compileSdk.get().toInt()
+    compileSdk =
+        libs.versions.android.compileSdk
+            .get()
+            .toInt()
 
     defaultConfig {
-        minSdk = libs.versions.android.minSdk.get().toInt()
+        minSdk =
+            libs.versions.android.minSdk
+                .get()
+                .toInt()
     }
 
     compileOptions {

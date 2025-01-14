@@ -12,11 +12,11 @@ import org.closs.auth.shared.domain.model.SignIn
 import org.closs.auth.shared.domain.rules.AuthValidator
 import org.closs.auth.shared.presentation.events.SignInEvents
 import org.closs.auth.shared.presentation.state.SignInState
-import org.closs.core.presentation.messages.Messages
-import org.closs.core.presentation.navigation.Destination
-import org.closs.core.presentation.navigation.Navigator
-import org.closs.core.shared.types.auth.SignInDto
-import org.closs.core.types.state.RequestState
+import org.closs.core.presentation.shared.messages.Messages
+import org.closs.core.presentation.shared.navigation.Destination
+import org.closs.core.presentation.shared.navigation.Navigator
+import org.closs.core.types.shared.auth.dto.SignInDto
+import org.closs.core.types.shared.state.RequestState
 
 class SignInViewModel(
     private val navigator: Navigator,

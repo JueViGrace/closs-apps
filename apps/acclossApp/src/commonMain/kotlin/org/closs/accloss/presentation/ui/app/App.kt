@@ -4,8 +4,9 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import org.closs.accloss.presentation.ui.components.Navigation
-import org.closs.core.presentation.ui.theme.AppTheme
+import org.closs.accloss.presentation.ui.components.AppScaffold
+import org.closs.app.shared.presentation.ui.components.Navigation
+import org.closs.core.presentation.shared.ui.theme.AppTheme
 import org.koin.compose.KoinContext
 
 @Composable
@@ -15,7 +16,13 @@ fun App() {
             Surface(
                 modifier = Modifier.fillMaxSize()
             ) {
-                Navigation()
+                Navigation { navController, navigator, snackBarHostState ->
+                    AppScaffold(
+                        navController = navController,
+                        navigator = navigator,
+                        snackBarHostState = snackBarHostState
+                    )
+                }
             }
         }
     }

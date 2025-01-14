@@ -1,8 +1,9 @@
 package org.closs.accloss.di
 
-import org.closs.accloss.data.AppRepository
 import org.closs.accloss.data.DefaultAppRepository
-import org.closs.accloss.presentation.viewmodel.AppViewModel
+import org.closs.accloss.presentation.viewmodel.DefaultAppViewModel
+import org.closs.app.shared.data.AppRepository
+import org.closs.app.shared.presentation.viewmodel.AppViewModel
 import org.closs.auth.di.authModule
 import org.closs.order.di.orderModule
 import org.closs.product.di.productModule
@@ -16,7 +17,7 @@ import org.koin.dsl.module
 fun appModule(): Module = module {
     singleOf(::DefaultAppRepository) bind AppRepository::class
 
-    viewModelOf(::AppViewModel)
+    viewModelOf(::DefaultAppViewModel) bind AppViewModel::class
 
     includes(
         databaseModule(),

@@ -1,12 +1,12 @@
 package org.closs.auth.shared.data.repository
 
 import kotlinx.coroutines.flow.Flow
-import org.closs.core.shared.types.auth.ForgotPasswordDto
-import org.closs.core.shared.types.auth.SignInDto
-import org.closs.core.types.auth.Session
-import org.closs.core.types.data.Repository
-import org.closs.core.types.state.DataCodes
-import org.closs.core.types.state.RequestState
+import org.closs.core.types.shared.auth.Session
+import org.closs.core.types.shared.auth.dto.ForgotPasswordDto
+import org.closs.core.types.shared.auth.dto.SignInDto
+import org.closs.core.types.shared.data.Repository
+import org.closs.core.types.shared.state.DataCodes
+import org.closs.core.types.shared.state.RequestState
 
 interface AuthRepository : Repository {
     suspend fun signIn(signInDto: SignInDto): RequestState<DataCodes>

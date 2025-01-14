@@ -34,6 +34,7 @@ kotlin {
         commonMain.dependencies {
             // Types
             implementation(projects.lib.core.types.shared)
+            implementation(projects.lib.core.types.picking)
 
             // Api: client
             implementation(projects.lib.core.api)
@@ -46,17 +47,18 @@ kotlin {
             implementation(projects.lib.core.di)
 
             // Presentation: client
-            implementation(projects.lib.core.presentation)
+            implementation(projects.lib.core.presentation.shared)
+            implementation(projects.lib.core.presentation.picking)
 
             // Resources: client
             implementation(projects.lib.core.resources)
 
+            // App
+            implementation(projects.lib.app)
+
             // Auth
             implementation(projects.lib.auth.shared)
             implementation(projects.lib.auth.picking)
-
-            // User
-            implementation(projects.lib.user)
 
             // Product
             implementation(projects.lib.product)
