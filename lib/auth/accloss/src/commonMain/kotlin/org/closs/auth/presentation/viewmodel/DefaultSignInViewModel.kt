@@ -2,15 +2,19 @@ package org.closs.auth.presentation.viewmodel
 
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavOptions
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import org.closs.auth.shared.data.repository.AuthRepository
 import org.closs.auth.shared.presentation.events.SignInEvents
+import org.closs.auth.shared.presentation.state.SignInState
 import org.closs.auth.shared.presentation.viewmodel.SignInViewModel
 import org.closs.core.presentation.shared.messages.Messages
 import org.closs.core.presentation.shared.navigation.Destination
 import org.closs.core.presentation.shared.navigation.Navigator
+import org.closs.core.resources.resources.generated.resources.Res
+import org.closs.core.resources.resources.generated.resources.company_invalid_input
 import org.closs.core.types.shared.auth.dto.SignInDto
 import org.closs.core.types.shared.state.RequestState
 
@@ -23,6 +27,7 @@ class DefaultSignInViewModel(
     messages = messages,
     authRepository = authRepository
 ) {
+    override val _state: MutableStateFlow<SignInState> = MutableStateFlow(SignInState(signInEnabled = false))
     override val state = _state.asStateFlow()
 
     override fun onEvent(event: SignInEvents) {
@@ -38,7 +43,22 @@ class DefaultSignInViewModel(
         }
     }
 
+    private fun companyChanged(value: String) {
+        _state.update { state ->
+            state.copy(
+                company = value,
+                companySubmitEnabled = state.company.length == 6,
+                companyError = if (value.any { !it.isDigit() }) {
+                    Res.string.company_invalid_input
+                } else {
+                    null
+                }
+            )
+        }
+    }
+
     // todo: company search
+    // todo: enable login
     private fun companySubmit() {
         viewModelScope.launch {
         }

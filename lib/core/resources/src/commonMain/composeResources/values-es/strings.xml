@@ -6,13 +6,16 @@
     <string name="welcome_back">Bienvenido de vuelta!</string>
     <string name="please_log_in">Inicia sesión</string>
     <string name="please_select_an_account">Seleccione una cuenta</string>
+    <string name="company">Empresa</string>
     <string name="username">Usuario</string>
     <string name="password">Contraseña</string>
     <string name="your_username">Tu nombre de usuario...</string>
     <string name="your_password">Tu contraseña...</string>
+    <string name="your_company">Tu empresa...</string>
     <string name="forgot_password">¿Olvido su contraseña?</string>
     <string name="log_in">Iniciar sesión</string>
     <string name="sign_up">Regístrate</string>
+    <string name="submit">Enviar</string>
     <string name="dont_have_an_account">¿No tienes una cuenta?</string>
     <!--Icon descriptions-->
     <string name="app_logo">App logo</string>
@@ -26,6 +29,7 @@
     <string name="hide_password">Ocultar contraseña</string>
     <!--Error messages-->
     <string name="auth_no_data">No se encontraron datos para este usuario.</string>
+    <string name="company_invalid_input">Empresa solo puede contener números</string>
     <string name="session_expired">Tu sessión ha expirado, inicia sesión nuevamente.</string>
     <string name="version_error">Tienes una versión antigua de la app, por favor actualiza a la versión mas reciente.</string>
     <string name="server_error">Ha ocurrido un error con el servidor, inténtelo más tarde.</string>

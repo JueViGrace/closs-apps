@@ -18,8 +18,9 @@ data class SignInState(
     val errorMessage: StringResource? = null,
 
     // Screen state
+    val companySubmitEnabled: Boolean = false,
+    val signInEnabled: Boolean = true,
     val passwordVisibility: Boolean = false,
-    val companyEnabled: Boolean = false,
-    val signInEnabled: Boolean = false,
+    val signInSubmitEnabled: Boolean = false,
     val isLoading: Boolean = false,
 )

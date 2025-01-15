@@ -7,7 +7,7 @@ plugins {
     alias(libs.plugins.kotlinx.serialization)
 }
 
-group = "org.closs.core.api"
+group = "org.closs.core.api.shared"
 
 kotlin {
     androidTarget {
@@ -53,7 +53,7 @@ kotlin {
 }
 
 android {
-    namespace = "org.closs.core.api"
+    namespace = "org.closs.core.api.shared"
     compileSdk =
         libs.versions.android.compileSdk
             .get()

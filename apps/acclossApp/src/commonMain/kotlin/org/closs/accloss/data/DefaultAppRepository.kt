@@ -6,7 +6,9 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import org.closs.app.shared.data.AppRepository
-import org.closs.core.api.KtorClient
+import org.closs.core.api.shared.KtorClient
+import org.closs.core.api.shared.call
+import org.closs.core.api.shared.post
 import org.closs.core.database.helper.ACCLOSSDbHelper
 import org.closs.core.resources.resources.generated.resources.Res
 import org.closs.core.resources.resources.generated.resources.session_expired
@@ -27,7 +29,7 @@ import org.closs.core.types.shared.user.domainToDb
 import kotlin.coroutines.CoroutineContext
 
 class DefaultAppRepository(
-    private val ktorClient: KtorClient,
+    private val defaultKtorClient: KtorClient,
     private val dbHelper: ACCLOSSDbHelper,
     override val coroutineContext: CoroutineContext,
     override val scope: CoroutineScope,
@@ -103,7 +105,7 @@ class DefaultAppRepository(
     }
 
     private suspend fun refresh(refreshToken: String): ApiOperation<AuthDto> {
-        return ktorClient.call {
+        return defaultKtorClient.call {
             post(
                 urlString = "/api/auth/refresh",
                 body = RefreshTokenDto(

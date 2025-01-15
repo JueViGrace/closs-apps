@@ -40,20 +40,11 @@ abstract class SignInViewModel(
         }
     }
 
-    protected fun companyChanged(value: String) {
-        _state.update { state ->
-            state.copy(
-                company = value,
-                companyEnabled = state.company.length == 6
-            )
-        }
-    }
-
     protected fun signInUsernameChanged(value: String) {
         _state.update { state ->
             state.copy(
                 username = value,
-                signInEnabled = state.username.isNotEmpty() && state.password.isNotEmpty()
+                signInSubmitEnabled = state.username.isNotEmpty() && state.password.isNotEmpty()
             )
         }
     }
@@ -62,7 +53,7 @@ abstract class SignInViewModel(
         _state.update { state ->
             state.copy(
                 password = value,
-                signInEnabled = state.username.isNotEmpty() && state.password.isNotEmpty()
+                signInSubmitEnabled = state.username.isNotEmpty() && state.password.isNotEmpty()
             )
         }
     }
@@ -107,7 +98,7 @@ abstract class SignInViewModel(
                 usernameError = null,
                 passwordError = null,
                 passwordVisibility = false,
-                signInEnabled = false,
+                signInSubmitEnabled = false,
                 errorMessage = null,
                 isLoading = false
             )

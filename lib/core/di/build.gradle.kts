@@ -26,9 +26,6 @@ kotlin {
         }
 
         commonMain.dependencies {
-            // Api: client
-            implementation(projects.lib.core.api)
-
             // Presentation: client
             implementation(projects.lib.core.presentation.shared)
 

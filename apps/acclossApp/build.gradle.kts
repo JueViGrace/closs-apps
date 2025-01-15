@@ -42,7 +42,8 @@ kotlin {
             implementation(projects.lib.core.types.accloss)
 
             // Api: client
-            implementation(projects.lib.core.api)
+            implementation(projects.lib.core.api.shared)
+            implementation(projects.lib.core.api.accloss)
 
             // Database
             implementation(projects.lib.core.database.shared)

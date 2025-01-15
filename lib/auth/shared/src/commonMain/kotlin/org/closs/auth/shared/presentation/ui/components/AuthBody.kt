@@ -44,7 +44,9 @@ fun AuthBody(
                 onValueChange = { newValue ->
                     onEvent(SignInEvents.OnUsernameChanged(newValue))
                 },
-                errorMessage = state.usernameError?.let { stringResource(it) }
+                errorMessage = state.usernameError?.let { stringResource(it) },
+                enabled = state.signInEnabled,
+                isError = state.usernameError != null
             )
 
             PasswordTextField(
@@ -53,6 +55,8 @@ fun AuthBody(
                     onEvent(SignInEvents.OnPasswordChanged(newValue))
                 },
                 errorMessage = state.passwordError?.let { stringResource(it) },
+                enabled = state.signInEnabled,
+                isError = state.usernameError != null,
                 passwordVisibility = state.passwordVisibility,
                 onVisibilityChange = {
                     onEvent(SignInEvents.TogglePasswordVisibility)
@@ -61,7 +65,8 @@ fun AuthBody(
         }
 
         Row(
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier.fillMaxWidth()
+                .padding(vertical = 6.dp, horizontal = 4.dp),
             horizontalArrangement = Arrangement.Start,
             verticalAlignment = Alignment.CenterVertically
         ) {
@@ -80,7 +85,7 @@ fun AuthBody(
             onClick = {
                 onEvent(SignInEvents.OnSignInSubmit)
             },
-            enabled = state.signInEnabled
+            enabled = state.signInSubmitEnabled
         ) {
             TextComponent(
                 text = stringResource(Res.string.log_in)

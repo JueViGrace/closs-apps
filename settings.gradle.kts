@@ -23,7 +23,9 @@ include(":lib")
 // core client library
 
 // network library
-include(":lib:core:api")
+include(":lib:core:api:shared")
+include(":lib:core:api:picking")
+include(":lib:core:api:accloss")
 
 // database library
 include(":lib:core:database:shared")

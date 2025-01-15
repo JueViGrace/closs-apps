@@ -7,15 +7,15 @@ import kotlinx.coroutines.flow.emptyFlow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import org.closs.app.shared.data.AppRepository
-import org.closs.core.api.KtorClient
+import org.closs.core.api.shared.KtorClient
+import org.closs.core.api.shared.call
+import org.closs.core.api.shared.post
 import org.closs.core.database.helper.PickingDbHelper
 import org.closs.core.resources.resources.generated.resources.Res
 import org.closs.core.resources.resources.generated.resources.session_expired
 import org.closs.core.resources.resources.generated.resources.unexpected_error
 import org.closs.core.resources.resources.generated.resources.unknown_error
-import org.closs.core.resources.resources.generated.resources.welcome
 import org.closs.core.types.shared.auth.Session
-import org.closs.core.types.shared.auth.dbAccountsToDomain
 import org.closs.core.types.shared.auth.dbActiveToDomain
 import org.closs.core.types.shared.auth.dto.AuthDto
 import org.closs.core.types.shared.auth.dto.RefreshTokenDto
@@ -29,7 +29,7 @@ import org.closs.core.types.shared.user.domainToDb
 import kotlin.coroutines.CoroutineContext
 
 class DefaultAppRepository(
-    private val ktorClient: KtorClient,
+    private val defaultKtorClient: KtorClient,
     private val dbHelper: PickingDbHelper,
     override val coroutineContext: CoroutineContext,
     override val scope: CoroutineScope,
@@ -82,7 +82,7 @@ class DefaultAppRepository(
     }
 
     private suspend fun refresh(refreshToken: String): ApiOperation<AuthDto> {
-        return ktorClient.call {
+        return defaultKtorClient.call {
             post(
                 urlString = "/api/auth/refresh",
                 body = RefreshTokenDto(

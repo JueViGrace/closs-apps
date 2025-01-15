@@ -19,6 +19,7 @@ fun appModule(): Module = module {
     viewModelOf(::DefaultAppViewModel) bind AppViewModel::class
 
     includes(
+        ktorModule(),
         databaseModule(),
         authModule(),
         productModule(),
