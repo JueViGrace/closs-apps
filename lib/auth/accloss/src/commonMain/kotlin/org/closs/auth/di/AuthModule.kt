@@ -1,8 +1,9 @@
 package org.closs.auth.di
 
 import org.closs.auth.data.repository.DefaultAuthRepository
+import org.closs.auth.presentation.viewmodel.AccountsListViewModel
+import org.closs.auth.presentation.viewmodel.DefaultSignInViewModel
 import org.closs.auth.shared.data.repository.AuthRepository
-import org.closs.auth.shared.presentation.viewmodel.AccountsListViewModel
 import org.closs.auth.shared.presentation.viewmodel.ForgotPasswordViewModel
 import org.closs.auth.shared.presentation.viewmodel.SignInViewModel
 import org.koin.core.module.Module
@@ -14,7 +15,7 @@ import org.koin.dsl.module
 fun authModule(): Module = module {
     singleOf(::DefaultAuthRepository) bind AuthRepository::class
 
-    viewModelOf(::SignInViewModel)
+    viewModelOf(::DefaultSignInViewModel) bind SignInViewModel::class
 
     viewModelOf(::ForgotPasswordViewModel)
 

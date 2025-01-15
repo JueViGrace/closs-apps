@@ -12,7 +12,6 @@ import org.closs.core.resources.resources.generated.resources.Res
 import org.closs.core.resources.resources.generated.resources.session_expired
 import org.closs.core.resources.resources.generated.resources.unexpected_error
 import org.closs.core.resources.resources.generated.resources.unknown_error
-import org.closs.core.resources.resources.generated.resources.welcome
 import org.closs.core.types.shared.auth.Session
 import org.closs.core.types.shared.auth.dbAccountsToDomain
 import org.closs.core.types.shared.auth.dbActiveToDomain
@@ -70,9 +69,7 @@ class DefaultAppRepository(
             }
             emit(
                 RequestState.Error(
-                    error = DataCodes.NullError(
-                        desc = "Session is null"
-                    )
+                    error = DataCodes.NullError()
                 )
             )
         }.flowOn(coroutineContext)
@@ -89,9 +86,7 @@ class DefaultAppRepository(
                 if (list.isEmpty()) {
                     return@collect emit(
                         RequestState.Error(
-                            error = DataCodes.NullError(
-                                msg = Res.string.welcome,
-                            )
+                            error = DataCodes.NullError()
                         )
                     )
                 }

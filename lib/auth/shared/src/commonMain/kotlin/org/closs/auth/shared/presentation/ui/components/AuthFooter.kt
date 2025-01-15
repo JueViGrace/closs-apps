@@ -15,7 +15,8 @@ import org.jetbrains.compose.resources.stringResource
 
 @Composable
 fun AuthFooter(
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    title: String = stringResource(Res.string.app_name)
 ) {
     Column(
         modifier = modifier,
@@ -23,7 +24,7 @@ fun AuthFooter(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         TextComponent(
-            text = stringResource(Res.string.app_name),
+            text = title,
             fontSize = MaterialTheme.typography.bodyLarge.fontSize,
             fontWeight = MaterialTheme.typography.bodyLarge.fontWeight,
         )

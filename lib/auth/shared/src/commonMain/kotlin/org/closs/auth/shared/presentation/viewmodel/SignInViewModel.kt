@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavOptions
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -15,29 +16,18 @@ import org.closs.auth.shared.presentation.state.SignInState
 import org.closs.core.presentation.shared.messages.Messages
 import org.closs.core.presentation.shared.navigation.Destination
 import org.closs.core.presentation.shared.navigation.Navigator
-import org.closs.core.types.shared.auth.dto.SignInDto
-import org.closs.core.types.shared.state.RequestState
 
-class SignInViewModel(
-    private val navigator: Navigator,
-    private val authRepository: AuthRepository,
-    private val messages: Messages
+abstract class SignInViewModel(
+    protected open val navigator: Navigator,
+    protected open val messages: Messages,
+    protected open val authRepository: AuthRepository
 ) : ViewModel() {
-    private val _state = MutableStateFlow(SignInState())
-    val state = _state.asStateFlow()
+    protected open val _state: MutableStateFlow<SignInState> = MutableStateFlow(SignInState())
+    open val state: StateFlow<SignInState> = MutableStateFlow(SignInState()).asStateFlow()
 
-    fun onEvent(event: SignInEvents) {
-        when (event) {
-            SignInEvents.OnNavigateToForgotPassword -> navigateForgotPassword()
-            SignInEvents.OnNavigateToSignUp -> navigateToSignUp()
-            is SignInEvents.OnSignInUsernameChanged -> signInUsernameChanged(event.value)
-            is SignInEvents.OnSignInPasswordChanged -> signInPasswordChanged(event.value)
-            SignInEvents.OnSignInSubmit -> signInSubmit()
-            SignInEvents.TogglePasswordVisibility -> togglePasswordVisibility()
-        }
-    }
+    abstract fun onEvent(event: SignInEvents)
 
-    private fun navigateForgotPassword() {
+    protected fun navigateForgotPassword() {
         resetState()
         viewModelScope.launch {
             navigator.navigate(
@@ -50,20 +40,16 @@ class SignInViewModel(
         }
     }
 
-    private fun navigateToSignUp() {
-        resetState()
-        viewModelScope.launch {
-            navigator.navigate(
-                destination = Destination.Accounts,
-                navOptions = NavOptions.Builder().apply {
-                    setPopUpTo(route = Destination.SignIn, inclusive = false)
-                    setLaunchSingleTop(true)
-                }.build()
+    protected fun companyChanged(value: String) {
+        _state.update { state ->
+            state.copy(
+                company = value,
+                companyEnabled = state.company.length == 6
             )
         }
     }
 
-    private fun signInUsernameChanged(value: String) {
+    protected fun signInUsernameChanged(value: String) {
         _state.update { state ->
             state.copy(
                 username = value,
@@ -72,7 +58,7 @@ class SignInViewModel(
         }
     }
 
-    private fun signInPasswordChanged(value: String) {
+    protected fun signInPasswordChanged(value: String) {
         _state.update { state ->
             state.copy(
                 password = value,
@@ -81,7 +67,7 @@ class SignInViewModel(
         }
     }
 
-    private fun togglePasswordVisibility() {
+    protected fun togglePasswordVisibility() {
         _state.update { state ->
             state.copy(
                 passwordVisibility = !state.passwordVisibility
@@ -89,57 +75,9 @@ class SignInViewModel(
         }
     }
 
-    private fun signInSubmit() {
-        if (onSignInError()) return
-        viewModelScope.launch {
-            val call = authRepository.signIn(
-                signInDto = SignInDto(
-                    username = _state.value.username,
-                    password = _state.value.password
-                )
-            )
-            when (call) {
-                is RequestState.Error -> {
-                    _state.update { state ->
-                        state.copy(
-                            isLoading = false,
-                            errorMessage = call.error.message
-                        )
-                    }
-                    messages.sendMessage(call.error)
-                }
-                is RequestState.Success -> {
-                    _state.update { state ->
-                        state.copy(
-                            isLoading = false,
-                            errorMessage = null
-                        )
-                    }
+    protected abstract fun signInSubmit()
 
-                    messages.sendMessage(call.data)
-                    navigator.navigate(
-                        destination = Destination.Home,
-                        navOptions = NavOptions.Builder().apply {
-                            setPopUpTo(route = Destination.AuthGraph, inclusive = true)
-                            setLaunchSingleTop(true)
-                        }.build()
-                    )
-
-                    resetState()
-                }
-                else -> {
-                    _state.update { state ->
-                        state.copy(
-                            isLoading = true,
-                            errorMessage = null
-                        )
-                    }
-                }
-            }
-        }
-    }
-
-    private fun onSignInError(): Boolean {
+    protected fun onSignInError(): Boolean {
         val validation = AuthValidator.validateSignIn(
             signIn = SignIn(
                 username = _state.value.username,
@@ -159,15 +97,19 @@ class SignInViewModel(
         return errors.isNotEmpty()
     }
 
-    private fun resetState() {
+    protected fun resetState() {
         _state.update { state ->
             state.copy(
+                company = "",
                 username = "",
                 password = "",
+                companyError = null,
                 usernameError = null,
                 passwordError = null,
                 passwordVisibility = false,
-                signInEnabled = false
+                signInEnabled = false,
+                errorMessage = null,
+                isLoading = false
             )
         }
     }

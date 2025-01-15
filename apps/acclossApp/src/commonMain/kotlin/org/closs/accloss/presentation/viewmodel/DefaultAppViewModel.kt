@@ -2,7 +2,6 @@ package org.closs.accloss.presentation.viewmodel
 
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavOptions
-import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
@@ -13,6 +12,7 @@ import org.closs.core.presentation.shared.messages.Messages
 import org.closs.core.presentation.shared.navigation.Destination
 import org.closs.core.presentation.shared.navigation.Navigator
 import org.closs.core.resources.resources.generated.resources.Res
+import org.closs.core.resources.resources.generated.resources.welcome
 import org.closs.core.resources.resources.generated.resources.welcome_back
 import org.closs.core.types.shared.state.RequestState
 
@@ -21,7 +21,6 @@ class DefaultAppViewModel(
     override val messages: Messages,
     override val appRepository: AppRepository,
 ) : AppViewModel(navigator = navigator, messages = messages, appRepository = appRepository) {
-    private var _state = MutableStateFlow(AppState())
     override val state = combine(
         _state,
         appRepository.validateSession(),
@@ -40,7 +39,7 @@ class DefaultAppViewModel(
                         )
                         state.copy(
                             session = null,
-                            snackMessage = accounts.error.message,
+                            snackMessage = accounts.error.message ?: Res.string.welcome,
                             description = accounts.error.description ?: "",
                         )
                     }
@@ -90,7 +89,7 @@ class DefaultAppViewModel(
         }
     }.stateIn(
         viewModelScope,
-        SharingStarted.Eagerly,
+        SharingStarted.Lazily,
         AppState()
     )
 }

@@ -18,7 +18,7 @@ fun MobileAuthLayout(
 ) {
     Column(
         modifier = Modifier.fillMaxSize().padding(horizontal = 12.dp),
-        verticalArrangement = Arrangement.spacedBy(8.dp, Alignment.CenterVertically),
+        verticalArrangement = Arrangement.SpaceBetween,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         title()

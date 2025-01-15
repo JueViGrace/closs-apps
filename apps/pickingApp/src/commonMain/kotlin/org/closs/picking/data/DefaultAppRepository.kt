@@ -71,9 +71,7 @@ class DefaultAppRepository(
             }
             emit(
                 RequestState.Error(
-                    error = DataCodes.NullError(
-                        desc = "Session is null"
-                    )
+                    error = DataCodes.NullError()
                 )
             )
         }.flowOn(coroutineContext)

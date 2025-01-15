@@ -1,40 +1,38 @@
-package org.closs.auth.shared.presentation.ui.screens
+package org.closs.auth.presentation.ui.screens
 
-import androidx.compose.foundation.border
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import org.closs.auth.shared.presentation.ui.components.AuthBody
 import org.closs.auth.shared.presentation.ui.components.AuthFooter
 import org.closs.auth.shared.presentation.ui.components.AuthTitle
 import org.closs.auth.shared.presentation.ui.components.mobile.MobileAuthLayout
-import org.closs.auth.shared.presentation.viewmodel.AccountsListViewModel
+import org.closs.auth.shared.presentation.viewmodel.SignInViewModel
 import org.closs.core.presentation.shared.ui.components.display.TextComponent
 import org.closs.core.resources.resources.generated.resources.Res
-import org.closs.core.resources.resources.generated.resources.please_select_an_account
+import org.closs.core.resources.resources.generated.resources.picking_app_name
+import org.closs.core.resources.resources.generated.resources.please_log_in
 import org.closs.core.resources.resources.generated.resources.welcome_back
 import org.jetbrains.compose.resources.stringResource
+import org.koin.androidx.compose.koinViewModel
 
 @Composable
-actual fun AccountsListScreen(
-    viewModel: AccountsListViewModel
+fun SignInScreen(
+    viewModel: SignInViewModel = koinViewModel()
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
     val onEvent = viewModel::onEvent
-
     MobileAuthLayout(
         title = {
             AuthTitle(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .weight(0.3f),
+                    .padding(top = 12.dp),
                 title = {
                     TextComponent(
                         text = stringResource(Res.string.welcome_back),
@@ -42,7 +40,7 @@ actual fun AccountsListScreen(
                         fontWeight = MaterialTheme.typography.headlineMedium.fontWeight,
                     )
                     TextComponent(
-                        text = stringResource(Res.string.please_select_an_account),
+                        text = stringResource(Res.string.please_log_in),
                         fontSize = MaterialTheme.typography.titleLarge.fontSize,
                         fontWeight = MaterialTheme.typography.titleLarge.fontWeight,
                     )
@@ -50,27 +48,18 @@ actual fun AccountsListScreen(
             )
         },
         content = {
-            LazyColumn(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .weight(0.6f)
-                    .border(
-                        width = 1.dp,
-                        color = MaterialTheme.colorScheme.primary,
-                        shape = MaterialTheme.shapes.small
-                    ),
-                verticalArrangement = Arrangement.spacedBy(8.dp, Alignment.Top),
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                items(state.accounts) { account ->
-                }
-            }
+            AuthBody(
+                modifier = Modifier.fillMaxWidth(),
+                state = state,
+                onEvent = onEvent
+            )
         },
         footer = {
             AuthFooter(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .weight(0.1f),
+                    .padding(bottom = 12.dp),
+                title = stringResource(Res.string.picking_app_name)
             )
         }
     )

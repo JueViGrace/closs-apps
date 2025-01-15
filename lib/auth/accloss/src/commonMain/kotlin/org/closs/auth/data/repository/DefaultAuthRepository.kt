@@ -3,15 +3,14 @@ package org.closs.auth.data.repository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.emptyFlow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import org.closs.auth.shared.data.repository.AuthRepository
 import org.closs.core.api.KtorClient
 import org.closs.core.database.helper.ACCLOSSDbHelper
 import org.closs.core.resources.resources.generated.resources.Res
+import org.closs.core.resources.resources.generated.resources.please_log_in
 import org.closs.core.resources.resources.generated.resources.unknown_error
-import org.closs.core.resources.resources.generated.resources.welcome
 import org.closs.core.resources.resources.generated.resources.welcome_back
 import org.closs.core.types.shared.auth.Session
 import org.closs.core.types.shared.auth.dbAccountsToDomain
@@ -58,7 +57,7 @@ class DefaultAuthRepository(
 
                 RequestState.Success(
                     data = DataCodes.CustomMessage(
-                        msg = Res.string.welcome,
+                        msg = Res.string.welcome_back,
                         desc = res.message
                     )
                 )
@@ -93,7 +92,7 @@ class DefaultAuthRepository(
 
                 RequestState.Success(
                     data = DataCodes.CustomMessage(
-                        msg = Res.string.welcome_back,
+                        msg = Res.string.please_log_in,
                         desc = res.message
                     )
                 )

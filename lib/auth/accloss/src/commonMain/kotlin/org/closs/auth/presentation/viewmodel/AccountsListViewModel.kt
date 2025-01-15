@@ -1,4 +1,4 @@
-package org.closs.auth.shared.presentation.viewmodel
+package org.closs.auth.presentation.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
