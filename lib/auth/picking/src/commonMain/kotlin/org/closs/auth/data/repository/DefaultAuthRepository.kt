@@ -5,7 +5,9 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.emptyFlow
 import org.closs.auth.shared.data.repository.AuthRepository
-import org.closs.core.api.KtorClient
+import org.closs.core.api.shared.KtorClient
+import org.closs.core.api.shared.call
+import org.closs.core.api.shared.post
 import org.closs.core.database.helper.PickingDbHelper
 import org.closs.core.resources.resources.generated.resources.Res
 import org.closs.core.resources.resources.generated.resources.please_log_in

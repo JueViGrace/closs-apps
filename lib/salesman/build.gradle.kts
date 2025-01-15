@@ -1,4 +1,3 @@
-import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
@@ -12,7 +11,6 @@ group = "org.closs.salesman"
 
 kotlin {
     androidTarget {
-        @OptIn(ExperimentalKotlinGradlePluginApi::class)
         compilerOptions {
             jvmTarget.set(JvmTarget.JVM_21)
         }
@@ -35,7 +33,7 @@ kotlin {
             implementation(projects.lib.core.database.shared)
 
             // Api: client
-            implementation(projects.lib.core.api)
+            implementation(projects.lib.core.api.shared)
 
             // Presentation: client
             implementation(projects.lib.core.presentation.shared)

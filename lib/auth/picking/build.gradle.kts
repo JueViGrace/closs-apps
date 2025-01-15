@@ -33,7 +33,8 @@ kotlin {
             implementation(projects.lib.core.database.picking)
 
             // Api: client
-            implementation(projects.lib.core.api)
+            implementation(projects.lib.core.api.shared)
+            implementation(projects.lib.core.api.picking)
 
             // Presentation: client
             implementation(projects.lib.core.presentation.shared)

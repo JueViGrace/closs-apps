@@ -33,7 +33,7 @@ kotlin {
             implementation(projects.lib.core.database.shared)
 
             // Api: client
-            implementation(projects.lib.core.api)
+            implementation(projects.lib.core.api.shared)
 
             // Presentation: client
             implementation(projects.lib.core.presentation.shared)

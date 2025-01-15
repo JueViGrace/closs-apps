@@ -1,4 +1,3 @@
-import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
@@ -12,7 +11,6 @@ group = "org.closs.auth.shared"
 
 kotlin {
     androidTarget {
-        @OptIn(ExperimentalKotlinGradlePluginApi::class)
         compilerOptions {
             jvmTarget.set(JvmTarget.JVM_21)
         }
@@ -30,12 +28,6 @@ kotlin {
         commonMain.dependencies {
             // Types
             implementation(projects.lib.core.types.shared)
-
-            // Database: client
-            implementation(projects.lib.core.database.shared)
-
-            // Api: client
-            implementation(projects.lib.core.api)
 
             // Presentation: client
             implementation(projects.lib.core.presentation.shared)
