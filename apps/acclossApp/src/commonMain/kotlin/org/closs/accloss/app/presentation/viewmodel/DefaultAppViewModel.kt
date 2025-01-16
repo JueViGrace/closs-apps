@@ -1,4 +1,4 @@
-package org.closs.picking.presentation.viewmodel
+package org.closs.accloss.presentation.viewmodel
 
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavOptions
@@ -20,25 +20,53 @@ class DefaultAppViewModel(
     override val navigator: Navigator,
     override val messages: Messages,
     override val appRepository: AppRepository,
-) : AppViewModel(navigator = navigator, messages = messages, appRepository = appRepository) {
+) : AppViewModel(
+    navigator = navigator,
+    messages = messages,
+    appRepository = appRepository
+) {
     override val state = combine(
         _state,
         appRepository.validateSession(),
-    ) { state, session ->
+        appRepository.getAccounts()
+    ) { state, session, accounts ->
         when (session) {
             is RequestState.Error -> {
-                navigator.navigate(
-                    destination = Destination.SignIn,
-                    navOptions = NavOptions.Builder().apply {
-                        setPopUpTo(route = Destination.Splash, inclusive = true)
-                        setLaunchSingleTop(true)
-                    }.build()
-                )
-                state.copy(
-                    session = null,
-                    snackMessage = session.error.message ?: Res.string.welcome,
-                    description = session.error.description ?: "",
-                )
+                when (accounts) {
+                    is RequestState.Error -> {
+                        navigator.navigate(
+                            destination = Destination.SignIn,
+                            navOptions = NavOptions.Builder().apply {
+                                setPopUpTo(route = Destination.Splash, inclusive = true)
+                                setLaunchSingleTop(true)
+                            }.build()
+                        )
+                        state.copy(
+                            session = null,
+                            snackMessage = accounts.error.message ?: Res.string.welcome,
+                            description = accounts.error.description ?: "",
+                        )
+                    }
+                    is RequestState.Success -> {
+                        navigator.navigate(
+                            destination = Destination.Accounts,
+                            navOptions = NavOptions.Builder().apply {
+                                setPopUpTo(route = Destination.Splash, inclusive = true)
+                                setLaunchSingleTop(true)
+                            }.build()
+                        )
+                        state.copy(
+                            session = null,
+                        )
+                    }
+                    else -> {
+                        state.copy(
+                            session = null,
+                            snackMessage = null,
+                            description = ""
+                        )
+                    }
+                }
             }
             is RequestState.Success -> {
                 navigator.navigate(
