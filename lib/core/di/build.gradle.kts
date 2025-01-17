@@ -32,6 +32,9 @@ kotlin {
             // State handle
             implementation(libs.androidx.lifecycle.viewmodel.savedstate)
 
+            // Konnection
+            implementation(libs.konnection)
+
             // Koin
             implementation(libs.koin.core)
             implementation(libs.koin.compose)

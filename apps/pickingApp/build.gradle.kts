@@ -64,8 +64,9 @@ kotlin {
             // Product
             implementation(projects.lib.product)
 
-            // Order
-            implementation(projects.lib.order)
+            // Orders
+            implementation(projects.lib.order.shared)
+            implementation(projects.lib.order.picking)
 
             // Compose
             implementation(compose.runtime)
@@ -86,8 +87,11 @@ kotlin {
             // Kotlinx
             implementation(libs.kotlinx.coroutines.core)
 
-            // Ktor: client
+            // Ktor
             implementation(libs.ktor.client.core)
+
+            // Konnection
+            implementation(libs.konnection)
 
             // Koin
             implementation(libs.koin.core)

@@ -121,6 +121,10 @@ class DefaultAuthRepository(
         scope.async {
             dbHelper.withDatabase { db ->
                 db.transaction {
+                    if (session.user == null) {
+                        return@transaction
+                    }
+
                     db.clossSessionQueries.insert(
                         closs_session = session.sessionToDb()
                     )
@@ -128,7 +132,7 @@ class DefaultAuthRepository(
                         ?: rollback()
 
                     db.clossUserQueries.insert(
-                        closs_user = session.user.domainToDb()
+                        closs_user = session.user!!.domainToDb()
                     )
                         .executeAsOneOrNull()
                         ?: rollback()

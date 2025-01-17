@@ -4,6 +4,7 @@
     <string name="picking_app_name">CLOSS Picking</string>
     <string name="welcome">Welcome!</string>
     <string name="welcome_back">Welcome back!</string>
+    <string name="greetings">Greetings</string>
     <string name="please_log_in">Please log in</string>
     <string name="please_select_an_account">Please select an account</string>
     <string name="company">Company</string>
@@ -16,18 +17,23 @@
     <string name="log_in">Log in</string>
     <string name="sign_up">Sign up</string>
     <string name="submit">Submit</string>
+    <string name="notifications">Notifications</string>
     <string name="dont_have_an_account">Don't have an account?</string>
-    <!--Icon descriptions-->
+    <string name="picking_history">Picking history</string>
+    <string name="pending_orders">Pending orders</string>
+    <!--Descriptions-->
     <string name="app_logo">App logo</string>
     <string name="company_logo">Company logo</string>
     <string name="company_text_field_icon">Company text field icon</string>
     <string name="username_text_field_icon">Username text field icon</string>
     <string name="password_text_field_icon">Password text field icon</string>
+    <string name="navigate_forward">Navigate forward</string>
     <string name="go_back">Go back</string>
     <string name="close">Close</string>
     <string name="show">Show</string>
     <string name="show_password">Show password</string>
     <string name="hide_password">Hide password</string>
+    <string name="picking_dash_image">Picking image</string>
     <!--Error messages-->
     <string name="auth_no_data">No data found for this user.</string>
     <string name="company_invalid_input">Company must only contain numbers</string>

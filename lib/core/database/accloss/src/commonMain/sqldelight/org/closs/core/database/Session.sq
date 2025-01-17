@@ -1,0 +1,16 @@
+findActiveAccount:
+SELECT *
+FROM closs_session
+LEFT JOIN closs_user
+ON closs_session.user_id = closs_user.id
+LEFT JOIN closs_salesman
+ON closs_user.id = closs_salesman.user_id
+WHERE active = 1;
+
+findAccounts:
+SELECT *
+FROM closs_session
+LEFT JOIN closs_user
+ON closs_session.user_id = closs_user.id
+LEFT JOIN closs_salesman
+ON closs_user.id = closs_salesman.user_id;

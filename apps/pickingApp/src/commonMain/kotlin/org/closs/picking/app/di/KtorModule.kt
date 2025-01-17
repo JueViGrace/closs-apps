@@ -1,4 +1,4 @@
-package org.closs.picking.di
+package org.closs.picking.app.di
 
 import org.closs.core.api.DefaultKtorClient
 import org.closs.core.api.shared.KtorClient

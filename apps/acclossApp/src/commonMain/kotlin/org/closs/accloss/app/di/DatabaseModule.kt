@@ -1,4 +1,4 @@
-package org.closs.accloss.di
+package org.closs.accloss.app.di
 
 import org.koin.core.module.Module
 

@@ -1,4 +1,4 @@
-package org.closs.picking.di
+package org.closs.picking.app.di
 
 import org.closs.core.database.driver.DefaultDriverFactory
 import org.closs.core.database.helper.DefaultDbHelper

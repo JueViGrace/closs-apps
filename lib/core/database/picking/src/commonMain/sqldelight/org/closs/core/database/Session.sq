@@ -1,0 +1,8 @@
+findActiveAccount:
+SELECT *
+FROM closs_session
+LEFT JOIN closs_user
+ON closs_session.user_id = closs_user.id
+LEFT JOIN closs_picker
+ON closs_user.id = closs_picker.user_id
+WHERE active = 1;

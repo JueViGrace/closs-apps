@@ -3,7 +3,7 @@ package org.closs.picking
 import android.app.Application
 import org.closs.core.di.KoinBuilder
 import org.closs.core.di.coreModule
-import org.closs.picking.di.appModule
+import org.closs.picking.app.di.appModule
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.core.logger.Level

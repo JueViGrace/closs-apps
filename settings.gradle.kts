@@ -72,7 +72,9 @@ include(":lib:product")
 include(":lib:customer")
 
 // order library
-include(":lib:order")
+include(":lib:order:shared")
+include(":lib:order:picking")
+include(":lib:order:accloss")
 
 // document library
 include(":lib:document")

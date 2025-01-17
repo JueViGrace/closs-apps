@@ -1,35 +1,34 @@
 package org.closs.core.presentation.shared.ui.components.display
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.TextUnit
-import androidx.compose.ui.unit.dp
+import org.closs.core.presentation.shared.utils.ScreenSize
+import org.closs.core.presentation.shared.utils.getScreenSize
 
 @Composable
 fun LetterComponent(
     modifier: Modifier = Modifier,
     letter: String,
-    fontSize: TextUnit = MaterialTheme.typography.titleLarge.fontSize,
-    fontWeight: FontWeight? = MaterialTheme.typography.titleLarge.fontWeight
 ) {
+    val fontSize: TextUnit = when (getScreenSize()) {
+        ScreenSize.Compact -> MaterialTheme.typography.titleMedium.fontSize
+        ScreenSize.Medium -> MaterialTheme.typography.titleLarge.fontSize
+        ScreenSize.Large -> MaterialTheme.typography.displaySmall.fontSize
+    }
+
+    val fontWeight: FontWeight? = when (getScreenSize()) {
+        ScreenSize.Compact -> MaterialTheme.typography.titleMedium.fontWeight
+        ScreenSize.Medium -> MaterialTheme.typography.titleLarge.fontWeight
+        ScreenSize.Large -> MaterialTheme.typography.displaySmall.fontWeight
+    }
+
     Box(
-        modifier = modifier
-            .size(50.dp)
-            .background(
-                color = MaterialTheme.colorScheme.primaryContainer,
-                shape = CircleShape
-            )
-            .clip(CircleShape)
-            .padding(10.dp),
+        modifier = modifier,
         contentAlignment = Alignment.Center
     ) {
         TextComponent(

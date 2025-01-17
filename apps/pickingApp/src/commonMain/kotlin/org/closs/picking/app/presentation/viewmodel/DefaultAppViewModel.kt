@@ -1,4 +1,4 @@
-package org.closs.picking.presentation.viewmodel
+package org.closs.picking.app.presentation.viewmodel
 
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavOptions

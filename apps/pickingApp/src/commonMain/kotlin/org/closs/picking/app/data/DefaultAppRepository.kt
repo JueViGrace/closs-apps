@@ -1,4 +1,4 @@
-package org.closs.picking.data
+package org.closs.picking.app.data
 
 import dev.tmapps.konnection.Konnection
 import kotlinx.coroutines.CoroutineScope

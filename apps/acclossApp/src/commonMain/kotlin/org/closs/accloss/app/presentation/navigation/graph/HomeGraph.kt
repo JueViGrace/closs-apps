@@ -1,8 +1,9 @@
-package org.closs.accloss.presentation.navigation.graph
+package org.closs.accloss.app.presentation.navigation.graph
 
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
+import androidx.navigation.toRoute
 import org.closs.core.presentation.shared.navigation.Destination
 import org.closs.order.presentation.ui.screens.OrderDetailsScreen
 import org.closs.order.presentation.ui.screens.OrdersListScreen
@@ -26,16 +27,22 @@ fun NavGraphBuilder.homeGraph() {
             ProductsListScreen()
         }
 
-        composable<Destination.ProductDetails> {
-            ProductDetailsScreen()
+        composable<Destination.ProductDetails> { backStackEntry ->
+            val id: String = backStackEntry.toRoute()
+            ProductDetailsScreen(
+                productId = id
+            )
         }
 
         composable<Destination.Orders> {
             OrdersListScreen()
         }
 
-        composable<Destination.OrderDetails> {
-            OrderDetailsScreen()
+        composable<Destination.OrderDetails> { backStackEntry ->
+            val id: String = backStackEntry.toRoute()
+            OrderDetailsScreen(
+                orderId = id
+            )
         }
     }
 }

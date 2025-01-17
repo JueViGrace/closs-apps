@@ -1,4 +1,4 @@
-package org.closs.accloss.presentation.ui.components
+package org.closs.accloss.app.presentation.ui.components
 
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable

@@ -1,9 +1,12 @@
-package org.closs.picking.presentation.ui.components
+package org.closs.picking.app.presentation.ui.components
 
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
@@ -22,9 +25,13 @@ import org.closs.core.presentation.shared.navigation.NavigationStack
 import org.closs.core.presentation.shared.navigation.Navigator
 import org.closs.core.presentation.shared.ui.components.buttons.AccountButton
 import org.closs.core.presentation.shared.ui.components.buttons.BackArrowButton
+import org.closs.core.presentation.shared.ui.components.display.TextComponent
 import org.closs.core.presentation.shared.ui.components.layout.TopBarComponent
-import org.closs.picking.presentation.navigation.graph.authGraph
-import org.closs.picking.presentation.navigation.graph.homeGraph
+import org.closs.core.resources.resources.generated.resources.Res
+import org.closs.core.resources.resources.generated.resources.notifications
+import org.closs.picking.app.presentation.navigation.graph.authGraph
+import org.closs.picking.app.presentation.navigation.graph.homeGraph
+import org.jetbrains.compose.resources.stringResource
 
 @Composable
 fun AppScaffold(
@@ -67,6 +74,7 @@ fun AppScaffold(
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun TopBar(
     state: AppState,
@@ -89,6 +97,9 @@ private fun TopBar(
 
         Destination.Home -> {
             TopBarComponent(
+                colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
+                    containerColor = MaterialTheme.colorScheme.surfaceContainer,
+                ),
                 actions = {
                     AccountButton(
                         letter = state.session?.user?.name?.firstOrNull()?.toString() ?: "P",
@@ -112,6 +123,13 @@ private fun TopBar(
         }
         Destination.Notifications -> {
             TopBarComponent(
+                title = {
+                    TextComponent(
+                        text = stringResource(Res.string.notifications),
+                        fontSize = MaterialTheme.typography.titleLarge.fontSize,
+                        fontWeight = MaterialTheme.typography.titleLarge.fontWeight,
+                    )
+                },
                 navigationIcon = {
                     BackArrowButton {
                         scope.launch {
@@ -121,10 +139,31 @@ private fun TopBar(
                 },
             )
         }
+        Destination.PickingHistory -> {
+            TopBarComponent(
+                navigationIcon = {
+                    BackArrowButton {
+                        scope.launch {
+                            navigator.navigateUp()
+                        }
+                    }
+                },
+            )
+        }
+        Destination.PendingOrders -> {
+            TopBarComponent(
+                navigationIcon = {
+                    BackArrowButton {
+                        scope.launch {
+                            navigator.navigateUp()
+                        }
+                    }
+                },
+            )
+        }
+        is Destination.OrderDetails -> { }
         Destination.Products -> { }
         is Destination.ProductDetails -> { }
-        Destination.Orders -> { }
-        is Destination.OrderDetails -> { }
         null -> { }
         else -> {}
     }

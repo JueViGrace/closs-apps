@@ -24,6 +24,9 @@ kotlin {
         }
 
         commonMain.dependencies {
+            // Types
+            implementation(projects.lib.core.types.shared)
+
             // Database
             implementation(projects.lib.core.database.shared)
             implementation(projects.lib.core.database.picking)

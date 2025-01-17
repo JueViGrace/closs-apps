@@ -60,6 +60,11 @@ class DefaultSignInViewModel(
     // todo: company search
     // todo: enable login
     private fun companySubmit() {
+        _state.update { state ->
+            state.copy(
+                isLoading = true
+            )
+        }
         viewModelScope.launch {
         }
     }
@@ -79,7 +84,19 @@ class DefaultSignInViewModel(
 
     // todo: save session
     override fun signInSubmit() {
-        if (onSignInError()) return
+        _state.update { state ->
+            state.copy(
+                isLoading = true
+            )
+        }
+        if (onSignInError()) {
+            _state.update { state ->
+                state.copy(
+                    isLoading = false
+                )
+            }
+            return
+        }
         viewModelScope.launch {
             val call = authRepository.signIn(
                 signInDto = SignInDto(

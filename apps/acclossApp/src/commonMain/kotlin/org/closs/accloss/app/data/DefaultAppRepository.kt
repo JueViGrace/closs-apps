@@ -1,4 +1,4 @@
-package org.closs.accloss.data
+package org.closs.accloss.app.data
 
 import dev.tmapps.konnection.Konnection
 import kotlinx.coroutines.CoroutineScope

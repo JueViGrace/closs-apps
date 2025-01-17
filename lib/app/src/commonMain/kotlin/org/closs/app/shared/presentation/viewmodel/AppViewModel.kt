@@ -9,6 +9,7 @@ import org.closs.app.shared.presentation.state.AppState
 import org.closs.core.presentation.shared.messages.Messages
 import org.closs.core.presentation.shared.navigation.Navigator
 
+// Refactor session queries
 abstract class AppViewModel(
     open val navigator: Navigator,
     open val messages: Messages,

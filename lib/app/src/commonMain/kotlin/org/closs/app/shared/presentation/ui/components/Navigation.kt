@@ -20,7 +20,8 @@ fun Navigation(
     content: @Composable (
         NavHostController,
         Navigator,
-        SnackbarHostState
+        SnackbarHostState,
+        AppViewModel,
     ) -> Unit,
 ) {
     val viewModel: AppViewModel = koinViewModel()
@@ -65,6 +66,7 @@ fun Navigation(
     content(
         navController,
         navigator,
-        snackBarHostState
+        snackBarHostState,
+        viewModel
     )
 }

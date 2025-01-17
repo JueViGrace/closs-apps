@@ -11,10 +11,14 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import org.closs.core.presentation.shared.ui.components.display.TextComponent
 import org.closs.product.presentation.viewmodel.ProductDetailsViewModel
 import org.koin.compose.viewmodel.koinViewModel
+import org.koin.core.parameter.parametersOf
 
 @Composable
 fun ProductDetailsScreen(
-    viewModel: ProductDetailsViewModel = koinViewModel()
+    productId: String,
+    viewModel: ProductDetailsViewModel = koinViewModel(
+        parameters = { parametersOf(productId) }
+    )
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
 

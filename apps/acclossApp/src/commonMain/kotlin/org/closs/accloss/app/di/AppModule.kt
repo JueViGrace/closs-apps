@@ -1,7 +1,7 @@
-package org.closs.accloss.di
+package org.closs.accloss.app.di
 
-import org.closs.accloss.data.DefaultAppRepository
-import org.closs.accloss.presentation.viewmodel.DefaultAppViewModel
+import org.closs.accloss.app.data.DefaultAppRepository
+import org.closs.accloss.app.presentation.viewmodel.DefaultAppViewModel
 import org.closs.app.shared.data.AppRepository
 import org.closs.app.shared.presentation.viewmodel.AppViewModel
 import org.closs.auth.di.authModule

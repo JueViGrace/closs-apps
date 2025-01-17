@@ -1,4 +1,4 @@
-package org.closs.picking.presentation.navigation.graph
+package org.closs.picking.app.presentation.navigation.graph
 
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable

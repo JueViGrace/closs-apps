@@ -56,4 +56,11 @@ sealed interface Destination {
 
     @Serializable
     data class SalesmanDetails(val code: String) : Destination
+
+    // Picking App
+    @Serializable
+    data object PickingHistory : Destination
+
+    @Serializable
+    data object PendingOrders : Destination
 }

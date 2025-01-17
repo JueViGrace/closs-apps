@@ -9,19 +9,6 @@ CREATE TABLE IF NOT EXISTS closs_session(
     FOREIGN KEY(user_id) REFERENCES closs_user(id)
 );
 
-findActiveAccount:
-SELECT *
-FROM closs_session
-LEFT JOIN closs_user
-ON closs_session.user_id = closs_user.id
-WHERE active = 1;
-
-findAccounts:
-SELECT *
-FROM closs_session
-LEFT JOIN closs_user
-ON closs_session.user_id = closs_user.id;
-
 insert:
 INSERT OR REPLACE INTO closs_session(
     access_token,

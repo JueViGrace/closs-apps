@@ -53,6 +53,9 @@ kotlin {
             // Ktor: client
             implementation(libs.ktor.client.core)
 
+            // Konnection
+            implementation(libs.konnection)
+
             // Koin
             implementation(libs.koin.core)
             implementation(libs.koin.compose)

@@ -56,11 +56,14 @@ class DefaultNavigator(
     }
 
     override suspend fun navigateUp() {
+        println("navigateUp")
+        println(stack.value.destinations)
+        println(stack.value.currentDestination)
         _stack.update { stack ->
             if (stack.destinations.isEmpty()) {
                 return@update stack
             }
-            stack.destinations.removeLast()
+            stack.destinations.removeLastOrNull()
             stack.copy(
                 currentDestination = stack.destinations.lastOrNull()
             )
