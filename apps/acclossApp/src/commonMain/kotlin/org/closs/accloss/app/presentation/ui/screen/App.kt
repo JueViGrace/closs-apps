@@ -16,11 +16,12 @@ fun App() {
             Surface(
                 modifier = Modifier.fillMaxSize()
             ) {
-                Navigation { navController, navigator, snackBarHostState ->
+                Navigation { navController, navigator, snackBarHostState, viewModel ->
                     AppScaffold(
                         navController = navController,
                         navigator = navigator,
-                        snackBarHostState = snackBarHostState
+                        snackBarHostState = snackBarHostState,
+                        viewModel = viewModel
                     )
                 }
             }

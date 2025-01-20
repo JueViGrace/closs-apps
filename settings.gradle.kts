@@ -51,6 +51,9 @@ include(":lib:core:types:accloss")
 // app library
 include(":lib:app")
 
+// home library
+include(":lib:home:shared")
+
 // auth library
 include(":lib:auth:shared")
 include(":lib:auth:accloss")

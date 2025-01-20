@@ -18,9 +18,12 @@
     <string name="sign_up">Sign up</string>
     <string name="submit">Submit</string>
     <string name="notifications">Notifications</string>
+    <string name="settings">Settings</string>
+    <string name="your_account">Your account</string>
     <string name="dont_have_an_account">Don't have an account?</string>
     <string name="picking_history">Picking history</string>
     <string name="pending_orders">Pending orders</string>
+    <string name="sync">Sync</string>
     <!--Descriptions-->
     <string name="app_logo">App logo</string>
     <string name="company_logo">Company logo</string>

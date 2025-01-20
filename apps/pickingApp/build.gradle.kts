@@ -36,7 +36,7 @@ kotlin {
             implementation(projects.lib.core.types.shared)
             implementation(projects.lib.core.types.picking)
 
-            // Api: client
+            // Api
             implementation(projects.lib.core.api.shared)
             implementation(projects.lib.core.api.picking)
 
@@ -44,18 +44,21 @@ kotlin {
             implementation(projects.lib.core.database.shared)
             implementation(projects.lib.core.database.picking)
 
-            // Di: client
+            // Di
             implementation(projects.lib.core.di)
 
-            // Presentation: client
+            // Presentation
             implementation(projects.lib.core.presentation.shared)
             implementation(projects.lib.core.presentation.picking)
 
-            // Resources: client
+            // Resources
             implementation(projects.lib.core.resources)
 
             // App
             implementation(projects.lib.app)
+
+            // Home
+            implementation(projects.lib.home.shared)
 
             // Auth
             implementation(projects.lib.auth.shared)

@@ -1,2 +1,2 @@
-package org.closs.picking.home.di
+package org.closs.accloss.home.di
 

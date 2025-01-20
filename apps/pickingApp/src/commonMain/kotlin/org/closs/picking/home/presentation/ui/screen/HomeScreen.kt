@@ -10,18 +10,21 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import org.closs.core.presentation.shared.ui.components.display.TextComponent
 import org.closs.core.resources.resources.generated.resources.Res
 import org.closs.core.resources.resources.generated.resources.greetings
 import org.closs.core.resources.resources.generated.resources.ic_arrow_big_right
-import org.closs.core.resources.resources.generated.resources.ic_avlogo
 import org.closs.core.resources.resources.generated.resources.ic_shopping_bag
 import org.closs.core.resources.resources.generated.resources.pending_orders
 import org.closs.core.resources.resources.generated.resources.picking_history
+import org.closs.home.shared.presentation.events.HomeEvents
 import org.closs.picking.home.presentation.ui.components.DashboardNavItem
+import org.closs.picking.home.presentation.ui.components.PickingHomeDialog
 import org.closs.picking.home.presentation.viewmodel.HomeViewModel
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
@@ -31,6 +34,15 @@ import org.koin.androidx.compose.koinViewModel
 fun HomeScreen(
     viewModel: HomeViewModel = koinViewModel()
 ) {
+    val state by viewModel.state.collectAsStateWithLifecycle()
+
+    if (state.showDialog) {
+        PickingHomeDialog(
+            state = state,
+            onEvent = viewModel::onEvent
+        )
+    }
+
     Column(
         modifier = Modifier.fillMaxSize(),
         verticalArrangement = Arrangement.SpaceEvenly,
@@ -63,11 +75,11 @@ fun HomeScreen(
                 .fillMaxSize()
                 .weight(1f)
                 .clickable {
-                    viewModel.navigateToPickingHistory()
+                    viewModel.onEvent(HomeEvents.NavigateToPickingHistory)
                 }
                 .padding(horizontal = 16.dp),
             title = stringResource(Res.string.picking_history),
-            image = painterResource(Res.drawable.ic_avlogo),
+            image = painterResource(Res.drawable.ic_shopping_bag),
             icon = painterResource(Res.drawable.ic_arrow_big_right)
         )
         HorizontalDivider(
@@ -78,11 +90,11 @@ fun HomeScreen(
                 .fillMaxSize()
                 .weight(1f)
                 .clickable {
-                    viewModel.navigateToPendingOrders()
+                    viewModel.onEvent(HomeEvents.NavigateToPendingOrders)
                 }
                 .padding(horizontal = 16.dp),
             title = stringResource(Res.string.pending_orders),
-            image = painterResource(Res.drawable.ic_avlogo),
+            image = painterResource(Res.drawable.ic_shopping_bag),
             icon = painterResource(Res.drawable.ic_arrow_big_right)
         )
     }

@@ -17,10 +17,13 @@
     <string name="log_in">Iniciar sesión</string>
     <string name="sign_up">Regístrate</string>
     <string name="submit">Enviar</string>
+    <string name="settings">Configuración</string>
+    <string name="your_account">Tu cuenta</string>
     <string name="notifications">Notificaciones</string>
     <string name="dont_have_an_account">¿No tienes una cuenta?</string>
     <string name="picking_history">Historial de pickeo</string>
     <string name="pending_orders">Pedidos pendientes</string>
+    <string name="sync">Sincronizar</string>
     <!--Icon descriptions-->
     <string name="app_logo">App logo</string>
     <string name="company_logo">Logo de la empresa</string>

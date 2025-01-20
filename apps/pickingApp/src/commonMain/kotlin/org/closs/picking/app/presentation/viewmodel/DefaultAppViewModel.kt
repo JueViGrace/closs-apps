@@ -1,12 +1,12 @@
 package org.closs.picking.app.presentation.viewmodel
 
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavOptions
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 import org.closs.app.shared.data.AppRepository
-import org.closs.app.shared.presentation.state.AppState
 import org.closs.app.shared.presentation.viewmodel.AppViewModel
 import org.closs.core.presentation.shared.messages.Messages
 import org.closs.core.presentation.shared.navigation.Destination
@@ -14,17 +14,22 @@ import org.closs.core.presentation.shared.navigation.Navigator
 import org.closs.core.resources.resources.generated.resources.Res
 import org.closs.core.resources.resources.generated.resources.welcome
 import org.closs.core.resources.resources.generated.resources.welcome_back
+import org.closs.core.types.shared.common.Constants
 import org.closs.core.types.shared.state.RequestState
 
 class DefaultAppViewModel(
     override val navigator: Navigator,
     override val messages: Messages,
+    override val handle: SavedStateHandle,
     override val appRepository: AppRepository,
 ) : AppViewModel(
     navigator = navigator,
     messages = messages,
+    handle = handle,
     appRepository = appRepository
 ) {
+    private val showDialog = handle.getStateFlow(Constants.SHOW_HOME_DIALOG_KEY, false)
+
     override val state = combine(
         _state,
         appRepository.validateSession(),
@@ -52,7 +57,6 @@ class DefaultAppViewModel(
                         setLaunchSingleTop(true)
                     }.build()
                 )
-                // todo: change for user name
                 state.copy(
                     session = session.data,
                     snackMessage = Res.string.welcome_back,
@@ -70,6 +74,10 @@ class DefaultAppViewModel(
     }.stateIn(
         viewModelScope,
         SharingStarted.Lazily,
-        AppState()
+        _state.value
     )
+
+    override fun toggleDialog() {
+        handle[Constants.SHOW_HOME_DIALOG_KEY] = !showDialog.value
+    }
 }

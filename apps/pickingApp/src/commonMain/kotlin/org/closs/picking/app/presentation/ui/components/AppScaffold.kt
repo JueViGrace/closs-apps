@@ -15,7 +15,6 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import org.closs.app.shared.presentation.state.AppState
 import org.closs.app.shared.presentation.ui.screens.SplashScreen
@@ -23,10 +22,10 @@ import org.closs.app.shared.presentation.viewmodel.AppViewModel
 import org.closs.core.presentation.shared.navigation.Destination
 import org.closs.core.presentation.shared.navigation.NavigationStack
 import org.closs.core.presentation.shared.navigation.Navigator
-import org.closs.core.presentation.shared.ui.components.buttons.AccountButton
 import org.closs.core.presentation.shared.ui.components.buttons.BackArrowButton
 import org.closs.core.presentation.shared.ui.components.display.TextComponent
-import org.closs.core.presentation.shared.ui.components.layout.TopBarComponent
+import org.closs.core.presentation.shared.ui.components.layout.bars.TopBarComponent
+import org.closs.core.presentation.shared.ui.components.layout.bars.actions.HomeTopBarActions
 import org.closs.core.resources.resources.generated.resources.Res
 import org.closs.core.resources.resources.generated.resources.notifications
 import org.closs.picking.app.presentation.navigation.graph.authGraph
@@ -43,17 +42,14 @@ fun AppScaffold(
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
     val stack by navigator.stack.collectAsStateWithLifecycle()
-    val scope = rememberCoroutineScope()
-
-    // todo: make dialog
 
     Scaffold(
         topBar = {
             TopBar(
                 state = state,
+                viewModel = viewModel,
                 navigator = navigator,
                 stack = stack,
-                scope = scope
             )
         },
         snackbarHost = {
@@ -78,10 +74,11 @@ fun AppScaffold(
 @Composable
 private fun TopBar(
     state: AppState,
+    viewModel: AppViewModel,
     navigator: Navigator,
     stack: NavigationStack,
-    scope: CoroutineScope,
 ) {
+    val scope = rememberCoroutineScope()
     when (stack.currentDestination) {
         Destination.ForgotPassword -> {
             TopBarComponent(
@@ -101,15 +98,29 @@ private fun TopBar(
                     containerColor = MaterialTheme.colorScheme.surfaceContainer,
                 ),
                 actions = {
-                    AccountButton(
-                        letter = state.session?.user?.name?.firstOrNull()?.toString() ?: "P",
-                    ) {
-                        // todo: account settings dialog menu
-                    }
+                    HomeTopBarActions(
+                        accountLetter = state.session?.user?.name?.firstOrNull()?.toString() ?: "P",
+                        onNotificationsClick = {
+                            viewModel.navigateToNotifications()
+                        },
+                        onAccountClick = {
+                            viewModel.toggleDialog()
+                        }
+                    )
                 }
             )
         }
-        Destination.Profile -> { }
+        Destination.Profile -> {
+            TopBarComponent(
+                navigationIcon = {
+                    BackArrowButton {
+                        scope.launch {
+                            navigator.navigateUp()
+                        }
+                    }
+                },
+            )
+        }
         Destination.Settings -> {
             TopBarComponent(
                 navigationIcon = {

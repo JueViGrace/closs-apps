@@ -12,4 +12,5 @@ actual object Constants {
 
     actual const val SNACK_BAR_MESSAGE_KEY: String = "SNACK_BAR_MESSAGE_KEY"
     actual const val SEARCH_BAR_TEXT_KEY: String = "SEARCH_BAR_TEXT_KEY"
+    actual val SHOW_HOME_DIALOG_KEY: String = "SHOW_HOME_DIALOG_KEY"
 }

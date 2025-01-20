@@ -28,6 +28,9 @@ kotlin {
             implementation(projects.lib.core.types.shared)
             implementation(projects.lib.core.types.picking)
 
+            // Presentation
+            implementation(projects.lib.core.presentation.shared)
+
             // Compose Resources
             implementation(projects.lib.core.resources)
 

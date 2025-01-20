@@ -22,8 +22,6 @@ enum class Orientation {
 fun getScreenSize(): ScreenSize {
     val width = getScreenWidth()
     val height = getScreenHeight()
-    println(width)
-    println(height)
 
     return when (getScreenOrientation()) {
         Orientation.Portrait -> {

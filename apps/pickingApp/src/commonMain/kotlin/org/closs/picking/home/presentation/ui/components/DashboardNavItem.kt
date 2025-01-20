@@ -11,7 +11,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import org.closs.core.presentation.shared.ui.components.display.ImageComponent
 import org.closs.core.presentation.shared.ui.components.display.TextComponent
 import org.closs.core.presentation.shared.ui.components.icons.IconComponent
 import org.closs.core.presentation.shared.utils.ScreenSize
@@ -33,13 +32,13 @@ fun DashboardNavItem(
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
     ) {
-        ImageComponent(
+        IconComponent(
             modifier = Modifier
                 .size(
                     size = when (getScreenSize()) {
-                        ScreenSize.Compact -> 100.dp
-                        ScreenSize.Medium -> 150.dp
-                        ScreenSize.Large -> 200.dp
+                        ScreenSize.Compact -> 80.dp
+                        ScreenSize.Medium -> 120.dp
+                        ScreenSize.Large -> 175.dp
                     }
                 )
                 .weight(1f),

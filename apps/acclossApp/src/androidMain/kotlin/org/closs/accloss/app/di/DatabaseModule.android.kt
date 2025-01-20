@@ -1,4 +1,4 @@
-package org.closs.accloss.di
+package org.closs.accloss.app.di
 
 import org.closs.core.database.driver.DefaultDriverFactory
 import org.closs.core.database.helper.ACCLOSSDbHelper

@@ -14,8 +14,8 @@ import org.closs.core.resources.resources.generated.resources.Res
 import org.closs.core.resources.resources.generated.resources.please_log_in
 import org.closs.core.resources.resources.generated.resources.unknown_error
 import org.closs.core.resources.resources.generated.resources.welcome_back
+import org.closs.core.types.auth.dbAccountsToDomain
 import org.closs.core.types.shared.auth.Session
-import org.closs.core.types.shared.auth.dbAccountsToDomain
 import org.closs.core.types.shared.auth.dto.AuthDto
 import org.closs.core.types.shared.auth.dto.ForgotPasswordDto
 import org.closs.core.types.shared.auth.dto.SignInDto
@@ -107,7 +107,7 @@ class DefaultAuthRepository(
             emit(RequestState.Loading)
             dbHelper.withDatabase { db ->
                 executeListAsFlow(
-                    query = db.clossSessionQueries.findAccounts()
+                    query = db.sessionQueries.findAccounts()
                 )
             }.collect { list ->
                 if (list.isEmpty()) {
@@ -155,7 +155,7 @@ class DefaultAuthRepository(
                         ?: rollback()
 
                     db.clossUserQueries.insert(
-                        closs_user = session.user.domainToDb()
+                        closs_user = session.user!!.domainToDb()
                     )
                         .executeAsOneOrNull()
                         ?: rollback()

@@ -1,6 +1,7 @@
-package org.closs.accloss.presentation.ui.components
+package org.closs.accloss.app.presentation.ui.components
 
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
@@ -12,7 +13,6 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import org.closs.accloss.app.presentation.navigation.graph.authGraph
 import org.closs.accloss.app.presentation.navigation.graph.homeGraph
@@ -22,9 +22,9 @@ import org.closs.app.shared.presentation.viewmodel.AppViewModel
 import org.closs.core.presentation.shared.navigation.Destination
 import org.closs.core.presentation.shared.navigation.NavigationStack
 import org.closs.core.presentation.shared.navigation.Navigator
-import org.closs.core.presentation.shared.ui.components.buttons.AccountButton
 import org.closs.core.presentation.shared.ui.components.buttons.BackArrowButton
-import org.closs.core.presentation.shared.ui.components.layout.TopBarComponent
+import org.closs.core.presentation.shared.ui.components.layout.bars.TopBarComponent
+import org.closs.core.presentation.shared.ui.components.layout.bars.actions.HomeTopBarActions
 
 @Composable
 actual fun AppScaffold(
@@ -36,17 +36,14 @@ actual fun AppScaffold(
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
     val stack by navigator.stack.collectAsStateWithLifecycle()
-    val scope = rememberCoroutineScope()
-
-    // todo: make dialog
 
     Scaffold(
         topBar = {
             TopBar(
                 state = state,
+                viewModel = viewModel,
                 navigator = navigator,
                 stack = stack,
-                scope = scope
             )
         },
         bottomBar = {
@@ -69,13 +66,15 @@ actual fun AppScaffold(
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun TopBar(
     state: AppState,
+    viewModel: AppViewModel,
     navigator: Navigator,
     stack: NavigationStack,
-    scope: CoroutineScope,
 ) {
+    val scope = rememberCoroutineScope()
     when (stack.currentDestination) {
         Destination.ForgotPassword -> {
             TopBarComponent(
@@ -92,15 +91,29 @@ private fun TopBar(
         Destination.Home -> {
             TopBarComponent(
                 actions = {
-                    AccountButton(
-                        letter = state.session?.user?.name?.firstOrNull()?.toString() ?: "G",
-                    ) {
-                        // todo: account settings dialog menu
-                    }
+                    HomeTopBarActions(
+                        accountLetter = state.session?.user?.name?.firstOrNull()?.toString() ?: "P",
+                        onNotificationsClick = {
+                            viewModel.navigateToNotifications()
+                        },
+                        onAccountClick = {
+                            viewModel.toggleDialog()
+                        }
+                    )
                 }
             )
         }
-        Destination.Profile -> { }
+        Destination.Profile -> {
+            TopBarComponent(
+                navigationIcon = {
+                    BackArrowButton {
+                        scope.launch {
+                            navigator.navigateUp()
+                        }
+                    }
+                },
+            )
+        }
         Destination.Settings -> {
             TopBarComponent(
                 navigationIcon = {
@@ -124,10 +137,50 @@ private fun TopBar(
             )
         }
 
-        is Destination.OrderDetails -> { }
-        Destination.Orders -> { }
-        is Destination.ProductDetails -> { }
-        Destination.Products -> { }
+        Destination.Orders -> {
+            TopBarComponent(
+                navigationIcon = {
+                    BackArrowButton {
+                        scope.launch {
+                            navigator.navigateUp()
+                        }
+                    }
+                },
+            )
+        }
+        is Destination.OrderDetails -> {
+            TopBarComponent(
+                navigationIcon = {
+                    BackArrowButton {
+                        scope.launch {
+                            navigator.navigateUp()
+                        }
+                    }
+                },
+            )
+        }
+        Destination.Products -> {
+            TopBarComponent(
+                navigationIcon = {
+                    BackArrowButton {
+                        scope.launch {
+                            navigator.navigateUp()
+                        }
+                    }
+                },
+            )
+        }
+        is Destination.ProductDetails -> {
+            TopBarComponent(
+                navigationIcon = {
+                    BackArrowButton {
+                        scope.launch {
+                            navigator.navigateUp()
+                        }
+                    }
+                },
+            )
+        }
         null -> { }
         else -> {}
     }

@@ -26,6 +26,9 @@ fun NavGraphBuilder.homeGraph() {
         composable<Destination.Notifications> {
         }
 
+        composable<Destination.Profile> {
+        }
+
         composable<Destination.PickingHistory> {
             HistoryScreen()
         }

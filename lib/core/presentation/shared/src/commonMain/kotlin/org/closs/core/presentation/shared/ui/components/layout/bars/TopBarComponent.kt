@@ -1,4 +1,4 @@
-package org.closs.core.presentation.shared.ui.components.layout
+package org.closs.core.presentation.shared.ui.components.layout.bars
 
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.material3.CenterAlignedTopAppBar
