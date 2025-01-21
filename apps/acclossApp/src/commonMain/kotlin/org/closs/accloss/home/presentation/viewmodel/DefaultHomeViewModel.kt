@@ -1,26 +1,21 @@
-package org.closs.picking.home.presentation.viewmodel
+package org.closs.accloss.home.presentation.viewmodel
 
 import androidx.lifecycle.SavedStateHandle
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.navigation.NavOptions
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
-import kotlinx.coroutines.flow.update
-import kotlinx.coroutines.launch
-import org.closs.core.presentation.shared.navigation.Destination
 import org.closs.core.presentation.shared.navigation.Navigator
 import org.closs.core.types.shared.common.Constants
 import org.closs.home.shared.presentation.events.HomeEvents
+import org.closs.home.shared.presentation.state.HomeState
 import org.closs.home.shared.presentation.viewmodel.HomeViewModel
-import org.closs.picking.home.presentation.state.HomeState
 
 class DefaultHomeViewModel(
     override val navigator: Navigator,
-    override val handle: SavedStateHandle
+    override val handle: SavedStateHandle,
 ) : HomeViewModel(
     navigator = navigator,
     handle = handle
@@ -28,7 +23,7 @@ class DefaultHomeViewModel(
     private val _showDialog = handle.getStateFlow(Constants.SHOW_HOME_DIALOG_KEY, false)
 
     private val _state = MutableStateFlow(HomeState())
-    val state = combine(
+    override val state: StateFlow<HomeState> = combine(
         _state,
         _showDialog
     ) { state, showDialog ->
@@ -44,12 +39,12 @@ class DefaultHomeViewModel(
     override fun onEvent(event: HomeEvents) {
         when (event) {
             HomeEvents.ToggleDialog -> toggleDialog()
-            HomeEvents.NavigateToPickingHistory -> navigateToPickingHistory()
-            HomeEvents.NavigateToPendingOrders -> navigateToPendingOrders()
             HomeEvents.NavigateToProfile -> navigateToProfile()
-            HomeEvents.NavigateToNotifications -> navigateToNotifications()
             HomeEvents.NavigateToSettings -> navigateToSettings()
+            HomeEvents.NavigateToNotifications -> navigateToNotifications()
             HomeEvents.Sync -> sync()
+            HomeEvents.LogOut -> logOut()
+            else -> {}
         }
     }
 
@@ -58,30 +53,5 @@ class DefaultHomeViewModel(
     }
 
     override fun sync() {
-
     }
-
-    private fun navigateToPickingHistory() {
-        viewModelScope.launch {
-            navigator.navigate(
-                destination = Destination.PickingHistory,
-                navOptions = NavOptions.Builder().apply {
-                    setPopUpTo(Destination.Home, false)
-                }.build()
-            )
-        }
-    }
-
-    private fun navigateToPendingOrders() {
-        viewModelScope.launch {
-            navigator.navigate(
-                destination = Destination.PendingOrders,
-                navOptions = NavOptions.Builder().apply {
-                    setPopUpTo(Destination.Home, false)
-                }.build()
-            )
-        }
-    }
-
-
 }

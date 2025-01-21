@@ -21,6 +21,7 @@ import org.closs.core.resources.resources.generated.resources.welcome_back
 import org.jetbrains.compose.resources.stringResource
 import org.koin.androidx.compose.koinViewModel
 
+// todo: responsive
 @Composable
 fun SignInScreen(
     viewModel: SignInViewModel = koinViewModel()

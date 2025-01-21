@@ -3,6 +3,7 @@ package org.closs.accloss.app.presentation.viewmodel
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavOptions
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
@@ -31,6 +32,7 @@ class DefaultAppViewModel(
 ) {
     private val showDialog = handle.getStateFlow(Constants.SHOW_HOME_DIALOG_KEY, false)
 
+    private val _state = MutableStateFlow(AppState())
     override val state = combine(
         _state,
         appRepository.validateSession(),
@@ -100,7 +102,7 @@ class DefaultAppViewModel(
     }.stateIn(
         viewModelScope,
         SharingStarted.Lazily,
-        AppState()
+        _state.value
     )
 
     override fun toggleDialog() {

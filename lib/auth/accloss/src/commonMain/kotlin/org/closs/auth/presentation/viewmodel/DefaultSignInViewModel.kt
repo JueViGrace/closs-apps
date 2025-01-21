@@ -66,6 +66,11 @@ class DefaultSignInViewModel(
             )
         }
         viewModelScope.launch {
+            _state.update { state ->
+                state.copy(
+                    isLoading = false
+                )
+            }
         }
     }
 

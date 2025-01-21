@@ -21,7 +21,6 @@ abstract class AppViewModel(
     open val handle: SavedStateHandle,
     protected open val appRepository: AppRepository,
 ) : ViewModel() {
-    protected open val _state: MutableStateFlow<AppState> = MutableStateFlow(AppState())
     open val state: StateFlow<AppState> = MutableStateFlow(AppState()).asStateFlow()
 
     abstract fun toggleDialog()

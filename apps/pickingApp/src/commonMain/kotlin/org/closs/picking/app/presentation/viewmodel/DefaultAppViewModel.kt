@@ -3,10 +3,12 @@ package org.closs.picking.app.presentation.viewmodel
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavOptions
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 import org.closs.app.shared.data.AppRepository
+import org.closs.app.shared.presentation.state.AppState
 import org.closs.app.shared.presentation.viewmodel.AppViewModel
 import org.closs.core.presentation.shared.messages.Messages
 import org.closs.core.presentation.shared.navigation.Destination
@@ -16,6 +18,7 @@ import org.closs.core.resources.resources.generated.resources.welcome
 import org.closs.core.resources.resources.generated.resources.welcome_back
 import org.closs.core.types.shared.common.Constants
 import org.closs.core.types.shared.state.RequestState
+import org.closs.home.shared.presentation.state.HomeState
 
 class DefaultAppViewModel(
     override val navigator: Navigator,
@@ -30,6 +33,7 @@ class DefaultAppViewModel(
 ) {
     private val showDialog = handle.getStateFlow(Constants.SHOW_HOME_DIALOG_KEY, false)
 
+    private val _state: MutableStateFlow<AppState> = MutableStateFlow(AppState())
     override val state = combine(
         _state,
         appRepository.validateSession(),

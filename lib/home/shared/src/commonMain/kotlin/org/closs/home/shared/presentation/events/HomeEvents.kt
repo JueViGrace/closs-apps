@@ -8,4 +8,5 @@ sealed interface HomeEvents {
     data object NavigateToNotifications : HomeEvents
     data object NavigateToSettings : HomeEvents
     data object Sync : HomeEvents
+    data object LogOut : HomeEvents
 }

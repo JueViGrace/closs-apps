@@ -1,6 +1,5 @@
 package org.closs.picking.home.presentation.ui.components
 
-import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.RepeatMode
@@ -16,6 +15,7 @@ import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.unit.dp
 import org.closs.core.presentation.shared.ui.components.dialogs.HomeDialog
 import org.closs.core.presentation.shared.ui.components.dialogs.content.AccountDialogSection
+import org.closs.core.presentation.shared.ui.components.dialogs.content.LogOutDialogItem
 import org.closs.core.presentation.shared.ui.components.dialogs.content.NotificationsDialogItem
 import org.closs.core.presentation.shared.ui.components.dialogs.content.SettingsDialogItem
 import org.closs.core.presentation.shared.ui.components.dialogs.content.SyncDialogItem
@@ -24,8 +24,8 @@ import org.closs.core.presentation.shared.utils.calculateIconSize
 import org.closs.core.resources.resources.generated.resources.Res
 import org.closs.core.resources.resources.generated.resources.ic_refresh
 import org.closs.core.resources.resources.generated.resources.sync
-import org.closs.picking.home.presentation.events.HomeEvents
-import org.closs.picking.home.presentation.state.HomeState
+import org.closs.home.shared.presentation.events.HomeEvents
+import org.closs.home.shared.presentation.state.HomeState
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 
@@ -79,6 +79,9 @@ fun PickingHomeDialog(
         infoSection = {
             SettingsDialogItem {
                 onEvent(HomeEvents.NavigateToSettings)
+            }
+            LogOutDialogItem {
+                onEvent(HomeEvents.LogOut)
             }
         }
     )
