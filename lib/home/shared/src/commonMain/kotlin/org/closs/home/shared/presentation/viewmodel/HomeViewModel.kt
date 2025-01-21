@@ -11,10 +11,12 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import org.closs.core.presentation.shared.navigation.Destination
 import org.closs.core.presentation.shared.navigation.Navigator
+import org.closs.home.shared.data.HomeRepository
 import org.closs.home.shared.presentation.events.HomeEvents
 import org.closs.home.shared.presentation.state.HomeState
 
 abstract class HomeViewModel(
+    protected open val repository: HomeRepository,
     protected open val navigator: Navigator,
     protected open val handle: SavedStateHandle
 ) : ViewModel() {
@@ -66,5 +68,8 @@ abstract class HomeViewModel(
     abstract fun sync()
 
     protected fun logOut() {
+        viewModelScope.launch {
+            repository.logOut()
+        }
     }
 }

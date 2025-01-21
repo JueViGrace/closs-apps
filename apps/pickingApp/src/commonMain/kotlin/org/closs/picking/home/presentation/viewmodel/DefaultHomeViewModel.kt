@@ -11,14 +11,17 @@ import kotlinx.coroutines.launch
 import org.closs.core.presentation.shared.navigation.Destination
 import org.closs.core.presentation.shared.navigation.Navigator
 import org.closs.core.types.shared.common.Constants
+import org.closs.home.shared.data.HomeRepository
 import org.closs.home.shared.presentation.events.HomeEvents
 import org.closs.home.shared.presentation.state.HomeState
 import org.closs.home.shared.presentation.viewmodel.HomeViewModel
 
 class DefaultHomeViewModel(
+    override val repository: HomeRepository,
     override val navigator: Navigator,
     override val handle: SavedStateHandle
 ) : HomeViewModel(
+    repository = repository,
     navigator = navigator,
     handle = handle
 ) {

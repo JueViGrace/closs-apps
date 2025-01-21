@@ -2,6 +2,7 @@ package org.closs.accloss.app.di
 
 import org.closs.accloss.app.data.DefaultAppRepository
 import org.closs.accloss.app.presentation.viewmodel.DefaultAppViewModel
+import org.closs.accloss.home.di.homeModule
 import org.closs.app.shared.data.AppRepository
 import org.closs.app.shared.presentation.viewmodel.AppViewModel
 import org.closs.auth.di.authModule
@@ -23,6 +24,7 @@ fun appModule(): Module = module {
         ktorModule(),
         databaseModule(),
         authModule(),
+        homeModule(),
         userModule(),
         productModule(),
         orderModule(),
