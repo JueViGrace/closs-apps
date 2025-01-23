@@ -27,11 +27,10 @@ import org.closs.core.resources.resources.generated.resources.your_account
 import org.closs.core.types.shared.auth.Session
 import org.jetbrains.compose.resources.stringResource
 
-// todo: make session non null
 @Composable
 fun AccountDialogSection(
     modifier: Modifier = Modifier,
-    session: Session?,
+    session: Session,
     onNavigateToProfile: () -> Unit,
     hasMultiAccount: (@Composable () -> Unit)? = null
 ) {
@@ -50,7 +49,7 @@ fun AccountDialogSection(
                 contentAlignment = Alignment.Center
             ) {
                 LetterComponent(
-                    letter = session?.user?.name?.firstOrNull()?.toString() ?: "P"
+                    letter = session.name.firstOrNull()?.toString() ?: "P"
                 )
             }
         },
@@ -70,10 +69,10 @@ fun AccountDialogSection(
                         horizontalAlignment = Alignment.Start
                     ) {
                         TextComponent(
-                            text = session?.user?.name ?: "sdfas",
+                            text = session.name,
                         )
                         TextComponent(
-                            text = session?.user?.username ?: "asdfsdafsa",
+                            text = session.user?.username ?: "",
                             fontSize = calculateLabelFontSize(),
                             fontWeight = calculateLabelFontWeight(),
                             color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.7f)

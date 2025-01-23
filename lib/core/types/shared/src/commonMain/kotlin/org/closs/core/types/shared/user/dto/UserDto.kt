@@ -15,8 +15,8 @@ data class UserDto(
     val lastSync: String,
     @SerialName("version")
     val version: String,
-    @SerialName("createdAt")
+    @SerialName("created_at")
     val createdAt: String,
-    @SerialName("updatedAt")
+    @SerialName("updated_at")
     val updatedAt: String,
 )

@@ -76,6 +76,6 @@ INSERT OR REPLACE INTO closs_config(
 VALUES ?
 RETURNING *;
 
-delete:
+deleteByUser:
 DELETE FROM closs_config
 WHERE user_id = :id;

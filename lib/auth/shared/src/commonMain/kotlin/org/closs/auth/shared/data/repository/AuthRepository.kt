@@ -9,7 +9,7 @@ import org.closs.core.types.shared.state.DataCodes
 import org.closs.core.types.shared.state.RequestState
 
 interface AuthRepository : Repository {
-    suspend fun signIn(signInDto: SignInDto): RequestState<DataCodes>
+    suspend fun signIn(signInDto: SignInDto): Flow<RequestState<DataCodes>>
     suspend fun forgotPassword(forgotPasswordDto: ForgotPasswordDto): RequestState<DataCodes>
     fun getAccounts(): Flow<RequestState<List<Session>>>
     suspend fun startSession(id: String)

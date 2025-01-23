@@ -99,7 +99,7 @@ private fun TopBar(
                 ),
                 actions = {
                     HomeTopBarActions(
-                        accountLetter = state.session?.user?.name?.firstOrNull()?.toString() ?: "P",
+                        accountLetter = state.session?.name?.firstOrNull()?.toString() ?: "P",
                         onNotificationsClick = {
                             viewModel.navigateToNotifications()
                         },

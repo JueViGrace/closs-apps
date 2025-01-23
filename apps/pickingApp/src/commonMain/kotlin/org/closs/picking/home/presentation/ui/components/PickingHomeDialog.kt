@@ -39,13 +39,15 @@ fun PickingHomeDialog(
             onEvent(HomeEvents.ToggleDialog)
         },
         accountSection = {
-            AccountDialogSection(
-                modifier = Modifier.padding(8.dp),
-                session = state.session,
-                onNavigateToProfile = {
-                    onEvent(HomeEvents.NavigateToProfile)
-                },
-            )
+            state.session?.let { session ->
+                AccountDialogSection(
+                    modifier = Modifier.padding(8.dp),
+                    session = session,
+                    onNavigateToProfile = {
+                        onEvent(HomeEvents.NavigateToProfile)
+                    },
+                )
+            }
         },
         optionsSection = {
             NotificationsDialogItem {

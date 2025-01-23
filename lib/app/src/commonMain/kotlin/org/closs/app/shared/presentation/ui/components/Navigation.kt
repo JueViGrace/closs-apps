@@ -46,10 +46,10 @@ fun Navigation(
     ObserveAsEvents(
         flow = viewModel.messages.messages,
     ) { msg ->
-        msg.message?.let { message ->
-            scope.launch {
-                snackBarHostState.showSnackbar("${getString(message)} ${msg.description ?: ""}")
-            }
+        scope.launch {
+            snackBarHostState.showSnackbar(
+                "${msg.message?.let { getString(it) }} ${msg.description ?: ""}"
+            )
         }
     }
 

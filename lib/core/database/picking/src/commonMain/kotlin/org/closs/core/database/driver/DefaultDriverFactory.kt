@@ -14,7 +14,7 @@ class DefaultDriverFactory(
         return AndroidSqliteDriver(
             schema = ClossDb.Schema.synchronous(),
             context = context,
-            name = "picking.db"
+            name = "picking.db",
         )
     }
 }

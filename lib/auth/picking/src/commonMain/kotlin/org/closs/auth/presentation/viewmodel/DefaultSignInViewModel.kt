@@ -36,51 +36,51 @@ class DefaultSignInViewModel(
         }
     }
 
-    // todo: save session
     override fun signInSubmit() {
         if (onSignInError()) return
         viewModelScope.launch {
-            val call = authRepository.signIn(
+            authRepository.signIn(
                 signInDto = SignInDto(
                     username = _state.value.username,
                     password = _state.value.password
                 )
-            )
-            when (call) {
-                is RequestState.Error -> {
-                    _state.update { state ->
-                        state.copy(
-                            isLoading = false,
-                            errorMessage = call.error.message
-                        )
+            ).collect { call ->
+                when (call) {
+                    is RequestState.Error -> {
+                        _state.update { state ->
+                            state.copy(
+                                isLoading = false,
+                                errorMessage = call.error.message
+                            )
+                        }
+                        messages.sendMessage(call.error)
                     }
-                    messages.sendMessage(call.error)
-                }
-                is RequestState.Success -> {
-                    _state.update { state ->
-                        state.copy(
-                            isLoading = false,
-                            errorMessage = null
+                    is RequestState.Success -> {
+                        _state.update { state ->
+                            state.copy(
+                                isLoading = false,
+                                errorMessage = null
+                            )
+                        }
+
+                        messages.sendMessage(call.data.response)
+                        navigator.navigate(
+                            destination = Destination.Home,
+                            navOptions = NavOptions.Builder().apply {
+                                setPopUpTo(route = Destination.AuthGraph, inclusive = true)
+                                setLaunchSingleTop(true)
+                            }.build()
                         )
+
+                        resetState()
                     }
-
-                    messages.sendMessage(call.data)
-                    navigator.navigate(
-                        destination = Destination.Home,
-                        navOptions = NavOptions.Builder().apply {
-                            setPopUpTo(route = Destination.AuthGraph, inclusive = true)
-                            setLaunchSingleTop(true)
-                        }.build()
-                    )
-
-                    resetState()
-                }
-                else -> {
-                    _state.update { state ->
-                        state.copy(
-                            isLoading = true,
-                            errorMessage = null
-                        )
+                    else -> {
+                        _state.update { state ->
+                            state.copy(
+                                isLoading = true,
+                                errorMessage = null
+                            )
+                        }
                     }
                 }
             }

@@ -1,5 +1,19 @@
 CREATE TABLE IF NOT EXISTS closs_picker(
     user_id TEXT NOT NULL PRIMARY KEY,
     name TEXT NOT NULL DEFAULT '',
+    almacen TEXT NOT NULL DEFAULT '',
     FOREIGN KEY (user_id) REFERENCES closs_user(id)
 );
+
+insert:
+INSERT OR REPLACE INTO closs_picker(
+    user_id,
+    name,
+    almacen
+)
+VALUES ?
+RETURNING *;
+
+deleteByUser:
+DELETE FROM closs_picker
+WHERE user_id = :id;

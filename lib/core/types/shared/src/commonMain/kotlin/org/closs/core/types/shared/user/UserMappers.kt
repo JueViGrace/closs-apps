@@ -8,7 +8,6 @@ fun UserDto.dtoToDomain(): User =
         id = id,
         username = username,
         code = code,
-        name = name,
         lastSync = lastSync,
         version = version,
         createdAt = createdAt,

@@ -15,7 +15,7 @@ sealed class RequestState<out T> {
     data object Idle : RequestState<Nothing>()
     data object Loading : RequestState<Nothing>()
     data class Success<T>(val data: T) : RequestState<T>()
-    data class Error(val error: DataCodes) : RequestState<Nothing>()
+    data class Error(val error: ResponseMessage) : RequestState<Nothing>()
 
     fun isLoading() = this is Loading
     fun isSuccess() = this is Success
@@ -39,14 +39,16 @@ sealed class RequestState<out T> {
      * @throws ClassCastException If the current state is not [Error]
      *  */
     fun getErrorMessage() = (this as Error).error
-    fun getErrorMessageOrEmpty(): DataCodes {
+    fun getErrorMessageOrEmpty(): ResponseMessage {
         return try {
             (this as Error).error
         } catch (e: Exception) {
             DataCodes.UnknownError(
-                msg = Res.string.unknown_error,
-                desc = e.message,
-            )
+                res = ResponseMessage(
+                    message = Res.string.unknown_error,
+                    description = e.message
+                )
+            ).response
         }
     }
 }
@@ -56,7 +58,7 @@ fun<T> RequestState<T>.DisplayResult(
     onIdle: (@Composable () -> Unit)? = null,
     onLoading: @Composable () -> Unit,
     onSuccess: @Composable (T) -> Unit,
-    onError: @Composable (DataCodes) -> Unit,
+    onError: @Composable (ResponseMessage) -> Unit,
     transitionSpec: AnimatedContentTransitionScope<*>.() -> ContentTransform = {
         fadeIn(tween(durationMillis = 300)) togetherWith
             fadeOut(tween(durationMillis = 300))

@@ -1,6 +1,6 @@
 package org.closs.auth.di
 
-import org.closs.auth.data.repository.DefaultAuthRepository
+import org.closs.auth.data.DefaultAuthRepository
 import org.closs.auth.shared.data.repository.AuthRepository
 import org.closs.auth.shared.presentation.viewmodel.ForgotPasswordViewModel
 import org.closs.auth.presentation.viewmodel.DefaultSignInViewModel

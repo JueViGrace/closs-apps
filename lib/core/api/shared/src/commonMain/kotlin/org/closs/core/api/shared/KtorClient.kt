@@ -25,7 +25,8 @@ import kotlinx.serialization.json.Json
 import org.closs.core.types.shared.common.log
 import org.closs.core.types.shared.response.APIResponse
 import org.closs.core.types.shared.response.ApiOperation
-import org.closs.core.types.shared.state.AppCodes
+import org.closs.core.types.shared.state.DataCodes
+import org.closs.core.types.shared.state.ResponseMessage
 import kotlin.coroutines.coroutineContext
 
 interface KtorClient {
@@ -60,11 +61,68 @@ suspend inline fun <reified T> KtorClient.call(callback: KtorClient.() -> APIRes
     return try {
         val body: APIResponse<T> = callback()
         when (body.status) {
+            HttpStatusCode.ServiceUnavailable.value -> {
+                ApiOperation.Failure(
+                    error = DataCodes.ServiceUnavailable(
+                        res = ResponseMessage(
+                            description = body.message
+                        )
+                    )
+                )
+            }
             HttpStatusCode.InternalServerError.value -> {
-                ApiOperation.Failure(error = AppCodes.InternalServerError)
+                ApiOperation.Failure(
+                    error = DataCodes.InternalServerError(
+                        res = ResponseMessage(
+                            description = body.message
+                        )
+                    )
+                )
             }
             HttpStatusCode.NotFound.value -> {
-                ApiOperation.Failure(error = AppCodes.NotFound)
+                ApiOperation.Failure(
+                    error = DataCodes.NotFound(
+                        res = ResponseMessage(
+                            description = body.message
+                        )
+                    )
+                )
+            }
+            HttpStatusCode.Unauthorized.value -> {
+                ApiOperation.Failure(
+                    error = DataCodes.Unauthorized(
+                        res = ResponseMessage(
+                            description = body.message
+                        )
+                    )
+                )
+            }
+            HttpStatusCode.Forbidden.value -> {
+                ApiOperation.Failure(
+                    error = DataCodes.Forbidden(
+                        res = ResponseMessage(
+                            description = body.message
+                        )
+                    )
+                )
+            }
+            HttpStatusCode.BadRequest.value -> {
+                ApiOperation.Failure(
+                    error = DataCodes.BadRequest(
+                        res = ResponseMessage(
+                            description = body.message
+                        )
+                    )
+                )
+            }
+            HttpStatusCode.Conflict.value -> {
+                ApiOperation.Failure(
+                    error = DataCodes.Conflict(
+                        res = ResponseMessage(
+                            description = body.message
+                        )
+                    )
+                )
             }
             else -> {
                 ApiOperation.Success(value = body)
@@ -73,7 +131,13 @@ suspend inline fun <reified T> KtorClient.call(callback: KtorClient.() -> APIRes
     } catch (e: Exception) {
         coroutineContext.ensureActive()
         e.log("Network call exception")
-        ApiOperation.Failure(error = AppCodes.UnexpectedError)
+        ApiOperation.Failure(
+            error = DataCodes.UnexpectedError(
+                res = ResponseMessage(
+                    description = e.message
+                )
+            )
+        )
     }
 }
 

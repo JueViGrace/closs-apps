@@ -6,5 +6,6 @@ data class Session(
     val accessToken: String,
     val refreshToken: String,
     val user: User? = null,
+    val name: String = "",
     val active: Boolean = false,
 )

@@ -1,19 +1,31 @@
 package org.closs.core.types.shared.response
 
-import org.closs.core.types.shared.state.AppCodes
 import org.closs.core.types.shared.state.DataCodes
 
 sealed interface ApiOperation<out T> {
     data class Success<T>(val value: APIResponse<T>) : ApiOperation<T>
-    data class Failure(val error: AppCodes) : ApiOperation<Nothing>
+    data class Failure(val error: DataCodes) : ApiOperation<Nothing>
 }
 
-inline fun <reified T, reified R> ApiOperation<T>.display(
-    onSuccess: (APIResponse<T>) -> R,
-    onFailure: (DataCodes) -> R
-): R {
+/*
+inline fun <reified T> ApiOperation<T>.resolve(): RequestState<T> {
     return when (this) {
-        is ApiOperation.Success -> onSuccess(value)
-        is ApiOperation.Failure -> onFailure(DataCodes.fromCode(error))
+        is ApiOperation.Failure -> {
+            RequestState.Error(
+                error = error.res
+            )
+        }
+        is ApiOperation.Success -> {
+            if (value.data == null) {
+                return RequestState.Error(
+                    error = DataCodes.NullError().res
+                )
+            }
+
+            RequestState.Success(
+                data = value.data
+            )
+        }
     }
 }
+*/

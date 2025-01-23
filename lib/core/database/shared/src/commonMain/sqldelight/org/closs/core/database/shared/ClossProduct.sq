@@ -92,6 +92,6 @@ INSERT OR REPLACE INTO closs_product(
 VALUES ?
 RETURNING *;
 
-delete:
+deleteByUser:
 DELETE FROM closs_product
-WHERE codigo = :code AND user_id = :id;
+WHERE user_id = :id;

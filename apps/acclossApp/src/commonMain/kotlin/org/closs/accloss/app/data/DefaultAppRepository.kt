@@ -142,7 +142,8 @@ class DefaultAppRepository(
                 urlString = "/api/auth/refresh",
                 body = RefreshTokenDto(
                     refreshToken = refreshToken
-                )
+                ),
+                headers = mapOf("Authorization" to "Bearer $refreshToken")
             )
         }
     }

@@ -1,4 +1,4 @@
-package org.closs.auth.data.repository
+package org.closs.auth.data
 
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.async

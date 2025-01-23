@@ -5,6 +5,8 @@ plugins {
     alias(libs.plugins.kotlinMultiplatform)
     alias(libs.plugins.androidLibrary)
     alias(libs.plugins.kotlinx.serialization)
+    alias(libs.plugins.composeMultiplatform)
+    alias(libs.plugins.composeCompiler)
 }
 
 group = "org.closs.core.api.shared"
@@ -35,6 +37,9 @@ kotlin {
 
             // Coroutines
             implementation(libs.kotlinx.coroutines.core)
+
+            implementation(compose.runtime)
+            implementation(compose.components.resources)
 
             // Ktor: client
             implementation(libs.ktor.client.core)
@@ -70,6 +75,10 @@ android {
         sourceCompatibility = JavaVersion.VERSION_21
         targetCompatibility = JavaVersion.VERSION_21
     }
+}
+
+compose.resources {
+    generateResClass = never
 }
 
 tasks.withType<Jar> {

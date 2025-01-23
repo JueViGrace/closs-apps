@@ -12,10 +12,11 @@ fun FindActiveAccount.dbActiveToDomain(): Session =
             id = id ?: "",
             username = username ?: "",
             code = code ?: "",
-            name = name ?: "",
             lastSync = last_sync ?: "",
             version = version ?: "",
             createdAt = created_at ?: "",
             updatedAt = updated_at ?: "",
-        )
+        ),
+        name = name ?: "",
+        active = active,
     )

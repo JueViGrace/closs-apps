@@ -18,7 +18,6 @@ import org.closs.core.resources.resources.generated.resources.welcome
 import org.closs.core.resources.resources.generated.resources.welcome_back
 import org.closs.core.types.shared.common.Constants
 import org.closs.core.types.shared.state.RequestState
-import org.closs.home.shared.presentation.state.HomeState
 
 class DefaultAppViewModel(
     override val navigator: Navigator,
@@ -64,7 +63,7 @@ class DefaultAppViewModel(
                 state.copy(
                     session = session.data,
                     snackMessage = Res.string.welcome_back,
-                    description = session.data.user?.name ?: "",
+                    description = session.data.name,
                 )
             }
             else -> {
