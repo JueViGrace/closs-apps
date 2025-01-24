@@ -13,6 +13,7 @@ import kotlinx.coroutines.launch
 import org.closs.core.presentation.shared.navigation.Destination
 import org.closs.core.presentation.shared.navigation.Navigator
 import org.closs.core.types.shared.common.Constants
+import org.closs.core.types.shared.state.RequestState
 import org.closs.shared.home.data.HomeRepository
 import org.closs.shared.home.presentation.events.HomeEvents
 import org.closs.shared.home.presentation.state.HomeState
@@ -28,15 +29,34 @@ class DefaultHomeViewModel(
     handle = handle
 ) {
     private val _showDialog = handle.getStateFlow(Constants.SHOW_HOME_DIALOG_KEY, false)
+    private val _session = repository.getSession()
 
     private val _state = MutableStateFlow(HomeState())
     override val state = combine(
         _state,
-        _showDialog
-    ) { state, showDialog ->
-        state.copy(
-            showDialog = showDialog
-        )
+        _showDialog,
+        _session
+    ) { state, showDialog, session ->
+        when (session) {
+            is RequestState.Error -> {
+                state.copy(
+                    session = null,
+                    showDialog = showDialog
+                )
+            }
+            is RequestState.Success -> {
+                state.copy(
+                    session = session.data,
+                    showDialog = showDialog
+                )
+            }
+            else -> {
+                state.copy(
+                    session = null,
+                    showDialog = showDialog
+                )
+            }
+        }
     }.stateIn(
         viewModelScope,
         SharingStarted.WhileSubscribed(5_000),

@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedTextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -23,10 +22,10 @@ import org.closs.core.resources.resources.generated.resources.ic_arrow_big_right
 import org.closs.core.resources.resources.generated.resources.ic_shopping_bag
 import org.closs.core.resources.resources.generated.resources.pending_orders
 import org.closs.core.resources.resources.generated.resources.picking_history
-import org.closs.shared.home.presentation.events.HomeEvents
-import org.closs.shared.home.presentation.viewmodel.HomeViewModel
 import org.closs.picking.home.presentation.ui.components.DashboardNavItem
 import org.closs.picking.home.presentation.ui.components.PickingHomeDialog
+import org.closs.shared.home.presentation.events.HomeEvents
+import org.closs.shared.home.presentation.viewmodel.HomeViewModel
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 import org.koin.androidx.compose.koinViewModel

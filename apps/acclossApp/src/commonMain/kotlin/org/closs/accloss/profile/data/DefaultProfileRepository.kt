@@ -1,0 +1,5 @@
+package org.closs.accloss.profile.data
+
+import org.closs.shared.profile.data.ProfileRepository
+
+class DefaultProfileRepository : ProfileRepository

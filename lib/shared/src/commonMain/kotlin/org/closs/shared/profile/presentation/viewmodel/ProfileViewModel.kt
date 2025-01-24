@@ -7,15 +7,15 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import org.closs.core.presentation.shared.navigation.Navigator
 import org.closs.shared.profile.data.ProfileRepository
-import org.closs.shared.settings.presentation.events.SettingsEvents
-import org.closs.shared.settings.presentation.state.SettingsState
+import org.closs.shared.profile.presentation.events.ProfileEvents
+import org.closs.shared.profile.presentation.state.ProfileState
 
 abstract class ProfileViewModel(
     protected open val repository: ProfileRepository,
-    protected open val navigator: Navigator,
+    open val navigator: Navigator,
     protected open val handle: SavedStateHandle
 ) : ViewModel() {
-    open val state: StateFlow<SettingsState> = MutableStateFlow(SettingsState()).asStateFlow()
+    open val state: StateFlow<ProfileState> = MutableStateFlow(ProfileState()).asStateFlow()
 
-    abstract fun onEvent(event: SettingsEvents)
+    abstract fun onEvent(event: ProfileEvents)
 }

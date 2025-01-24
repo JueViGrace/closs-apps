@@ -9,6 +9,9 @@ import org.closs.order.detail.presentation.ui.screen.OrderDetailScreen
 import org.closs.order.history.presentation.ui.screen.HistoryScreen
 import org.closs.order.orders.presentation.ui.screen.OrdersScreen
 import org.closs.picking.home.presentation.ui.screen.HomeScreen
+import org.closs.picking.notifications.presentation.ui.screen.NotificationsScreen
+import org.closs.picking.profile.presentation.ui.screen.ProfileScreen
+import org.closs.picking.settings.presentation.ui.screen.SettingsScreen
 import org.closs.product.presentation.ui.screens.ProductDetailsScreen
 import org.closs.product.presentation.ui.screens.ProductsListScreen
 
@@ -21,12 +24,15 @@ fun NavGraphBuilder.homeGraph() {
         }
 
         composable<Destination.Settings> {
+            SettingsScreen()
         }
 
         composable<Destination.Notifications> {
+            NotificationsScreen()
         }
 
         composable<Destination.Profile> {
+            ProfileScreen()
         }
 
         composable<Destination.PickingHistory> {

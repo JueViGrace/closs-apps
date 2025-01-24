@@ -8,11 +8,11 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
-import org.closs.shared.app.data.AppRepository
-import org.closs.shared.app.presentation.state.AppState
 import org.closs.core.presentation.shared.messages.Messages
 import org.closs.core.presentation.shared.navigation.Destination
 import org.closs.core.presentation.shared.navigation.Navigator
+import org.closs.shared.app.data.AppRepository
+import org.closs.shared.app.presentation.state.AppState
 
 abstract class AppViewModel(
     open val navigator: Navigator,

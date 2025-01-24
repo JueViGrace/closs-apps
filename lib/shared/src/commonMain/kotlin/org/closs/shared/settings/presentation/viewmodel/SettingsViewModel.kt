@@ -12,7 +12,7 @@ import org.closs.shared.settings.presentation.state.SettingsState
 
 abstract class SettingsViewModel(
     protected open val repository: SettingsRepository,
-    protected open val navigator: Navigator,
+    open val navigator: Navigator,
     protected open val handle: SavedStateHandle
 ) : ViewModel() {
     open val state: StateFlow<SettingsState> = MutableStateFlow(SettingsState()).asStateFlow()

@@ -15,6 +15,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import org.closs.core.presentation.shared.ui.components.display.LetterComponent
 import org.closs.core.presentation.shared.ui.components.display.RowComponent
@@ -70,6 +71,8 @@ fun AccountDialogSection(
                     ) {
                         TextComponent(
                             text = session.name,
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis,
                         )
                         TextComponent(
                             text = session.user?.username ?: "",

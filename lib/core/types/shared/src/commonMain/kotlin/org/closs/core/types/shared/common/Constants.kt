@@ -7,4 +7,5 @@ expect object Constants {
     val SHOW_HOME_DIALOG_KEY: String
     val SNACK_BAR_MESSAGE_KEY: String
     val SEARCH_BAR_TEXT_KEY: String
+    val SESSION_KEY: String
 }

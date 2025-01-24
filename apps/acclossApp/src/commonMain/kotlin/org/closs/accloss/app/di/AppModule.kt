@@ -3,6 +3,9 @@ package org.closs.accloss.app.di
 import org.closs.accloss.app.data.DefaultAppRepository
 import org.closs.accloss.app.presentation.viewmodel.DefaultAppViewModel
 import org.closs.accloss.home.di.homeModule
+import org.closs.accloss.notifications.di.notificationsModule
+import org.closs.accloss.profile.di.profileModule
+import org.closs.accloss.settings.di.settingsModule
 import org.closs.shared.app.data.AppRepository
 import org.closs.shared.app.presentation.viewmodel.AppViewModel
 import org.closs.auth.di.authModule
@@ -25,6 +28,9 @@ fun appModule(): Module = module {
         databaseModule(),
         authModule(),
         homeModule(),
+        profileModule(),
+        settingsModule(),
+        notificationsModule(),
         userModule(),
         productModule(),
         orderModule(),

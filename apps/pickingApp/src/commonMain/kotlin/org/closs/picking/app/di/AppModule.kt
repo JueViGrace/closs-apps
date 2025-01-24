@@ -9,6 +9,9 @@ import org.closs.order.orders.di.ordersModule
 import org.closs.picking.app.data.DefaultAppRepository
 import org.closs.picking.app.presentation.viewmodel.DefaultAppViewModel
 import org.closs.picking.home.di.homeModule
+import org.closs.picking.notifications.di.notificationsModule
+import org.closs.picking.profile.di.profileModule
+import org.closs.picking.settings.di.settingsModule
 import org.closs.product.di.productModule
 import org.koin.core.module.Module
 import org.koin.core.module.dsl.singleOf
@@ -26,6 +29,9 @@ fun appModule(): Module = module {
         databaseModule(),
         authModule(),
         homeModule(),
+        notificationsModule(),
+        profileModule(),
+        settingsModule(),
         ordersModule(),
         historyModule(),
         orderDetailModule(),
