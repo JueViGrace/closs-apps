@@ -18,6 +18,7 @@ fun FindActiveAccount.dbActiveToDomain(): Session =
             createdAt = created_at ?: "",
             updatedAt = updated_at ?: "",
         ),
+        companyHost = company_host,
         name = nombre ?: "",
         active = active
     )
@@ -35,6 +36,7 @@ fun FindAccounts.dbAccountsToDomain(): Session =
             createdAt = created_at ?: "",
             updatedAt = updated_at ?: "",
         ),
+        companyHost = company_host,
         name = nombre ?: "",
         active = active
     )

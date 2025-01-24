@@ -7,28 +7,29 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
-import org.closs.app.shared.data.AppRepository
-import org.closs.core.api.shared.KtorClient
-import org.closs.core.api.shared.call
-import org.closs.core.api.shared.post
+import org.closs.shared.app.data.AppRepository
+import org.closs.core.api.shared.client.KtorClient
+import org.closs.core.api.shared.client.call
+import org.closs.core.api.shared.client.get
+import org.closs.core.api.shared.client.post
 import org.closs.core.database.helper.ACCLOSSDbHelper
-import org.closs.core.resources.resources.generated.resources.Res
-import org.closs.core.resources.resources.generated.resources.session_expired
-import org.closs.core.resources.resources.generated.resources.unexpected_error
-import org.closs.core.resources.resources.generated.resources.unknown_error
 import org.closs.core.types.auth.dbAccountsToDomain
 import org.closs.core.types.auth.dbActiveToDomain
+import org.closs.core.types.salesman.Salesman
+import org.closs.core.types.salesman.dto.SalesmanDto
+import org.closs.core.types.salesman.toDbSalesman
+import org.closs.core.types.salesman.toSalesman
 import org.closs.core.types.shared.auth.Session
 import org.closs.core.types.shared.auth.dto.AuthDto
 import org.closs.core.types.shared.auth.dto.RefreshTokenDto
 import org.closs.core.types.shared.auth.dtoToDomain
 import org.closs.core.types.shared.auth.sessionToDb
-import org.closs.core.types.shared.response.ApiOperation
-import org.closs.core.types.shared.response.display
+import org.closs.core.api.shared.client.ApiOperation
 import org.closs.core.types.shared.state.AppCodes
-import org.closs.core.types.shared.state.DataCodes
 import org.closs.core.types.shared.state.RequestState
 import org.closs.core.types.shared.user.domainToDb
+import org.closs.core.types.shared.user.dto.UserDto
+import org.closs.core.types.shared.user.dtoToDomain
 import kotlin.coroutines.CoroutineContext
 
 class DefaultAppRepository(
@@ -49,62 +50,39 @@ class DefaultAppRepository(
             }.catch { e ->
                 emit(
                     RequestState.Error(
-                        error = DataCodes.UnexpectedError(
-                            msg = Res.string.unexpected_error,
-                            desc = e.message
-                        )
+                        error = e.message ?: ""
                     )
                 )
             }.collect { session ->
                 if (session == null) {
                     return@collect emit(
                         RequestState.Error(
-                            error = DataCodes.NullError()
+                            error = ""
                         )
                     )
                 }
                 if (konnection.isConnected()) {
-                    val refreshCall = refresh(session.refresh_token).display(
-                        onFailure = { code ->
-                            when (code.code) {
-                                AppCodes.UnknownError,
-                                AppCodes.InternalServerError,
-                                AppCodes.ServiceUnavailable,
-                                AppCodes.RequestTimeout -> {
-                                    RequestState.Success(
-                                        data = session.dbActiveToDomain()
-                                    )
-                                }
-                                else -> {
-                                    endSession()
-                                    RequestState.Error(
-                                        error = code
-                                    )
-                                }
-                            }
-                        },
-                        onSuccess = { res ->
-                            if (res.data == null) {
-                                endSession()
-                                return@display RequestState.Error(
-                                    error = DataCodes.NullError(
-                                        msg = Res.string.session_expired,
-                                        desc = res.message
-                                    )
+                    when (val call = refresh(session.dbActiveToDomain())) {
+                        is RequestState.Error -> {
+                            endSession()
+                            emit(
+                                RequestState.Error(
+                                    error = call.error
                                 )
-                            }
-                            handleSuccessRefresh(
-                                session = res.data!!.dtoToDomain(),
                             )
                         }
-                    )
-                    emit(refreshCall)
+                        is RequestState.Success -> {
+                            emit(
+                                RequestState.Success(
+                                    data = call.data
+                                )
+                            )
+                        }
+                        else -> {
+                            emit(RequestState.Loading)
+                        }
+                    }
                 }
-                emit(
-                    RequestState.Success(
-                        data = session.dbActiveToDomain()
-                    )
-                )
             }
         }.flowOn(coroutineContext)
     }
@@ -120,7 +98,7 @@ class DefaultAppRepository(
                 if (list.isEmpty()) {
                     return@collect emit(
                         RequestState.Error(
-                            error = DataCodes.NullError()
+                            error = ""
                         )
                     )
                 }
@@ -136,62 +114,132 @@ class DefaultAppRepository(
         }.flowOn(coroutineContext)
     }
 
-    private suspend fun refresh(refreshToken: String): ApiOperation<AuthDto> {
-        return client.call {
+    // todo: this needs to check company data first before refreshing
+    private suspend fun refresh(session: Session): RequestState<Session> {
+        val refreshCall = client.call<AuthDto> {
             post(
+                baseUrl = session.companyHost,
                 urlString = "/api/auth/refresh",
                 body = RefreshTokenDto(
-                    refreshToken = refreshToken
+                    refreshToken = session.refreshToken
                 ),
-                headers = mapOf("Authorization" to "Bearer $refreshToken")
+                headers = mapOf("Authorization" to "Bearer ${session.accessToken}")
             )
+        }
+        return when (refreshCall) {
+            is ApiOperation.Failure -> when (refreshCall.error.status) {
+                AppCodes.UnknownError.value,
+                AppCodes.InternalServerError.value,
+                AppCodes.ServiceUnavailable.value,
+                AppCodes.RequestTimeout.value -> {
+                    return RequestState.Success(
+                        data = session
+                    )
+                }
+                else -> {
+                    return RequestState.Error(
+                        error = refreshCall.error.message ?: ""
+                    )
+                }
+            }
+            is ApiOperation.Success -> {
+                if (refreshCall.value.data == null) {
+                    return RequestState.Error(
+                        error = refreshCall.value.message ?: ""
+                    )
+                }
+
+                getUserData(
+                    session = refreshCall.value.data!!.dtoToDomain(),
+                )
+            }
         }
     }
 
-    private suspend fun handleSuccessRefresh(
-        session: Session,
-    ): RequestState<Session> {
-        scope.async {
+// refactor this sht
+    private suspend fun getUserData(session: Session): RequestState<Session> {
+        val call = client.call<UserDto> {
+            get(
+                baseUrl = session.companyHost,
+                urlString = "/api/users/me",
+                headers = mapOf("Authorization" to "Bearer ${session.accessToken}")
+            )
+        }
+
+        return when (call) {
+            is ApiOperation.Failure -> {
+                RequestState.Error(
+                    error = call.error.message ?: ""
+                )
+            }
+            is ApiOperation.Success -> {
+                if (call.value.data == null) {
+                    return RequestState.Error(
+                        error = call.value.message ?: ""
+                    )
+                }
+
+                val infoCall = client.call<SalesmanDto> {
+                    get(
+                        urlString = "/api/users/me/info",
+                        headers = mapOf("Authorization" to "Bearer ${session.accessToken}")
+                    )
+                }
+
+                when (infoCall) {
+                    is ApiOperation.Failure -> {
+                        RequestState.Error(
+                            error = infoCall.error.message ?: ""
+                        )
+                    }
+                    is ApiOperation.Success -> {
+                        if (infoCall.value.data == null) {
+                            return RequestState.Error(
+                                error = infoCall.value.message ?: ""
+                            )
+                        }
+
+                        val newSession = saveSession(
+                            session = session.copy(user = call.value.data?.dtoToDomain()),
+                            salesman = infoCall.value.data!!.toSalesman()
+                        )
+                            ?: return RequestState.Error(
+                                error = ""
+                            )
+
+                        RequestState.Success(
+                            data = newSession
+                        )
+                    }
+                }
+            }
+        }
+    }
+
+    private suspend fun saveSession(session: Session, salesman: Salesman): Session? {
+        return scope.async {
             dbHelper.withDatabase { db ->
                 db.transactionWithResult {
-                    // todo: refactor to request user data
                     if (session.user == null) {
                         rollback(null)
                     }
-                    db.clossUserQueries.insert(
-                        closs_user = session.user!!.domainToDb()
-                    )
-                        .executeAsOneOrNull()
-                        ?: rollback(null)
 
                     db.clossSessionQueries.insert(
                         closs_session = session.copy(active = true).sessionToDb()
                     )
-                        .executeAsOneOrNull()
-                        ?: rollback(null)
+
+                    db.clossUserQueries.insert(
+                        closs_user = session.user!!.domainToDb()
+                    )
+
+                    db.clossSalesmanQueries.insert(
+                        closs_salesman = salesman.toDbSalesman(session.user!!.id)
+                    )
+
+                    session
                 }
             }
         }.await()
-            ?: return RequestState.Error(
-                error = DataCodes.NullError(
-                    msg = Res.string.unexpected_error,
-                    desc = "Unable to update session"
-                )
-            )
-
-        val newSession = dbHelper.withDatabase { db ->
-            executeOne(
-                query = db.sessionQueries.findActiveAccount()
-            )
-        }
-            ?: return RequestState.Error(
-                error = DataCodes.NullError(
-                    msg = Res.string.unknown_error,
-                    desc = "Unable to find session"
-                )
-            )
-
-        return RequestState.Success(newSession.dbActiveToDomain())
     }
 
     private suspend fun endSession() {

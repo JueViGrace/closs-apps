@@ -14,5 +14,6 @@ fun Session.sessionToDb(): DbSession =
         access_token = accessToken,
         refresh_token = refreshToken,
         user_id = user?.id ?: "",
+        company_host = companyHost,
         active = active
     )

@@ -6,7 +6,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import org.closs.auth.shared.data.repository.AuthRepository
+import org.closs.auth.shared.data.AuthRepository
 import org.closs.auth.shared.presentation.events.SignInEvents
 import org.closs.auth.shared.presentation.state.SignInState
 import org.closs.auth.shared.presentation.viewmodel.SignInViewModel
@@ -15,8 +15,10 @@ import org.closs.core.presentation.shared.navigation.Destination
 import org.closs.core.presentation.shared.navigation.Navigator
 import org.closs.core.resources.resources.generated.resources.Res
 import org.closs.core.resources.resources.generated.resources.company_invalid_input
+import org.closs.core.resources.resources.generated.resources.unexpected_error
 import org.closs.core.types.shared.auth.dto.SignInDto
 import org.closs.core.types.shared.state.RequestState
+import org.closs.core.types.shared.state.ResponseMessage
 
 class DefaultSignInViewModel(
     override val navigator: Navigator,
@@ -103,47 +105,54 @@ class DefaultSignInViewModel(
             return
         }
         viewModelScope.launch {
-            val call = authRepository.signIn(
+            authRepository.signIn(
+                baseUrl = _state.value.company,
                 signInDto = SignInDto(
                     username = _state.value.username,
                     password = _state.value.password
                 )
-            )
-            when (call) {
-                is RequestState.Error -> {
-                    _state.update { state ->
-                        state.copy(
-                            isLoading = false,
-                            errorMessage = call.error.message
+            ).collect { call ->
+                when (call) {
+                    is RequestState.Error -> {
+                        _state.update { state ->
+                            state.copy(
+                                isLoading = false,
+                                errorMessage = Res.string.unexpected_error
+                            )
+                        }
+                        messages.sendMessage(
+                            ResponseMessage(
+                                message = Res.string.unexpected_error,
+                                description = call.error
+                            )
                         )
                     }
-                    messages.sendMessage(call.error)
-                }
-                is RequestState.Success -> {
-                    _state.update { state ->
-                        state.copy(
-                            isLoading = false,
-                            errorMessage = null
+                    is RequestState.Success -> {
+                        _state.update { state ->
+                            state.copy(
+                                isLoading = false,
+                                errorMessage = null
+                            )
+                        }
+
+                        messages.sendMessage(call.data.response)
+                        navigator.navigate(
+                            destination = Destination.Home,
+                            navOptions = NavOptions.Builder().apply {
+                                setPopUpTo(route = Destination.SignIn, inclusive = true)
+                                setLaunchSingleTop(true)
+                            }.build()
                         )
+
+                        resetState()
                     }
-
-                    messages.sendMessage(call.data)
-                    navigator.navigate(
-                        destination = Destination.Home,
-                        navOptions = NavOptions.Builder().apply {
-                            setPopUpTo(route = Destination.AuthGraph, inclusive = true)
-                            setLaunchSingleTop(true)
-                        }.build()
-                    )
-
-                    resetState()
-                }
-                else -> {
-                    _state.update { state ->
-                        state.copy(
-                            isLoading = true,
-                            errorMessage = null
-                        )
+                    else -> {
+                        _state.update { state ->
+                            state.copy(
+                                isLoading = true,
+                                errorMessage = null
+                            )
+                        }
                     }
                 }
             }

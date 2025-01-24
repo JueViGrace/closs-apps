@@ -76,5 +76,4 @@ INSERT OR REPLACE INTO closs_salesman_statistic(
     created_at,
     updated_at
 )
-VALUES ?
-RETURNING *;
+VALUES ?;

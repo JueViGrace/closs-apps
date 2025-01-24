@@ -84,8 +84,7 @@ INSERT OR REPLACE INTO closs_customer(
     dolarflete,
     nodolarflete
 )
-VALUES ?
-RETURNING *;
+VALUES ?;
 
 delete:
 DELETE FROM closs_customer

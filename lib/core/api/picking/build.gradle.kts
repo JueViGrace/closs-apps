@@ -1,4 +1,3 @@
-import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
@@ -11,13 +10,10 @@ group = "org.closs.core.api"
 
 kotlin {
     androidTarget {
-        @OptIn(ExperimentalKotlinGradlePluginApi::class)
         compilerOptions {
             jvmTarget.set(JvmTarget.JVM_21)
         }
     }
-
-    jvm()
 
     sourceSets {
         androidMain.dependencies {
@@ -26,6 +22,7 @@ kotlin {
         commonMain.dependencies {
             // Types
             implementation(projects.lib.core.types.shared)
+            implementation(projects.lib.core.types.picking)
 
             // Api
             implementation(projects.lib.core.api.shared)
@@ -48,10 +45,6 @@ kotlin {
             implementation(libs.ktor.serialization.kotlinx.json)
         }
 
-        jvmMain.dependencies {
-            // Coroutines
-            implementation(libs.kotlinx.coroutines.swing)
-        }
     }
 }
 

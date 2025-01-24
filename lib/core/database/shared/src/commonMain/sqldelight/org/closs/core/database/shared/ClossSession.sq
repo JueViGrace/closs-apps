@@ -4,6 +4,7 @@ CREATE TABLE IF NOT EXISTS closs_session(
     access_token TEXT NOT NULL,
     refresh_token TEXT NOT NULL,
     user_id TEXT NOT NULL,
+    company_host TEXT NOT NULL DEFAULT '',
     active INTEGER AS Boolean NOT NULL,
     PRIMARY KEY(user_id),
     FOREIGN KEY(user_id) REFERENCES closs_user(id)
@@ -14,10 +15,10 @@ INSERT OR REPLACE INTO closs_session(
     access_token,
     refresh_token,
     user_id,
+    company_host,
     active
 )
-VALUES ?
-RETURNING *;
+VALUES ?;
 
 startSession:
 UPDATE closs_session SET

@@ -8,7 +8,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import org.closs.auth.shared.data.repository.AuthRepository
+import org.closs.auth.shared.data.AuthRepository
 import org.closs.auth.shared.domain.model.SignIn
 import org.closs.auth.shared.domain.rules.AuthValidator
 import org.closs.auth.shared.presentation.events.SignInEvents

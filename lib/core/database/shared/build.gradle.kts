@@ -65,7 +65,6 @@ sqldelight {
     databases {
         create("ClossDb") {
             packageName.set("org.closs.core.database.shared")
-            dialect(libs.sqldelight.sqlite.dialect)
             generateAsync.set(true)
         }
     }

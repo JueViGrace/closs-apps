@@ -13,8 +13,7 @@ INSERT OR REPLACE INTO closs_managers(
     kng_codgcia,
     kng_codcoord
 )
-VALUES ?
-RETURNING *;
+VALUES ?;
 
 delete:
 DELETE FROM closs_managers

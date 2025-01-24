@@ -59,11 +59,8 @@ kotlin {
             // Resources
             implementation(projects.lib.core.resources)
 
-            // App
-            implementation(projects.lib.app)
-
-            // Home
-            implementation(projects.lib.home.shared)
+            // Shared
+            implementation(projects.lib.shared)
 
             // Auth
             implementation(projects.lib.auth.accloss)

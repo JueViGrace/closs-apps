@@ -43,8 +43,7 @@ INSERT OR REPLACE INTO closs_salesman(
     created_at,
     updated_at
 )
-VALUES ?
-RETURNING *;
+VALUES ?;
 
 delete:
 DELETE FROM closs_salesman

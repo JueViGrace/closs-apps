@@ -16,9 +16,9 @@ import androidx.navigation.compose.composable
 import kotlinx.coroutines.launch
 import org.closs.accloss.app.presentation.navigation.graph.authGraph
 import org.closs.accloss.app.presentation.navigation.graph.homeGraph
-import org.closs.app.shared.presentation.state.AppState
-import org.closs.app.shared.presentation.ui.screens.SplashScreen
-import org.closs.app.shared.presentation.viewmodel.AppViewModel
+import org.closs.shared.app.presentation.state.AppState
+import org.closs.shared.app.presentation.ui.screens.SplashScreen
+import org.closs.shared.app.presentation.viewmodel.AppViewModel
 import org.closs.core.presentation.shared.navigation.Destination
 import org.closs.core.presentation.shared.navigation.NavigationStack
 import org.closs.core.presentation.shared.navigation.Navigator
@@ -90,7 +90,7 @@ private fun TopBar(
             TopBarComponent(
                 actions = {
                     HomeTopBarActions(
-                        accountLetter = state.session?.user?.name?.firstOrNull()?.toString() ?: "P",
+                        accountLetter = state.session?.name?.firstOrNull()?.toString() ?: "P",
                         onNotificationsClick = {
                             viewModel.navigateToNotifications()
                         },

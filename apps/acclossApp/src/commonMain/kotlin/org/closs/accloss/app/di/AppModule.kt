@@ -3,8 +3,8 @@ package org.closs.accloss.app.di
 import org.closs.accloss.app.data.DefaultAppRepository
 import org.closs.accloss.app.presentation.viewmodel.DefaultAppViewModel
 import org.closs.accloss.home.di.homeModule
-import org.closs.app.shared.data.AppRepository
-import org.closs.app.shared.presentation.viewmodel.AppViewModel
+import org.closs.shared.app.data.AppRepository
+import org.closs.shared.app.presentation.viewmodel.AppViewModel
 import org.closs.auth.di.authModule
 import org.closs.order.di.orderModule
 import org.closs.product.di.productModule

@@ -68,7 +68,6 @@ sqldelight {
     databases {
         create("ClossDb") {
             packageName.set("org.closs.core.database")
-            dialect(libs.sqldelight.sqlite.dialect)
             generateAsync.set(true)
             schemaOutputDirectory.set(file("src/commonMain/sqldelight/databases"))
             dependency(project(":lib:core:database:shared"))

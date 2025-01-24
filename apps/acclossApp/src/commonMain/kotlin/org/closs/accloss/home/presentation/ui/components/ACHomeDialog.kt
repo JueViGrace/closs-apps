@@ -24,8 +24,8 @@ import org.closs.core.presentation.shared.utils.calculateIconSize
 import org.closs.core.resources.resources.generated.resources.Res
 import org.closs.core.resources.resources.generated.resources.ic_refresh
 import org.closs.core.resources.resources.generated.resources.sync
-import org.closs.home.shared.presentation.events.HomeEvents
-import org.closs.home.shared.presentation.state.HomeState
+import org.closs.shared.home.presentation.events.HomeEvents
+import org.closs.shared.home.presentation.state.HomeState
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 
@@ -39,16 +39,18 @@ fun ACHomeDialog(
             onEvent(HomeEvents.ToggleDialog)
         },
         accountSection = {
-            AccountDialogSection(
-                modifier = Modifier.padding(8.dp),
-                session = state.session,
-                onNavigateToProfile = {
-                    onEvent(HomeEvents.NavigateToProfile)
-                },
-                hasMultiAccount = {
-                    // todo: accounts button
-                }
-            )
+            state.session?.let { session ->
+                AccountDialogSection(
+                    modifier = Modifier.padding(8.dp),
+                    session = session,
+                    onNavigateToProfile = {
+                        onEvent(HomeEvents.NavigateToProfile)
+                    },
+                    hasMultiAccount = {
+                        // todo: accounts button
+                    }
+                )
+            }
             // todo: accounts list
         },
         optionsSection = {

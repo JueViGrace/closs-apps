@@ -3,18 +3,20 @@ package org.closs.picking.home.presentation.viewmodel
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavOptions
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import org.closs.core.presentation.shared.navigation.Destination
 import org.closs.core.presentation.shared.navigation.Navigator
 import org.closs.core.types.shared.common.Constants
-import org.closs.home.shared.data.HomeRepository
-import org.closs.home.shared.presentation.events.HomeEvents
-import org.closs.home.shared.presentation.state.HomeState
-import org.closs.home.shared.presentation.viewmodel.HomeViewModel
+import org.closs.shared.home.data.HomeRepository
+import org.closs.shared.home.presentation.events.HomeEvents
+import org.closs.shared.home.presentation.state.HomeState
+import org.closs.shared.home.presentation.viewmodel.HomeViewModel
 
 class DefaultHomeViewModel(
     override val repository: HomeRepository,
@@ -82,5 +84,26 @@ class DefaultHomeViewModel(
     }
 
     override fun sync() {
+    }
+
+    override fun logOut() {
+        toggleDialog()
+        _state.update { state ->
+            state.copy(
+                session = null,
+                isSyncing = false,
+                showDialog = false
+            )
+        }
+        viewModelScope.launch {
+            delay(100)
+            repository.logOut()
+            navigator.navigate(
+                destination = Destination.SignIn,
+                navOptions = NavOptions.Builder().apply {
+                    setPopUpTo(Destination.Home, true)
+                }.build()
+            )
+        }
     }
 }

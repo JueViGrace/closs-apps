@@ -1,7 +1,7 @@
 package org.closs.picking.app.di
 
-import org.closs.app.shared.data.AppRepository
-import org.closs.app.shared.presentation.viewmodel.AppViewModel
+import org.closs.shared.app.data.AppRepository
+import org.closs.shared.app.presentation.viewmodel.AppViewModel
 import org.closs.auth.di.authModule
 import org.closs.order.detail.di.orderDetailModule
 import org.closs.order.history.di.historyModule

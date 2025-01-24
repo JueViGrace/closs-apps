@@ -8,20 +8,15 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
-import org.closs.auth.shared.data.repository.AuthRepository
+import org.closs.auth.shared.data.AuthRepository
 import org.closs.auth.shared.presentation.events.AccountsListEvents
 import org.closs.auth.shared.presentation.state.AccountsListState
-import org.closs.core.presentation.shared.messages.Messages
 import org.closs.core.presentation.shared.navigation.Destination
 import org.closs.core.presentation.shared.navigation.Navigator
-import org.closs.core.resources.resources.generated.resources.Res
-import org.closs.core.resources.resources.generated.resources.welcome_back
-import org.closs.core.types.shared.state.DataCodes
 import org.closs.core.types.shared.state.RequestState
 
 class AccountsListViewModel(
     private val navigator: Navigator,
-    messages: Messages,
     private val authRepository: AuthRepository
 ) : ViewModel() {
 
@@ -38,11 +33,6 @@ class AccountsListViewModel(
                 )
             }
             is RequestState.Success -> {
-                messages.sendMessage(
-                    DataCodes.CustomMessage(
-                        msg = Res.string.welcome_back,
-                    )
-                )
                 state.copy(
                     accounts = accounts.data,
                     isLoading = false

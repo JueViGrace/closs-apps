@@ -4,7 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import org.closs.accloss.home.presentation.ui.components.ACHomeDialog
-import org.closs.home.shared.presentation.viewmodel.HomeViewModel
+import org.closs.shared.home.presentation.viewmodel.HomeViewModel
 
 @Composable
 actual fun HomeScreen(

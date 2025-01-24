@@ -7,14 +7,13 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
-import org.closs.app.shared.data.AppRepository
-import org.closs.app.shared.presentation.state.AppState
-import org.closs.app.shared.presentation.viewmodel.AppViewModel
+import org.closs.shared.app.data.AppRepository
+import org.closs.shared.app.presentation.state.AppState
+import org.closs.shared.app.presentation.viewmodel.AppViewModel
 import org.closs.core.presentation.shared.messages.Messages
 import org.closs.core.presentation.shared.navigation.Destination
 import org.closs.core.presentation.shared.navigation.Navigator
 import org.closs.core.resources.resources.generated.resources.Res
-import org.closs.core.resources.resources.generated.resources.welcome
 import org.closs.core.resources.resources.generated.resources.welcome_back
 import org.closs.core.types.shared.common.Constants
 import org.closs.core.types.shared.state.RequestState
@@ -51,8 +50,6 @@ class DefaultAppViewModel(
                         )
                         state.copy(
                             session = null,
-                            snackMessage = accounts.error.message ?: Res.string.welcome,
-                            description = accounts.error.description ?: "",
                         )
                     }
                     is RequestState.Success -> {
@@ -88,7 +85,7 @@ class DefaultAppViewModel(
                 state.copy(
                     session = session.data,
                     snackMessage = Res.string.welcome_back,
-                    description = session.data.user?.name ?: ""
+                    description = session.data.name
                 )
             }
             else -> {

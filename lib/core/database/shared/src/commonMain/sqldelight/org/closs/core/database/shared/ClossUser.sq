@@ -26,8 +26,7 @@ INSERT OR REPLACE INTO closs_user(
     version,
     created_at,
     updated_at
-) VALUES ?
-RETURNING *;
+) VALUES ?;
 
 delete:
 DELETE FROM closs_user

@@ -9,10 +9,10 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 import org.closs.core.presentation.shared.navigation.Navigator
 import org.closs.core.types.shared.common.Constants
-import org.closs.home.shared.data.HomeRepository
-import org.closs.home.shared.presentation.events.HomeEvents
-import org.closs.home.shared.presentation.state.HomeState
-import org.closs.home.shared.presentation.viewmodel.HomeViewModel
+import org.closs.shared.home.data.HomeRepository
+import org.closs.shared.home.presentation.events.HomeEvents
+import org.closs.shared.home.presentation.state.HomeState
+import org.closs.shared.home.presentation.viewmodel.HomeViewModel
 
 class DefaultHomeViewModel(
     override val repository: HomeRepository,

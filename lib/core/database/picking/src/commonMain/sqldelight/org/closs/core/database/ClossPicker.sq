@@ -11,8 +11,7 @@ INSERT OR REPLACE INTO closs_picker(
     name,
     almacen
 )
-VALUES ?
-RETURNING *;
+VALUES ?;
 
 deleteByUser:
 DELETE FROM closs_picker

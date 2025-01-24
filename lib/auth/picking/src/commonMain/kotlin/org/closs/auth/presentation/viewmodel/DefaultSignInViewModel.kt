@@ -5,14 +5,17 @@ import androidx.navigation.NavOptions
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import org.closs.auth.shared.data.repository.AuthRepository
+import org.closs.auth.shared.data.AuthRepository
 import org.closs.auth.shared.presentation.events.SignInEvents
 import org.closs.auth.shared.presentation.viewmodel.SignInViewModel
 import org.closs.core.presentation.shared.messages.Messages
 import org.closs.core.presentation.shared.navigation.Destination
 import org.closs.core.presentation.shared.navigation.Navigator
+import org.closs.core.resources.resources.generated.resources.Res
+import org.closs.core.resources.resources.generated.resources.unexpected_error
 import org.closs.core.types.shared.auth.dto.SignInDto
 import org.closs.core.types.shared.state.RequestState
+import org.closs.core.types.shared.state.ResponseMessage
 
 class DefaultSignInViewModel(
     override val navigator: Navigator,
@@ -50,10 +53,15 @@ class DefaultSignInViewModel(
                         _state.update { state ->
                             state.copy(
                                 isLoading = false,
-                                errorMessage = call.error.message
+                                errorMessage = Res.string.unexpected_error
                             )
                         }
-                        messages.sendMessage(call.error)
+                        messages.sendMessage(
+                            ResponseMessage(
+                                message = Res.string.unexpected_error,
+                                description = call.error
+                            )
+                        )
                     }
                     is RequestState.Success -> {
                         _state.update { state ->
@@ -67,7 +75,7 @@ class DefaultSignInViewModel(
                         navigator.navigate(
                             destination = Destination.Home,
                             navOptions = NavOptions.Builder().apply {
-                                setPopUpTo(route = Destination.AuthGraph, inclusive = true)
+                                setPopUpTo(route = Destination.SignIn, inclusive = true)
                                 setLaunchSingleTop(true)
                             }.build()
                         )

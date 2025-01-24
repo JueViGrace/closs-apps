@@ -2,8 +2,8 @@ package org.closs.accloss.home.di
 
 import org.closs.accloss.home.data.DefaultHomeRepository
 import org.closs.accloss.home.presentation.viewmodel.DefaultHomeViewModel
-import org.closs.home.shared.data.HomeRepository
-import org.closs.home.shared.presentation.viewmodel.HomeViewModel
+import org.closs.shared.home.data.HomeRepository
+import org.closs.shared.home.presentation.viewmodel.HomeViewModel
 import org.koin.core.module.Module
 import org.koin.core.module.dsl.singleOf
 import org.koin.core.module.dsl.viewModelOf

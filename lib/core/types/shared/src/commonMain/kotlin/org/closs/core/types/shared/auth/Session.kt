@@ -7,5 +7,6 @@ data class Session(
     val refreshToken: String,
     val user: User? = null,
     val name: String = "",
+    val companyHost: String = "",
     val active: Boolean = false,
 )

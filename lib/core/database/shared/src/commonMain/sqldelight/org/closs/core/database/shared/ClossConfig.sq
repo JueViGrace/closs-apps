@@ -73,8 +73,7 @@ INSERT OR REPLACE INTO closs_config(
     created_at,
     updated_at
 )
-VALUES ?
-RETURNING *;
+VALUES ?;
 
 deleteByUser:
 DELETE FROM closs_config

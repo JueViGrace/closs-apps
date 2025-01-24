@@ -60,5 +60,4 @@ INSERT OR REPLACE INTO closs_document_lines(
     created_at,
     updated_at
 )
-VALUES ?
-RETURNING *;
+VALUES ?;

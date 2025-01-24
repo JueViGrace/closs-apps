@@ -3,9 +3,9 @@ package org.closs.picking.home.data
 import dev.tmapps.konnection.Konnection
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.async
-import org.closs.core.api.shared.KtorClient
+import org.closs.core.api.shared.client.KtorClient
 import org.closs.core.database.helper.PickingDbHelper
-import org.closs.home.shared.data.HomeRepository
+import org.closs.shared.home.data.HomeRepository
 import kotlin.coroutines.CoroutineContext
 
 class DefaultHomeRepository(
@@ -23,7 +23,15 @@ class DefaultHomeRepository(
         scope.async {
             dbHelper.withDatabase { db ->
                 db.transaction {
-                    db.clossSessionQueries.endSession()
+                    val session = db.sessionQueries.findActiveAccount()
+                        .executeAsOneOrNull()
+                        ?: rollback()
+
+                    db.clossSessionQueries.deleteSession(session.user_id)
+                    db.clossUserQueries.delete(session.user_id)
+                    db.clossPickerQueries.deleteByUser(session.user_id)
+                    db.clossConfigQueries.deleteByUser(session.user_id)
+                    db.clossProductQueries.deleteByUser(session.user_id)
                 }
             }
         }.await()

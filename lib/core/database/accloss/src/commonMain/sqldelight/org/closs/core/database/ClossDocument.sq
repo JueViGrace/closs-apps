@@ -156,8 +156,7 @@ INSERT OR REPLACE INTO closs_document(
     created_at,
     user_id
 )
-VALUES ?
-RETURNING *;
+VALUES ?;
 
 delete:
 DELETE FROM closs_document

@@ -26,8 +26,7 @@ INSERT OR REPLACE INTO closs_company(
     ked_enlace,
     ked_agen
 )
-VALUES ?
-RETURNING *;
+VALUES ?;
 
 delete:
 DELETE FROM closs_company
