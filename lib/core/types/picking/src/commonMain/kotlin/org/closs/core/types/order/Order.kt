@@ -1,7 +1,5 @@
 package org.closs.core.types.order
 
-import org.closs.core.types.order.dto.OrderLineDto
-
 data class Order(
     val agencia: String,
     val tipodoc: String,
@@ -12,5 +10,6 @@ data class Order(
     val upickup: String,
     val idcarrito: String,
     val almacen: String,
-    val lines: List<OrderLineDto> = emptyList()
+    val kePedStatus: String,
+    val lines: List<OrderLine> = emptyList()
 )

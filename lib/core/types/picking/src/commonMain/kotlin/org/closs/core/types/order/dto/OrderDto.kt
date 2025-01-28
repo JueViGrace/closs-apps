@@ -23,6 +23,8 @@ data class OrderDto(
     val idcarrito: String,
     @SerialName("almacen")
     val almacen: String,
+    @SerialName("ke_pedstatus")
+    val kePedStatus: String,
     @SerialName("lines")
     val lines: List<OrderLineDto>
 )

@@ -1,0 +1,57 @@
+CREATE TABLE IF NOT EXISTS closs_order(
+    agencia TEXT NOT NULL DEFAULT '',
+    tipodoc TEXT NOT NULL DEFAULT '',
+    documento TEXT NOT NULL DEFAULT '',
+    codcliente TEXT NOT NULL DEFAULT '',
+    nombrecli TEXT NOT NULL DEFAULT '',
+    emision TEXT NOT NULL DEFAULT '',
+    upickup TEXT NOT NULL DEFAULT '',
+    idcarrito TEXT NOT NULL DEFAULT '',
+    almacen TEXT NOT NULL DEFAULT '',
+    ke_pedstatus TEXT NOT NULL DEFAULT '',
+    user_id TEXT NOT NULL,
+    PRIMARY KEY (documento),
+    FOREIGN KEY (user_id) REFERENCES closs_user(id)
+);
+
+findOrders:
+SELECT *
+FROM closs_order
+WHERE user_id = :id
+ORDER BY emision ASC;
+
+findOrder:
+SELECT *
+FROM closs_order
+LEFT JOIN closs_order_line
+    ON closs_order.documento = closs_order_line.documento
+WHERE
+    closs_order.user_id = :id AND
+    closs_order.documento = :doc;
+
+insert:
+INSERT OR REPLACE INTO closs_order(
+    agencia,
+    tipodoc,
+    documento,
+    codcliente,
+    nombrecli,
+    emision,
+    upickup,
+    idcarrito,
+    almacen,
+    ke_pedstatus,
+    user_id
+)
+VALUES ?;
+
+deleteOne:
+DELETE FROM closs_order
+WHERE
+    user_id = :id AND
+    documento = :doc;
+
+deleteByUser:
+DELETE FROM closs_order
+WHERE
+    user_id = :id;

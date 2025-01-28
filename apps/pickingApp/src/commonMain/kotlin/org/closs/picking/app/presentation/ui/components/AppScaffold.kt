@@ -16,20 +16,24 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import kotlinx.coroutines.launch
-import org.closs.shared.app.presentation.state.AppState
-import org.closs.shared.app.presentation.ui.screens.SplashScreen
-import org.closs.shared.app.presentation.viewmodel.AppViewModel
 import org.closs.core.presentation.shared.navigation.Destination
 import org.closs.core.presentation.shared.navigation.NavigationStack
 import org.closs.core.presentation.shared.navigation.Navigator
 import org.closs.core.presentation.shared.ui.components.buttons.BackArrowButton
 import org.closs.core.presentation.shared.ui.components.display.TextComponent
+import org.closs.core.presentation.shared.ui.components.icons.IconComponent
 import org.closs.core.presentation.shared.ui.components.layout.bars.TopBarComponent
 import org.closs.core.presentation.shared.ui.components.layout.bars.actions.HomeTopBarActions
+import org.closs.core.presentation.shared.utils.calculateIconSize
 import org.closs.core.resources.resources.generated.resources.Res
+import org.closs.core.resources.resources.generated.resources.ic_refresh
 import org.closs.core.resources.resources.generated.resources.notifications
 import org.closs.picking.app.presentation.navigation.graph.authGraph
 import org.closs.picking.app.presentation.navigation.graph.homeGraph
+import org.closs.shared.app.presentation.state.AppState
+import org.closs.shared.app.presentation.ui.screens.SplashScreen
+import org.closs.shared.app.presentation.viewmodel.AppViewModel
+import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 
 @Composable
@@ -170,9 +174,28 @@ private fun TopBar(
                         }
                     }
                 },
+                actions = {
+                    IconComponent(
+                        iconModifier = Modifier.calculateIconSize(),
+                        painter = painterResource(Res.drawable.ic_refresh),
+                        onClick = {
+                            viewModel.reloadOrders()
+                        }
+                    )
+                },
             )
         }
-        is Destination.OrderDetails -> { }
+        is Destination.OrderDetails -> {
+            TopBarComponent(
+                navigationIcon = {
+                    BackArrowButton {
+                        scope.launch {
+                            navigator.navigateUp()
+                        }
+                    }
+                },
+            )
+        }
         Destination.Products -> { }
         is Destination.ProductDetails -> { }
         null -> { }

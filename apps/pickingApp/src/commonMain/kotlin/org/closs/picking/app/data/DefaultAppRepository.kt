@@ -7,7 +7,6 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.emptyFlow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
-import org.closs.shared.app.data.AppRepository
 import org.closs.core.api.shared.auth.AuthClient
 import org.closs.core.api.shared.client.ApiOperation
 import org.closs.core.api.user.UserClient
@@ -23,6 +22,7 @@ import org.closs.core.types.shared.state.AppCodes
 import org.closs.core.types.shared.state.RequestState
 import org.closs.core.types.shared.user.domainToDb
 import org.closs.core.types.shared.user.dtoToDomain
+import org.closs.shared.app.data.AppRepository
 import kotlin.coroutines.CoroutineContext
 
 class DefaultAppRepository(
@@ -70,6 +70,12 @@ class DefaultAppRepository(
                         emit(RequestState.Loading)
                     }
                 }
+            } else {
+                return@flow emit(
+                    RequestState.Success(
+                        data = session.dbActiveToDomain()
+                    )
+                )
             }
         }.flowOn(coroutineContext)
     }

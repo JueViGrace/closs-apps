@@ -8,4 +8,5 @@ expect object Constants {
     val SNACK_BAR_MESSAGE_KEY: String
     val SEARCH_BAR_TEXT_KEY: String
     val SESSION_KEY: String
+    val REFRESH_ORDERS_KEY: String
 }

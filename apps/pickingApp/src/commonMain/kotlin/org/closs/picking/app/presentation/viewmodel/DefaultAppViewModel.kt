@@ -29,6 +29,7 @@ class DefaultAppViewModel(
     handle = handle,
     appRepository = appRepository
 ) {
+    private val reloadData = handle.getStateFlow(Constants.REFRESH_ORDERS_KEY, true)
     private val showDialog = handle.getStateFlow(Constants.SHOW_HOME_DIALOG_KEY, false)
 
     private val _state: MutableStateFlow<AppState> = MutableStateFlow(AppState())
@@ -79,5 +80,9 @@ class DefaultAppViewModel(
 
     override fun toggleDialog() {
         handle[Constants.SHOW_HOME_DIALOG_KEY] = !showDialog.value
+    }
+
+    override fun reloadOrders() {
+        handle[Constants.REFRESH_ORDERS_KEY] = !reloadData.value
     }
 }

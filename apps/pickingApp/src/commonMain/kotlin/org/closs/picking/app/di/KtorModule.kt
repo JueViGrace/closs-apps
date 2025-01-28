@@ -1,6 +1,7 @@
 package org.closs.picking.app.di
 
 import org.closs.core.api.client.DefaultKtorClient
+import org.closs.core.api.order.OrderClient
 import org.closs.core.api.shared.auth.AuthClient
 import org.closs.core.api.shared.client.KtorClient
 import org.closs.core.api.user.UserClient
@@ -15,4 +16,6 @@ fun ktorModule(): Module = module {
     singleOf(::AuthClient)
 
     singleOf(::UserClient)
+
+    singleOf(::OrderClient)
 }

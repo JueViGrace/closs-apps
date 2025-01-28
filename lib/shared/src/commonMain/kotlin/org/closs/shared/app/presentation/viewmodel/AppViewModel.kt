@@ -24,6 +24,9 @@ abstract class AppViewModel(
 
     abstract fun toggleDialog()
 
+    // todo: change to actions?
+    abstract fun reloadOrders()
+
     open fun navigateToNotifications() {
         viewModelScope.launch {
             navigator.navigate(

@@ -1,0 +1,39 @@
+CREATE TABLE IF NOT EXISTS closs_order_line(
+    agencia TEXT NOT NULL DEFAULT '',
+    tipodoc TEXT NOT NULL DEFAULT '',
+    documento TEXT NOT NULL DEFAULT '',
+    codigo TEXT NOT NULL DEFAULT '',
+    nombre TEXT NOT NULL DEFAULT '',
+    almacen TEXT NOT NULL DEFAULT '',
+    cantref INTEGER NOT NULL DEFAULT '',
+    cantidad INTEGER NOT NULL DEFAULT '',
+    user_id TEXT NOT NULL,
+    PRIMARY KEY (documento, codigo),
+    FOREIGN KEY (user_id) REFERENCES closs_user(id)
+);
+
+insert:
+INSERT OR REPLACE INTO closs_order_line(
+    agencia,
+    tipodoc,
+    documento,
+    codigo,
+    nombre,
+    almacen,
+    cantref,
+    cantidad,
+    user_id
+)
+VALUES ?;
+
+deleteOne:
+DELETE FROM closs_order_line
+WHERE
+    user_id = :id AND
+    documento = :doc AND
+    codigo = :cod;
+
+deleteByUser:
+DELETE FROM closs_order_line
+WHERE
+    user_id= :id;

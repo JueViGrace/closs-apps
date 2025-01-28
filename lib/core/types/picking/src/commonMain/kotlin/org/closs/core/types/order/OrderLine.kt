@@ -6,6 +6,7 @@ data class OrderLine(
     val documento: String,
     val almacen: String,
     val codigo: String,
-    val cantref: Double,
-    val cantidad: Double,
+    val nombre: String,
+    val cantref: Int,
+    val cantidad: Int,
 )

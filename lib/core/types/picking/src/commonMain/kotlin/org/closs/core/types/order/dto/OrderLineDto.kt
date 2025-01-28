@@ -15,8 +15,10 @@ data class OrderLineDto(
     val almacen: String,
     @SerialName("codigo")
     val codigo: String,
+    @SerialName("nombre")
+    val nombre: String,
     @SerialName("cantref")
-    val cantref: Double,
+    val cantref: Int,
     @SerialName("cantidad")
-    val cantidad: Double,
+    val cantidad: Int,
 )
