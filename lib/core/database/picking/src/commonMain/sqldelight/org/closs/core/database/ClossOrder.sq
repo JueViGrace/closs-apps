@@ -18,7 +18,7 @@ findOrders:
 SELECT *
 FROM closs_order
 WHERE user_id = :id
-ORDER BY emision ASC;
+ORDER BY emision ASC, documento ASC, almacen ASC;
 
 findOrder:
 SELECT *
@@ -27,7 +27,10 @@ LEFT JOIN closs_order_line
     ON closs_order.documento = closs_order_line.documento
 WHERE
     closs_order.user_id = :id AND
-    closs_order.documento = :doc;
+    closs_order.documento = :doc
+ORDER BY
+        closs_order_line.almacen ASC,
+        closs_order_line.codigo ASC;
 
 insert:
 INSERT OR REPLACE INTO closs_order(

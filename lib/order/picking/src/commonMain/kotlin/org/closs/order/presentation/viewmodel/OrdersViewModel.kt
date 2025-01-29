@@ -4,20 +4,19 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavOptions
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
-import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import org.closs.core.presentation.shared.messages.Messages
 import org.closs.core.presentation.shared.navigation.Destination
 import org.closs.core.presentation.shared.navigation.Navigator
+import org.closs.core.resources.resources.generated.resources.Res
+import org.closs.core.resources.resources.generated.resources.unknown_error
 import org.closs.core.types.shared.common.Constants.REFRESH_ORDERS_KEY
 import org.closs.core.types.shared.state.RequestState
+import org.closs.core.types.shared.state.ResponseMessage
 import org.closs.order.data.OrderRepository
 import org.closs.order.presentation.state.OrdersState
 
@@ -27,21 +26,68 @@ class OrdersViewModel(
     private val messages: Messages,
     private val handle: SavedStateHandle,
 ) : ViewModel() {
-    private val _reloadOrders: StateFlow<Boolean> = handle.getStateFlow(REFRESH_ORDERS_KEY, true)
-    private var _orders = repository.getOrders(_reloadOrders.value)
+    private val _state = MutableStateFlow(OrdersState(isLoading = true))
 
-    private val _state = MutableStateFlow(OrdersState())
+    private val _reload = combine(
+        _state,
+        handle.getStateFlow(REFRESH_ORDERS_KEY, true)
+    ) { state, reload ->
+        state.copy(
+            isLoading = reload
+        )
+    }
+    private val _orders = repository.getOrders()
+    private val _reloadOrders = combine(
+        _reload,
+        _orders
+    ) { reload, orders ->
+        if (reload.isLoading) {
+            repository.fetchOrders().collect { result ->
+                if (result is RequestState.Error) {
+                    messages.sendMessage(
+                        ResponseMessage(
+                            message = Res.string.unknown_error,
+                            description = result.error
+                        )
+                    )
+                }
+            }
+            handle[REFRESH_ORDERS_KEY] = false
+        }
+        orders
+    }
+
     val state = combine(
         _state,
-        _orders,
-        _reloadOrders
-    ) { state, orders, reload ->
-        if (reload) {
-            refreshOrders()
+        _reloadOrders,
+    ) { state, orders ->
+        when (orders) {
+            is RequestState.Error -> {
+                messages.sendMessage(
+                    ResponseMessage(
+                        message = Res.string.unknown_error,
+                        description = orders.error
+                    )
+                )
+                state.copy(
+                    isLoading = false
+                )
+            }
+
+            is RequestState.Success -> {
+                state.copy(
+                    orders = orders.data,
+                    isLoading = false
+                )
+            }
+
+            else -> {
+                state.copy(
+                    orders = emptyList(),
+                    isLoading = true
+                )
+            }
         }
-        state.copy(
-            orders = orders
-        )
     }.stateIn(
         viewModelScope,
         SharingStarted.WhileSubscribed(5_000),
@@ -57,23 +103,5 @@ class OrdersViewModel(
                 }.build()
             )
         }
-    }
-
-    private fun refreshOrders() {
-        _state.update { state ->
-            state.copy(
-                orders = RequestState.Loading
-            )
-        }
-        viewModelScope.launch {
-            repository.getOrders(true).collect { result ->
-                _state.update { state ->
-                    state.copy(
-                        orders = result
-                    )
-                }
-            }
-        }
-        handle[REFRESH_ORDERS_KEY] = false
     }
 }

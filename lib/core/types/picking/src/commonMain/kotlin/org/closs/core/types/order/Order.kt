@@ -10,6 +10,8 @@ data class Order(
     val upickup: String,
     val idcarrito: String,
     val almacen: String,
+    val rutaCodigo: String,
+    val rutaDescrip: String,
     val kePedStatus: String,
     val lines: List<OrderLine> = emptyList()
 )

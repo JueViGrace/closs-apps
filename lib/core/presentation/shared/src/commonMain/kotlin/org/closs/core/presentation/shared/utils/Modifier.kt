@@ -18,11 +18,22 @@ fun Modifier.calculateIconButtonSize(): Modifier {
 }
 
 @Composable
-fun Modifier.calculateIconSize(): Modifier {
+fun Modifier.calculateSmallIconSize(): Modifier {
     val size: Dp = when (getScreenSize()) {
         ScreenSize.Compact -> 20.dp
         ScreenSize.Medium -> 34.dp
         ScreenSize.Large -> 48.dp
+    }
+
+    return this.size(size)
+}
+
+@Composable
+fun Modifier.calculateMediumIconSize(): Modifier {
+    val size: Dp = when (getScreenSize()) {
+        ScreenSize.Compact -> 52.dp
+        ScreenSize.Medium -> 66.dp
+        ScreenSize.Large -> 80.dp
     }
 
     return this.size(size)

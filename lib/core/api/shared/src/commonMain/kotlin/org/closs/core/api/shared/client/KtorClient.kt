@@ -59,7 +59,7 @@ suspend inline fun <reified T> KtorClient.call(callback: KtorClient.() -> APIRes
         when (body.status) {
             HttpStatusCode.ServiceUnavailable.value -> {
                 ApiOperation.Failure(
-                    error = body
+                    error = body,
                 )
             }
             HttpStatusCode.InternalServerError.value -> {
@@ -104,7 +104,8 @@ suspend inline fun <reified T> KtorClient.call(callback: KtorClient.() -> APIRes
                 status = HttpStatusCode.InternalServerError.value,
                 description = HttpStatusCode.InternalServerError.description,
                 data = null,
-            )
+                message = e.message
+            ),
         )
     }
 }

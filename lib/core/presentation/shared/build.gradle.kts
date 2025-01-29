@@ -8,7 +8,7 @@ plugins {
     alias(libs.plugins.kotlinx.serialization)
 }
 
-group = "org.closs.core.presentation"
+group = "org.closs.core.presentation.shared"
 
 kotlin {
     androidTarget {

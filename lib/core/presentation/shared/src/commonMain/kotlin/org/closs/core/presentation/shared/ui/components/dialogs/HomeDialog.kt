@@ -15,7 +15,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import org.closs.core.presentation.shared.ui.components.icons.IconComponent
-import org.closs.core.presentation.shared.utils.calculateIconSize
+import org.closs.core.presentation.shared.utils.calculateSmallIconSize
 import org.closs.core.resources.resources.generated.resources.Res
 import org.closs.core.resources.resources.generated.resources.ic_x
 import org.jetbrains.compose.resources.painterResource
@@ -46,7 +46,7 @@ fun HomeDialog(
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     IconComponent(
-                        modifier = Modifier.calculateIconSize(),
+                        modifier = Modifier.calculateSmallIconSize(),
                         painter = painterResource(Res.drawable.ic_x),
                         onClick = onDismiss
                     )

@@ -24,7 +24,7 @@ import org.closs.core.presentation.shared.ui.components.display.TextComponent
 import org.closs.core.presentation.shared.ui.components.icons.IconComponent
 import org.closs.core.presentation.shared.ui.components.layout.bars.TopBarComponent
 import org.closs.core.presentation.shared.ui.components.layout.bars.actions.HomeTopBarActions
-import org.closs.core.presentation.shared.utils.calculateIconSize
+import org.closs.core.presentation.shared.utils.calculateSmallIconSize
 import org.closs.core.resources.resources.generated.resources.Res
 import org.closs.core.resources.resources.generated.resources.ic_refresh
 import org.closs.core.resources.resources.generated.resources.notifications
@@ -175,8 +175,10 @@ private fun TopBar(
                     }
                 },
                 actions = {
+                    // todo: change for menu actions or add fab to display options
+                    // filtering, reload
                     IconComponent(
-                        iconModifier = Modifier.calculateIconSize(),
+                        iconModifier = Modifier.calculateSmallIconSize(),
                         painter = painterResource(Res.drawable.ic_refresh),
                         onClick = {
                             viewModel.reloadOrders()

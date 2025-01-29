@@ -20,8 +20,9 @@ import org.closs.core.types.shared.state.RequestState
 import kotlin.coroutines.CoroutineContext
 
 interface OrderRepository {
-    fun getOrders(reload: Boolean = false): Flow<RequestState<List<Order>>>
+    fun getOrders(): Flow<RequestState<List<Order>>>
     fun getOrder(orderId: String): Flow<RequestState<Order?>>
+    fun fetchOrders(): Flow<RequestState<Boolean>>
 }
 
 class DefaultOrderRepository(
@@ -31,8 +32,7 @@ class DefaultOrderRepository(
     private val scope: CoroutineScope,
     private val konnection: Konnection,
 ) : OrderRepository {
-    override fun getOrders(reload: Boolean): Flow<RequestState<List<Order>>> = flow {
-        var forceReload = reload
+    override fun getOrders(): Flow<RequestState<List<Order>>> = flow {
         emit(RequestState.Loading)
         val session = dbHelper.withDatabase { db ->
             executeOne(db.sessionQueries.findActiveAccount())?.dbActiveToDomain()
@@ -54,23 +54,6 @@ class DefaultOrderRepository(
                 query = db.clossOrderQueries.findOrders(session.user!!.id)
             )
         }.collect { orders ->
-            if ((orders.isEmpty() || forceReload) && konnection.isConnected()) {
-                when (val fetch = fetchOrders(session)) {
-                    is RequestState.Error -> {
-                        emit(
-                            RequestState.Error(
-                                error = fetch.error
-                            )
-                        )
-                    }
-                    is RequestState.Success -> {
-                        forceReload = false
-                    }
-                    else -> {
-                        emit(RequestState.Loading)
-                    }
-                }
-            }
             emit(
                 RequestState.Success(
                     data = orders.map { order -> order.toOrder() }
@@ -123,17 +106,44 @@ class DefaultOrderRepository(
         }
     }.flowOn(coroutineContext)
 
-    private suspend fun fetchOrders(session: Session): RequestState<Boolean> {
-        return when (val response = client.getOrders(session.accessToken)) {
+    override fun fetchOrders(): Flow<RequestState<Boolean>> = flow {
+        if (!konnection.isConnected()) {
+            return@flow emit(
+                RequestState.Error(
+                    error = ""
+                )
+            )
+        }
+
+        val session = dbHelper.withDatabase { db ->
+            executeOne(db.sessionQueries.findActiveAccount())?.dbActiveToDomain()
+        } ?: return@flow emit(
+            RequestState.Error(
+                error = ""
+            )
+        )
+        if (session.user == null) {
+            return@flow emit(
+                RequestState.Error(
+                    error = "invalid state"
+                )
+            )
+        }
+
+        when (val response = client.getOrders(session.accessToken)) {
             is ApiOperation.Failure -> {
-                return RequestState.Error(
-                    error = response.error.message ?: ""
+                emit(
+                    RequestState.Error(
+                        error = response.error.message ?: ""
+                    )
                 )
             }
             is ApiOperation.Success -> {
                 val orders = response.value.data
-                    ?: return RequestState.Error(
-                        error = response.value.message ?: ""
+                    ?: return@flow emit(
+                        RequestState.Error(
+                            error = response.value.message ?: ""
+                        )
                     )
 
                 scope.async {

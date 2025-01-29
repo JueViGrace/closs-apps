@@ -6,15 +6,18 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.ElevatedCard
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.zIndex
 import org.closs.core.presentation.shared.ui.components.display.TextComponent
 import org.closs.core.presentation.shared.ui.components.icons.IconComponent
-import org.closs.core.presentation.shared.utils.calculateIconSize
+import org.closs.core.presentation.shared.utils.calculateMediumIconSize
+import org.closs.core.presentation.shared.utils.calculateSmallIconSize
 import org.closs.core.resources.resources.generated.resources.Res
-import org.closs.core.resources.resources.generated.resources.ic_eye
+import org.closs.core.resources.resources.generated.resources.ic_basket
 import org.closs.core.types.order.Order
 import org.jetbrains.compose.resources.painterResource
 
@@ -32,24 +35,33 @@ fun OrderListItem(
         contentAlignment = Alignment.Center
     ) {
         IconComponent(
-            modifier = Modifier.calculateIconSize().align(Alignment.CenterStart),
-            painter = painterResource(Res.drawable.ic_eye),
+            modifier = Modifier
+                .zIndex(1f)
+                .calculateMediumIconSize()
+                .align(Alignment.CenterStart)
+                .padding(start = 8.dp),
+            painter = painterResource(Res.drawable.ic_basket),
         )
 
-        Column(
+        ElevatedCard(
             modifier = Modifier
-                .fillMaxWidth()
-                .align(Alignment.CenterEnd)
-                .padding(start = 12.dp),
-            verticalArrangement = Arrangement.spacedBy(4.dp, Alignment.CenterVertically),
-            horizontalAlignment = Alignment.CenterHorizontally
+                .padding(start = 30.dp)
+                .align(Alignment.CenterEnd),
         ) {
-            TextComponent(
-                text = order.documento
-            )
-            TextComponent(
-                text = order.emision
-            )
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(12.dp),
+                verticalArrangement = Arrangement.spacedBy(4.dp, Alignment.CenterVertically),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                TextComponent(
+                    text = order.documento
+                )
+                TextComponent(
+                    text = order.emision
+                )
+            }
         }
     }
 }

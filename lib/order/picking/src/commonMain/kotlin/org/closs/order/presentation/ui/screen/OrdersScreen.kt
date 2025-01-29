@@ -1,7 +1,6 @@
 package org.closs.order.presentation.ui.screen
 
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -13,7 +12,6 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import org.closs.core.presentation.shared.ui.components.layout.loading.LoadingComponent
 import org.closs.core.presentation.shared.ui.components.navigation.BackHandlerComponent
-import org.closs.core.types.shared.state.DisplayResult
 import org.closs.order.presentation.ui.components.OrderListItem
 import org.closs.order.presentation.viewmodel.OrdersViewModel
 import org.koin.compose.viewmodel.koinViewModel
@@ -25,23 +23,19 @@ fun OrdersScreen(
     val state by viewModel.state.collectAsStateWithLifecycle()
     BackHandlerComponent(viewModel.navigator)
 
-    state.orders.DisplayResult(
-        onLoading = {
-            Box(
-                modifier = Modifier.fillMaxSize(),
-                contentAlignment = Alignment.TopCenter
-            ) {
-                LoadingComponent()
+    LazyColumn(
+        modifier = Modifier.fillMaxSize(),
+        verticalArrangement = Arrangement.spacedBy(4.dp, alignment = Alignment.Top),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        when (state.isLoading) {
+            true -> {
+                item {
+                    LoadingComponent()
+                }
             }
-        },
-        onError = {},
-        onSuccess = { orders ->
-            LazyColumn(
-                modifier = Modifier.fillMaxSize(),
-                verticalArrangement = Arrangement.spacedBy(4.dp, alignment = Alignment.Top),
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                items(orders) { order ->
+            false -> {
+                items(state.orders) { order ->
                     OrderListItem(
                         order = order,
                         onClick = {
@@ -51,5 +45,5 @@ fun OrdersScreen(
                 }
             }
         }
-    )
+    }
 }

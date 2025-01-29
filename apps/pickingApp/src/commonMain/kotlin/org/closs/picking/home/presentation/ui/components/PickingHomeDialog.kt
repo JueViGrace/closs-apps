@@ -20,7 +20,7 @@ import org.closs.core.presentation.shared.ui.components.dialogs.content.Notifica
 import org.closs.core.presentation.shared.ui.components.dialogs.content.SettingsDialogItem
 import org.closs.core.presentation.shared.ui.components.dialogs.content.SyncDialogItem
 import org.closs.core.presentation.shared.ui.components.icons.IconComponent
-import org.closs.core.presentation.shared.utils.calculateIconSize
+import org.closs.core.presentation.shared.utils.calculateSmallIconSize
 import org.closs.core.resources.resources.generated.resources.Res
 import org.closs.core.resources.resources.generated.resources.ic_refresh
 import org.closs.core.resources.resources.generated.resources.sync
@@ -71,7 +71,7 @@ fun PickingHomeDialog(
                     )
 
                     IconComponent(
-                        modifier = Modifier.calculateIconSize().rotate(angle),
+                        modifier = Modifier.calculateSmallIconSize().rotate(angle),
                         painter = painterResource(Res.drawable.ic_refresh),
                         contentDescription = stringResource(Res.string.sync),
                     )

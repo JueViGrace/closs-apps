@@ -9,7 +9,7 @@ import androidx.compose.ui.unit.dp
 import org.closs.core.presentation.shared.ui.components.display.RowComponent
 import org.closs.core.presentation.shared.ui.components.display.TextComponent
 import org.closs.core.presentation.shared.ui.components.icons.IconComponent
-import org.closs.core.presentation.shared.utils.calculateIconSize
+import org.closs.core.presentation.shared.utils.calculateSmallIconSize
 import org.closs.core.resources.resources.generated.resources.Res
 import org.closs.core.resources.resources.generated.resources.ic_bell
 import org.closs.core.resources.resources.generated.resources.notifications
@@ -30,7 +30,7 @@ fun NotificationsDialogItem(
             .padding(8.dp),
         icon = {
             IconComponent(
-                modifier = Modifier.calculateIconSize(),
+                modifier = Modifier.calculateSmallIconSize(),
                 painter = painterResource(Res.drawable.ic_bell),
                 contentDescription = stringResource(Res.string.notifications)
             )
