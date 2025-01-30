@@ -198,6 +198,8 @@ class DefaultAppRepository(
                 db.clossPickerQueries.deleteByUser(session.user_id)
                 db.clossConfigQueries.deleteByUser(session.user_id)
                 db.clossProductQueries.deleteByUser(session.user_id)
+                db.clossOrderQueries.deleteByUser(session.user_id)
+                db.clossOrderLineQueries.deleteByUser(session.user_id)
             }
         }
     }

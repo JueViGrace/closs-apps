@@ -8,9 +8,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import org.closs.core.presentation.shared.ui.components.layout.loading.LoadingComponent
+import org.closs.core.presentation.shared.ui.components.layout.loading.LinearLoadingComponent
 import org.closs.core.presentation.shared.ui.components.navigation.BackHandlerComponent
 import org.closs.order.presentation.ui.components.OrderListItem
 import org.closs.order.presentation.viewmodel.OrdersViewModel
@@ -25,16 +24,17 @@ fun OrdersScreen(
 
     LazyColumn(
         modifier = Modifier.fillMaxSize(),
-        verticalArrangement = Arrangement.spacedBy(4.dp, alignment = Alignment.Top),
+        verticalArrangement = Arrangement.Top,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         when (state.isLoading) {
             true -> {
                 item {
-                    LoadingComponent()
+                    LinearLoadingComponent()
                 }
             }
             false -> {
+                // todo: sticky header for dates
                 items(state.orders) { order ->
                     OrderListItem(
                         order = order,

@@ -165,7 +165,7 @@ private fun TopBar(
                 },
             )
         }
-        Destination.PendingOrders -> {
+        Destination.Orders -> {
             TopBarComponent(
                 navigationIcon = {
                     BackArrowButton {
@@ -188,6 +188,18 @@ private fun TopBar(
             )
         }
         is Destination.OrderDetails -> {
+            TopBarComponent(
+                navigationIcon = {
+                    BackArrowButton {
+                        scope.launch {
+                            navigator.navigateUp()
+                        }
+                    }
+                },
+            )
+        }
+        // todo: disable or create dialog to warn user about leaving the operation
+        is Destination.PickUp -> {
             TopBarComponent(
                 navigationIcon = {
                     BackArrowButton {

@@ -23,6 +23,10 @@ data class OrderDto(
     val idcarrito: String,
     @SerialName("almacen")
     val almacen: String,
+    @SerialName("ruta_codigo")
+    val rutaCodigo: String,
+    @SerialName("ruta_descrip")
+    val rutaDescrip: String,
     @SerialName("ke_pedstatus")
     val kePedStatus: String,
     @SerialName("lines")

@@ -62,5 +62,5 @@ sealed interface Destination {
     data object PickingHistory : Destination
 
     @Serializable
-    data object PendingOrders : Destination
+    data class PickUp(val id: String) : Destination
 }

@@ -25,6 +25,12 @@
     <string name="picking_history">Picking history</string>
     <string name="pending_orders">Pending orders</string>
     <string name="sync">Sync</string>
+    <string name="route">Route</string>
+    <string name="items_quantity">Items quantity</string>
+    <string name="customer">Customer</string>
+    <string name="status">Status</string>
+    <string name="order_status_unspecified">Unspecified</string>
+    <string name="order_status_ready_to_pick">Ready to pick</string>
     <!--Descriptions-->
     <string name="app_logo">App logo</string>
     <string name="company_logo">Company logo</string>

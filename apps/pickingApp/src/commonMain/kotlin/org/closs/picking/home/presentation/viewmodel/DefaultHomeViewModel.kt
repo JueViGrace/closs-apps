@@ -95,7 +95,7 @@ class DefaultHomeViewModel(
     private fun navigateToPendingOrders() {
         viewModelScope.launch {
             navigator.navigate(
-                destination = Destination.PendingOrders,
+                destination = Destination.Orders,
                 navOptions = NavOptions.Builder().apply {
                     setPopUpTo(Destination.Home, false)
                 }.build()

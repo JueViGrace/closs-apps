@@ -25,6 +25,12 @@
     <string name="picking_history">Historial de pickeo</string>
     <string name="pending_orders">Pedidos pendientes</string>
     <string name="sync">Sincronizar</string>
+    <string name="route">Ruta</string>
+    <string name="items_quantity">Cantidad de items</string>
+    <string name="customer">Cliente</string>
+    <string name="status">Estado</string>
+    <string name="order_status_unspecified">No especificado</string>
+    <string name="order_status_ready_to_pick">Listo para pickear</string>
     <!--Icon descriptions-->
     <string name="app_logo">App logo</string>
     <string name="company_logo">Logo de la empresa</string>

@@ -11,11 +11,12 @@ import org.closs.core.api.shared.client.ApiOperation
 import org.closs.core.database.helper.PickingDbHelper
 import org.closs.core.types.auth.dbActiveToDomain
 import org.closs.core.types.order.Order
+import org.closs.core.types.order.findOrderToOrder
+import org.closs.core.types.order.findOrdersToOrder
 import org.closs.core.types.order.toClossOrder
 import org.closs.core.types.order.toClossOrderLine
-import org.closs.core.types.order.toOrder
-import org.closs.core.types.order.toOrderWithLines
 import org.closs.core.types.shared.auth.Session
+import org.closs.core.types.shared.product.toDbProduct
 import org.closs.core.types.shared.state.RequestState
 import kotlin.coroutines.CoroutineContext
 
@@ -56,7 +57,7 @@ class DefaultOrderRepository(
         }.collect { orders ->
             emit(
                 RequestState.Success(
-                    data = orders.map { order -> order.toOrder() }
+                    data = orders.findOrdersToOrder()
                 )
             )
         }
@@ -95,7 +96,7 @@ class DefaultOrderRepository(
                 }.collect { rows ->
                     emit(
                         RequestState.Success(
-                            data = rows.toOrderWithLines()
+                            data = rows.findOrderToOrder()
                         )
                     )
                 }
@@ -151,6 +152,7 @@ class DefaultOrderRepository(
                         db.transaction {
                             db.clossOrderQueries.deleteByUser(session.user!!.id)
                             db.clossOrderLineQueries.deleteByUser(session.user!!.id)
+                            db.clossProductQueries.deleteByUser(session.user!!.id)
 
                             orders.forEach { order ->
                                 db.clossOrderQueries.insert(
@@ -159,6 +161,9 @@ class DefaultOrderRepository(
                                 order.lines.forEach { line ->
                                     db.clossOrderLineQueries.insert(
                                         closs_order_line = line.toClossOrderLine(session.user!!.id)
+                                    )
+                                    db.clossProductQueries.insert(
+                                        closs_product = line.productDto.toDbProduct(session.user!!.id)
                                     )
                                 }
                             }
@@ -186,15 +191,24 @@ class DefaultOrderRepository(
                 scope.async {
                     dbHelper.withDatabase { db ->
                         db.transaction {
-                            db.clossOrderQueries.deleteByUser(session.user!!.id)
-                            db.clossOrderLineQueries.deleteByUser(session.user!!.id)
+                            db.clossOrderQueries.deleteOne(session.user!!.id, orderId)
 
                             db.clossOrderQueries.insert(
                                 closs_order = order.toClossOrder(session.user!!.id)
                             )
                             order.lines.forEach { line ->
+                                db.clossOrderLineQueries.deleteOne(
+                                    id = session.user!!.id,
+                                    doc = line.documento,
+                                    cod = line.productDto.codigo
+                                )
+                                db.clossProductQueries.deleteByOne(session.user!!.id, line.productDto.codigo)
+
                                 db.clossOrderLineQueries.insert(
                                     closs_order_line = line.toClossOrderLine(session.user!!.id)
+                                )
+                                db.clossProductQueries.insert(
+                                    closs_product = line.productDto.toDbProduct(session.user!!.id)
                                 )
                             }
                         }

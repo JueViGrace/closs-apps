@@ -7,10 +7,10 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import kotlinx.coroutines.launch
-import org.closs.shared.app.presentation.viewmodel.AppViewModel
 import org.closs.core.presentation.shared.navigation.NavigationAction
 import org.closs.core.presentation.shared.navigation.Navigator
 import org.closs.core.presentation.shared.navigation.ObserveAsEvents
+import org.closs.shared.app.presentation.viewmodel.AppViewModel
 import org.jetbrains.compose.resources.getString
 import org.koin.compose.koinInject
 import org.koin.compose.viewmodel.koinViewModel

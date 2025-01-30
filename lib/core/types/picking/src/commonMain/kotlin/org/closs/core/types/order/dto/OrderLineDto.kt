@@ -2,6 +2,7 @@ package org.closs.core.types.order.dto
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
+import org.closs.core.types.shared.product.dto.ProductDto
 
 @Serializable
 data class OrderLineDto(
@@ -13,10 +14,8 @@ data class OrderLineDto(
     val documento: String,
     @SerialName("almacen")
     val almacen: String,
-    @SerialName("codigo")
-    val codigo: String,
-    @SerialName("nombre")
-    val nombre: String,
+    @SerialName("product")
+    val productDto: ProductDto,
     @SerialName("cantref")
     val cantref: Int,
     @SerialName("cantidad")

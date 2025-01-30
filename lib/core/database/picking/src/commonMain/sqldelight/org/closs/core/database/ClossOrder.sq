@@ -8,6 +8,8 @@ CREATE TABLE IF NOT EXISTS closs_order(
     upickup TEXT NOT NULL DEFAULT '',
     idcarrito TEXT NOT NULL DEFAULT '',
     almacen TEXT NOT NULL DEFAULT '',
+    ruta_codigo TEXT NOT NULL DEFAULT '',
+    ruta_descrip TEXT NOT NULL DEFAULT '',
     ke_pedstatus TEXT NOT NULL DEFAULT '',
     user_id TEXT NOT NULL,
     PRIMARY KEY (documento),
@@ -17,14 +19,21 @@ CREATE TABLE IF NOT EXISTS closs_order(
 findOrders:
 SELECT *
 FROM closs_order
-WHERE user_id = :id
-ORDER BY emision ASC, documento ASC, almacen ASC;
+LEFT JOIN closs_order_line
+    ON closs_order.documento = closs_order_line.documento
+    AND closs_order.user_id = closs_order_line.user_id
+WHERE closs_order.user_id = :id
+ORDER BY closs_order.emision ASC, closs_order.documento ASC, closs_order.almacen ASC;
 
 findOrder:
 SELECT *
 FROM closs_order
 LEFT JOIN closs_order_line
     ON closs_order.documento = closs_order_line.documento
+    AND closs_order.user_id = closs_order_line.user_id
+LEFT JOIN closs_product
+    ON closs_order_line.codigo = closs_product.codigo
+    AND closs_order_line.user_id = closs_product.user_id
 WHERE
     closs_order.user_id = :id AND
     closs_order.documento = :doc
@@ -43,6 +52,8 @@ INSERT OR REPLACE INTO closs_order(
     upickup,
     idcarrito,
     almacen,
+    ruta_codigo,
+    ruta_descrip,
     ke_pedstatus,
     user_id
 )

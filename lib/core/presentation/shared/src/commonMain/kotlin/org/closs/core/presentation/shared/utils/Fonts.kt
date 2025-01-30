@@ -40,3 +40,55 @@ fun calculateLabelFontWeight(): FontWeight? {
         ScreenSize.Large -> MaterialTheme.typography.bodySmall.fontWeight
     }
 }
+
+@Composable
+fun String.calculateMaxLength(): String {
+    return when (getScreenOrientation()) {
+        Orientation.Portrait -> when (getScreenSize()) {
+            ScreenSize.Compact -> {
+                if (this.length > 22) {
+                    "${this.slice(0..22)}..."
+                } else {
+                    this
+                }
+            }
+            ScreenSize.Medium -> {
+                if (this.length > 38) {
+                    "${this.slice(0..38)}..."
+                } else {
+                    this
+                }
+            }
+            ScreenSize.Large -> {
+                if (this.length > 52) {
+                    "${this.slice(0..52)}..."
+                } else {
+                    this
+                }
+            }
+        }
+        Orientation.Landscape -> when (getScreenSize()) {
+            ScreenSize.Compact -> {
+                if (this.length > 68) {
+                    "${this.slice(0..68)}..."
+                } else {
+                    this
+                }
+            }
+            ScreenSize.Medium -> {
+                if (this.length > 78) {
+                    "${this.slice(0..78)}..."
+                } else {
+                    this
+                }
+            }
+            ScreenSize.Large -> {
+                if (this.length > 88) {
+                    "${this.slice(0..88)}..."
+                } else {
+                    this
+                }
+            }
+        }
+    }
+}

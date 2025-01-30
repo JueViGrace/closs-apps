@@ -7,6 +7,7 @@ import androidx.navigation.toRoute
 import org.closs.core.presentation.shared.navigation.Destination
 import org.closs.order.detail.presentation.ui.screen.OrderDetailScreen
 import org.closs.order.history.presentation.ui.screen.HistoryScreen
+import org.closs.order.pickup.presentation.ui.screen.PickUpScreen
 import org.closs.order.presentation.ui.screen.OrdersScreen
 import org.closs.picking.home.presentation.ui.screen.HomeScreen
 import org.closs.picking.notifications.presentation.ui.screen.NotificationsScreen
@@ -39,14 +40,21 @@ fun NavGraphBuilder.homeGraph() {
             HistoryScreen()
         }
 
-        composable<Destination.PendingOrders> {
+        composable<Destination.Orders> {
             OrdersScreen()
         }
 
         composable<Destination.OrderDetails> { backStackEntry ->
-            val id: String = backStackEntry.toRoute()
+            val route: Destination.OrderDetails = backStackEntry.toRoute()
             OrderDetailScreen(
-                orderId = id
+                orderId = route.id
+            )
+        }
+
+        composable<Destination.PickUp> { backStackEntry ->
+            val route: Destination.PickUp = backStackEntry.toRoute()
+            PickUpScreen(
+                orderId = route.id
             )
         }
 
@@ -55,9 +63,9 @@ fun NavGraphBuilder.homeGraph() {
         }
 
         composable<Destination.ProductDetails> { backStackEntry ->
-            val id: String = backStackEntry.toRoute()
+            val route: Destination.ProductDetails = backStackEntry.toRoute()
             ProductDetailsScreen(
-                productId = id
+                productId = route.id
             )
         }
     }

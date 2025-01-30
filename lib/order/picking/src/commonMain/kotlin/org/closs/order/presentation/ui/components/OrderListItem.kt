@@ -4,22 +4,37 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.ElevatedCard
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedCard
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
 import org.closs.core.presentation.shared.ui.components.display.TextComponent
 import org.closs.core.presentation.shared.ui.components.icons.IconComponent
+import org.closs.core.presentation.shared.utils.ScreenSize
+import org.closs.core.presentation.shared.utils.calculateMaxLength
 import org.closs.core.presentation.shared.utils.calculateMediumIconSize
-import org.closs.core.presentation.shared.utils.calculateSmallIconSize
+import org.closs.core.presentation.shared.utils.getScreenSize
 import org.closs.core.resources.resources.generated.resources.Res
+import org.closs.core.resources.resources.generated.resources.customer
 import org.closs.core.resources.resources.generated.resources.ic_basket
+import org.closs.core.resources.resources.generated.resources.items_quantity
+import org.closs.core.resources.resources.generated.resources.route
+import org.closs.core.resources.resources.generated.resources.status
 import org.closs.core.types.order.Order
+import org.closs.core.types.shared.common.calculateOrderStatus
+import org.closs.core.types.shared.common.capitalizeString
 import org.jetbrains.compose.resources.painterResource
+import org.jetbrains.compose.resources.stringResource
 
 @Composable
 fun OrderListItem(
@@ -28,7 +43,7 @@ fun OrderListItem(
     modifier: Modifier = Modifier
         .clickable { onClick() }
         .fillMaxWidth()
-        .padding(12.dp),
+        .padding(8.dp),
 ) {
     Box(
         modifier = modifier,
@@ -38,29 +53,110 @@ fun OrderListItem(
             modifier = Modifier
                 .zIndex(1f)
                 .calculateMediumIconSize()
-                .align(Alignment.CenterStart)
-                .padding(start = 8.dp),
+                .align(Alignment.CenterStart),
             painter = painterResource(Res.drawable.ic_basket),
         )
 
-        ElevatedCard(
+        val cardPadding = when (getScreenSize()) {
+            ScreenSize.Compact -> {
+                26.dp
+            }
+            ScreenSize.Medium -> 34.dp
+            ScreenSize.Large -> 44.dp
+        }
+
+        OutlinedCard(
             modifier = Modifier
-                .padding(start = 30.dp)
+                .padding(start = cardPadding)
                 .align(Alignment.CenterEnd),
+            colors = CardDefaults.outlinedCardColors(
+                containerColor = MaterialTheme.colorScheme.surfaceContainer
+            )
         ) {
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(12.dp),
-                verticalArrangement = Arrangement.spacedBy(4.dp, Alignment.CenterVertically),
+                verticalArrangement = Arrangement.spacedBy(8.dp, Alignment.CenterVertically),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                TextComponent(
-                    text = order.documento
-                )
-                TextComponent(
-                    text = order.emision
-                )
+                val rowPadding = when (getScreenSize()) {
+                    ScreenSize.Compact -> 18.dp
+                    ScreenSize.Medium -> 24.dp
+                    ScreenSize.Large -> 34.dp
+                }
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(start = rowPadding),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    TextComponent(
+                        text = "${stringResource(Res.string.customer)}:"
+                    )
+                    TextComponent(
+                        text = order.nombrecli.calculateMaxLength().capitalizeString(),
+                        fontWeight = FontWeight.Bold,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis
+                    )
+                    TextComponent(
+                        text = "(${order.codcliente})",
+                    )
+                }
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(start = rowPadding),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    TextComponent(
+                        modifier = Modifier.weight(0.4f),
+                        text = "Nº ${order.documento}",
+                        fontWeight = FontWeight.Bold,
+                        textAlign = TextAlign.Start
+                    )
+                    TextComponent(
+                        modifier = Modifier.weight(0.6f),
+                        text = "${stringResource(Res.string.route)}: ${order.rutaDescrip}",
+                        textAlign = TextAlign.End,
+                        maxLines = 1,
+                    )
+                }
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(start = rowPadding),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Row(
+                        horizontalArrangement = Arrangement.spacedBy(2.dp, Alignment.Start),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        TextComponent(
+                            text = "${stringResource(Res.string.items_quantity)}:"
+                        )
+                        TextComponent(
+                            text = "${order.lines.size}",
+                            fontWeight = FontWeight.Bold
+                        )
+                    }
+                    Row(
+                        horizontalArrangement = Arrangement.spacedBy(2.dp, Alignment.Start),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        TextComponent(
+                            text = "${stringResource(Res.string.status)}:"
+                        )
+                        TextComponent(
+                            text = stringResource(order.kePedStatus.calculateOrderStatus()),
+                            fontWeight = FontWeight.Bold
+                        )
+                    }
+                }
             }
         }
     }

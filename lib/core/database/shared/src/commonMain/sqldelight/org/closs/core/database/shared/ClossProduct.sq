@@ -1,6 +1,7 @@
 CREATE TABLE IF NOT EXISTS closs_product(
-    user_id TEXT NOT NULL PRIMARY KEY,
-    codigo TEXT NOT NULL DEFAULT '',
+    user_id TEXT NOT NULL,
+    agencia TEXT NOT NULL DEFAULT '',
+    codigo TEXT NOT NULL DEFAULT '' PRIMARY KEY,
     grupo TEXT NOT NULL DEFAULT '',
     subgrupo TEXT NOT NULL DEFAULT '',
     nombre TEXT NOT NULL DEFAULT '',
@@ -53,6 +54,7 @@ ORDER BY codigo ASC;
 insert:
 INSERT OR REPLACE INTO closs_product(
     user_id,
+    agencia,
     codigo,
     grupo,
     subgrupo,
@@ -90,6 +92,12 @@ INSERT OR REPLACE INTO closs_product(
     updated_at
 )
 VALUES ?;
+
+deleteByOne:
+DELETE FROM closs_product
+WHERE
+    user_id = :id AND
+    codigo = :cod;
 
 deleteByUser:
 DELETE FROM closs_product

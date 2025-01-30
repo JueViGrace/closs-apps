@@ -1,16 +1,18 @@
-package org.closs.core.shared.types.product
+package org.closs.core.types.shared.product.dto
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
 data class ProductDto(
+    @SerialName("agencia")
+    val agencia: String = "",
     @SerialName("codigo")
     val codigo: String,
     @SerialName("grupo")
-    val grupo: String,
+    val grupo: String = "",
     @SerialName("subgrupo")
-    val subgrupo: String,
+    val subgrupo: String = "",
     @SerialName("nombre")
     val nombre: String,
     @SerialName("referencia")
@@ -20,59 +22,59 @@ data class ProductDto(
     @SerialName("unidad")
     val unidad: String,
     @SerialName("discont")
-    val discont: Long,
+    val discont: Long = 0,
     @SerialName("existencia")
-    val existencia: Long,
+    val existencia: Long = 0,
     @SerialName("vta_max")
-    val vtaMax: Long,
+    val vtaMax: Long = 0,
     @SerialName("vta_min")
-    val vtaMin: Long,
+    val vtaMin: Long = 0,
     @SerialName("vta_minenx")
-    val vtaMinEx: Long,
+    val vtaMinEx: Long = 0,
     @SerialName("comprometido")
-    val comprometido: Long,
+    val comprometido: Long = 0,
     @SerialName("precio1")
-    val precio1: Double,
+    val precio1: Double = 0.0,
     @SerialName("precio2")
-    val precio2: Double,
+    val precio2: Double = 0.0,
     @SerialName("precio3")
-    val precio3: Double,
+    val precio3: Double = 0.0,
     @SerialName("precio4")
-    val precio4: Double,
+    val precio4: Double = 0.0,
     @SerialName("precio5")
-    val precio5: Double,
+    val precio5: Double = 0.0,
     @SerialName("precio6")
-    val precio6: Double,
+    val precio6: Double = 0.0,
     @SerialName("precio7")
-    val precio7: Double,
+    val precio7: Double = 0.0,
     @SerialName("preventa")
-    val preventa: Long,
+    val preventa: Long = 0,
     @SerialName("vta_solofac")
-    val vtaSoloFac: Long,
+    val vtaSoloFac: Long = 0,
     @SerialName("vta_solone")
-    val vtaSolOne: Long,
+    val vtaSolOne: Long = 0,
     @SerialName("codbarras")
-    val codBarras: Long,
+    val codBarras: Long = 0,
     @SerialName("detalles")
-    val detalles: String,
+    val detalles: String = "",
     @SerialName("cantbulto")
-    val cantBulto: Double,
+    val cantBulto: Double = 0.0,
     @SerialName("costo_prom")
-    val costoProm: Double,
+    val costoProm: Double = 0.0,
     @SerialName("util1")
-    val util1: String,
+    val util1: String = "",
     @SerialName("util2")
-    val util2: String,
+    val util2: String = "",
     @SerialName("util3")
-    val util3: String,
+    val util3: String = "",
     @SerialName("fchultcomp")
-    val fchUltComp: String,
+    val fchUltComp: String = "",
     @SerialName("qtyultcomp")
-    val qtyUltComp: String,
-    @SerialName("images")
-    val images: List<String>,
+    val qtyUltComp: String = "",
+    @SerialName("image")
+    val image: String,
     @SerialName("created_at")
     val createdAt: String,
     @SerialName("updated_at")
-    val updatedAt: String,
+    val updatedAt: String = "",
 )
