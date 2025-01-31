@@ -59,12 +59,12 @@ fun HomeScreen(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             TextComponent(
-                text = "${stringResource(Res.string.greetings)}, Picker",
+                text = "${stringResource(Res.string.greetings)}, ${state.session?.name}",
                 fontSize = MaterialTheme.typography.titleMedium.fontSize,
                 fontWeight = MaterialTheme.typography.titleMedium.fontWeight
             )
             TextComponent(
-                text = "${stringResource(Res.string.pending_orders)} xx",
+                text = "${stringResource(Res.string.pending_orders)} ${state.orderCount}",
                 fontSize = MaterialTheme.typography.titleLarge.fontSize,
                 fontWeight = MaterialTheme.typography.titleLarge.fontWeight
             )

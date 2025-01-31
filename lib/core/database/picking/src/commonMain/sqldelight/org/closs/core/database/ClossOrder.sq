@@ -16,6 +16,11 @@ CREATE TABLE IF NOT EXISTS closs_order(
     FOREIGN KEY (user_id) REFERENCES closs_user(id)
 );
 
+countOrders:
+SELECT COUNT(*)
+FROM closs_order
+WHERE user_id = :id;
+
 findOrders:
 SELECT *
 FROM closs_order

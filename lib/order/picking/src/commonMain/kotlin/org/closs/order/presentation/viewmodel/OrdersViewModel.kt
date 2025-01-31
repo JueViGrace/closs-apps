@@ -15,6 +15,7 @@ import org.closs.core.presentation.shared.navigation.Navigator
 import org.closs.core.resources.resources.generated.resources.Res
 import org.closs.core.resources.resources.generated.resources.unknown_error
 import org.closs.core.types.shared.common.Constants.REFRESH_ORDERS_KEY
+import org.closs.core.types.shared.common.Constants.TOP_BAR_TITLE_KEY
 import org.closs.core.types.shared.state.RequestState
 import org.closs.core.types.shared.state.ResponseMessage
 import org.closs.order.data.OrderRepository
@@ -95,11 +96,13 @@ class OrdersViewModel(
     )
 
     fun navigateToDetails(orderId: String) {
+        handle[TOP_BAR_TITLE_KEY] = ""
         viewModelScope.launch {
             navigator.navigate(
                 destination = Destination.OrderDetails(orderId),
                 navOptions = NavOptions.Builder().apply {
-                    setPopUpTo(inclusive = false, route = Destination.Orders, saveState = true)
+                    setPopUpTo(Destination.Orders, false)
+                    setLaunchSingleTop(true)
                 }.build()
             )
         }

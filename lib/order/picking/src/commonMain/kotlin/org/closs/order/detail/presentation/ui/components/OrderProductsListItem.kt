@@ -6,6 +6,5 @@ import org.closs.core.types.order.OrderLine
 @Composable
 fun OrderProductsListItem(
     orderLine: OrderLine,
-){
-
+) {
 }

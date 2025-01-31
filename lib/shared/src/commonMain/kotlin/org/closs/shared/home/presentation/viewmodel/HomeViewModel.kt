@@ -34,6 +34,7 @@ abstract class HomeViewModel(
                 destination = Destination.Profile,
                 navOptions = NavOptions.Builder().apply {
                     setPopUpTo(Destination.Home, false)
+                    setLaunchSingleTop(true)
                 }.build()
             )
         }
@@ -47,6 +48,7 @@ abstract class HomeViewModel(
                 destination = Destination.Notifications,
                 navOptions = NavOptions.Builder().apply {
                     setPopUpTo(Destination.Home, false)
+                    setLaunchSingleTop(true)
                 }.build()
             )
         }
@@ -60,6 +62,7 @@ abstract class HomeViewModel(
                 destination = Destination.Settings,
                 navOptions = NavOptions.Builder().apply {
                     setPopUpTo(Destination.Home, false)
+                    setLaunchSingleTop(true)
                 }.build()
             )
         }

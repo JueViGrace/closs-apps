@@ -30,28 +30,33 @@ class DefaultHomeViewModel(
 ) {
     private val _showDialog = handle.getStateFlow(Constants.SHOW_HOME_DIALOG_KEY, false)
     private val _session = repository.getSession()
+    private val _orderCount = repository.getOrdersCount()
 
     private val _state = MutableStateFlow(HomeState())
     override val state = combine(
         _state,
         _showDialog,
-        _session
-    ) { state, showDialog, session ->
+        _session,
+        _orderCount,
+    ) { state, showDialog, session, orderCount ->
         when (session) {
             is RequestState.Error -> {
                 state.copy(
+                    orderCount = orderCount,
                     session = null,
                     showDialog = showDialog
                 )
             }
             is RequestState.Success -> {
                 state.copy(
+                    orderCount = orderCount,
                     session = session.data,
                     showDialog = showDialog
                 )
             }
             else -> {
                 state.copy(
+                    orderCount = orderCount,
                     session = null,
                     showDialog = showDialog
                 )
@@ -59,7 +64,7 @@ class DefaultHomeViewModel(
         }
     }.stateIn(
         viewModelScope,
-        SharingStarted.WhileSubscribed(5_000),
+        SharingStarted.Eagerly,
         _state.value
     )
 
@@ -87,6 +92,7 @@ class DefaultHomeViewModel(
                 destination = Destination.PickingHistory,
                 navOptions = NavOptions.Builder().apply {
                     setPopUpTo(Destination.Home, false)
+                    setLaunchSingleTop(true)
                 }.build()
             )
         }
@@ -98,6 +104,7 @@ class DefaultHomeViewModel(
                 destination = Destination.Orders,
                 navOptions = NavOptions.Builder().apply {
                     setPopUpTo(Destination.Home, false)
+                    setLaunchSingleTop(true)
                 }.build()
             )
         }

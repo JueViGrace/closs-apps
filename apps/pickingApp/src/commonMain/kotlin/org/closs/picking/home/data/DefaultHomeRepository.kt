@@ -49,6 +49,23 @@ class DefaultHomeRepository(
         }
     }.flowOn(coroutineContext)
 
+    override fun getOrdersCount(): Flow<Int> = flow {
+        emit(0)
+        val session = dbHelper.withDatabase { db ->
+            executeOne(
+                query = db.sessionQueries.findActiveAccount()
+            )
+        } ?: return@flow emit(0)
+
+        dbHelper.withDatabase { db ->
+            executeOneAsFlow(
+                db.clossOrderQueries.countOrders(session.user_id)
+            )
+        }.collect { count ->
+            emit(count?.toInt() ?: 0)
+        }
+    }.flowOn(coroutineContext)
+
     override fun sync() {
     }
 
@@ -66,6 +83,8 @@ class DefaultHomeRepository(
                     db.clossPickerQueries.deleteByUser(session.user_id)
                     db.clossConfigQueries.deleteByUser(session.user_id)
                     db.clossProductQueries.deleteByUser(session.user_id)
+                    db.clossOrderQueries.deleteByUser(session.user_id)
+                    db.clossOrderLineQueries.deleteByUser(session.user_id)
                 }
             }
         }.await()

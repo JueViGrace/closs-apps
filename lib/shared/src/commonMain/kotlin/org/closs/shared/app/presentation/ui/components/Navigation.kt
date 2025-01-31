@@ -30,12 +30,14 @@ fun Navigation(
     val scope = rememberCoroutineScope()
     val snackBarHostState = remember { SnackbarHostState() }
 
+
     ObserveAsEvents(
         flow = navigator.navigationActions,
     ) { action ->
         when (action) {
             is NavigationAction.Navigate -> {
                 navController.navigate(action.destination, navOptions = action.navOptions)
+                println("NAVIGATION STACK AFTER: ${navigator.stack.value}")
             }
             NavigationAction.NavigateUp -> {
                 navController.navigateUp()

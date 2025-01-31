@@ -39,6 +39,7 @@ class DefaultSignInViewModel(
         }
     }
 
+    // todo: loading state is not shown in ui
     override fun signInSubmit() {
         if (onSignInError()) return
         viewModelScope.launch {

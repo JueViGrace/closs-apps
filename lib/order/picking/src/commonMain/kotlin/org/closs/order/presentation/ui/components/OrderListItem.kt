@@ -4,9 +4,11 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.requiredWidth
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedCard
@@ -21,7 +23,6 @@ import androidx.compose.ui.zIndex
 import org.closs.core.presentation.shared.ui.components.display.TextComponent
 import org.closs.core.presentation.shared.ui.components.icons.IconComponent
 import org.closs.core.presentation.shared.utils.ScreenSize
-import org.closs.core.presentation.shared.utils.calculateMaxLength
 import org.closs.core.presentation.shared.utils.calculateMediumIconSize
 import org.closs.core.presentation.shared.utils.getScreenSize
 import org.closs.core.resources.resources.generated.resources.Res
@@ -32,7 +33,6 @@ import org.closs.core.resources.resources.generated.resources.route
 import org.closs.core.resources.resources.generated.resources.status
 import org.closs.core.types.order.Order
 import org.closs.core.types.shared.common.calculateOrderStatus
-import org.closs.core.types.shared.common.capitalizeString
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 
@@ -81,7 +81,7 @@ fun OrderListItem(
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 val rowPadding = when (getScreenSize()) {
-                    ScreenSize.Compact -> 18.dp
+                    ScreenSize.Compact -> 16.dp
                     ScreenSize.Medium -> 24.dp
                     ScreenSize.Large -> 34.dp
                 }
@@ -89,20 +89,25 @@ fun OrderListItem(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(start = rowPadding),
-                    horizontalArrangement = Arrangement.SpaceBetween,
+                    horizontalArrangement = Arrangement.spacedBy(2.dp, Alignment.CenterHorizontally),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     TextComponent(
+                        modifier = Modifier.requiredWidth(IntrinsicSize.Min),
                         text = "${stringResource(Res.string.customer)}:"
                     )
                     TextComponent(
-                        text = order.nombrecli.calculateMaxLength().capitalizeString(),
+                        modifier = Modifier.weight(1f),
+                        text = order.nombrecli,
                         fontWeight = FontWeight.Bold,
+                        textAlign = TextAlign.Center,
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis
                     )
                     TextComponent(
+                        modifier = Modifier.requiredWidth(IntrinsicSize.Min),
                         text = "(${order.codcliente})",
+                        maxLines = 1,
                     )
                 }
                 Row(

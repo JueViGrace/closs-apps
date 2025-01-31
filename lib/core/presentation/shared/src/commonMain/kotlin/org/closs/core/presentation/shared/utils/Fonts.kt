@@ -24,6 +24,42 @@ fun calculateDefaultFontWeight(): FontWeight? {
 }
 
 @Composable
+fun calculateMediumFontSize(): TextUnit {
+    return when (getScreenSize()) {
+        ScreenSize.Compact -> MaterialTheme.typography.titleMedium.fontSize
+        ScreenSize.Medium -> MaterialTheme.typography.titleLarge.fontSize
+        ScreenSize.Large -> MaterialTheme.typography.displaySmall.fontSize
+    }
+}
+
+@Composable
+fun calculateMediumFontWeight(): FontWeight? {
+    return when (getScreenSize()) {
+        ScreenSize.Compact -> MaterialTheme.typography.titleMedium.fontWeight
+        ScreenSize.Medium -> MaterialTheme.typography.titleLarge.fontWeight
+        ScreenSize.Large -> MaterialTheme.typography.displaySmall.fontWeight
+    }
+}
+
+@Composable
+fun calculateSmallFontSize(): TextUnit {
+    return when (getScreenSize()) {
+        ScreenSize.Compact -> MaterialTheme.typography.labelMedium.fontSize
+        ScreenSize.Medium -> MaterialTheme.typography.bodySmall.fontSize
+        ScreenSize.Large -> MaterialTheme.typography.bodyLarge.fontSize
+    }
+}
+
+@Composable
+fun calculateSmallFontWeight(): FontWeight? {
+    return when (getScreenSize()) {
+        ScreenSize.Compact -> MaterialTheme.typography.labelMedium.fontWeight
+        ScreenSize.Medium -> MaterialTheme.typography.bodySmall.fontWeight
+        ScreenSize.Large -> MaterialTheme.typography.bodyLarge.fontWeight
+    }
+}
+
+@Composable
 fun calculateLabelFontSize(): TextUnit {
     return when (getScreenSize()) {
         ScreenSize.Compact -> MaterialTheme.typography.labelSmall.fontSize
@@ -38,57 +74,5 @@ fun calculateLabelFontWeight(): FontWeight? {
         ScreenSize.Compact -> MaterialTheme.typography.labelSmall.fontWeight
         ScreenSize.Medium -> MaterialTheme.typography.labelMedium.fontWeight
         ScreenSize.Large -> MaterialTheme.typography.bodySmall.fontWeight
-    }
-}
-
-@Composable
-fun String.calculateMaxLength(): String {
-    return when (getScreenOrientation()) {
-        Orientation.Portrait -> when (getScreenSize()) {
-            ScreenSize.Compact -> {
-                if (this.length > 22) {
-                    "${this.slice(0..22)}..."
-                } else {
-                    this
-                }
-            }
-            ScreenSize.Medium -> {
-                if (this.length > 38) {
-                    "${this.slice(0..38)}..."
-                } else {
-                    this
-                }
-            }
-            ScreenSize.Large -> {
-                if (this.length > 52) {
-                    "${this.slice(0..52)}..."
-                } else {
-                    this
-                }
-            }
-        }
-        Orientation.Landscape -> when (getScreenSize()) {
-            ScreenSize.Compact -> {
-                if (this.length > 68) {
-                    "${this.slice(0..68)}..."
-                } else {
-                    this
-                }
-            }
-            ScreenSize.Medium -> {
-                if (this.length > 78) {
-                    "${this.slice(0..78)}..."
-                } else {
-                    this
-                }
-            }
-            ScreenSize.Large -> {
-                if (this.length > 88) {
-                    "${this.slice(0..88)}..."
-                } else {
-                    this
-                }
-            }
-        }
     }
 }

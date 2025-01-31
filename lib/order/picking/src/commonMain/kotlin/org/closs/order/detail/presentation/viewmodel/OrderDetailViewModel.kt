@@ -1,5 +1,6 @@
 package org.closs.order.detail.presentation.viewmodel
 
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -10,6 +11,7 @@ import org.closs.core.presentation.shared.messages.Messages
 import org.closs.core.presentation.shared.navigation.Navigator
 import org.closs.core.resources.resources.generated.resources.Res
 import org.closs.core.resources.resources.generated.resources.unknown_error
+import org.closs.core.types.shared.common.Constants.TOP_BAR_TITLE_KEY
 import org.closs.core.types.shared.state.RequestState
 import org.closs.core.types.shared.state.ResponseMessage
 import org.closs.order.data.OrderRepository
@@ -20,6 +22,7 @@ class OrderDetailViewModel(
     private val repository: OrderRepository,
     val navigator: Navigator,
     private val messages: Messages,
+    private val handle: SavedStateHandle,
 ) : ViewModel() {
     private val _order = repository.getOrder(id)
 
@@ -42,6 +45,7 @@ class OrderDetailViewModel(
                 )
             }
             is RequestState.Success -> {
+                handle[TOP_BAR_TITLE_KEY] = order.data?.documento ?: ""
                 state.copy(
                     order = order.data,
                     isLoading = false

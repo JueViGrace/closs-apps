@@ -12,10 +12,9 @@ fun CircularLoadingComponent(
     modifier: Modifier = Modifier.fillMaxWidth()
 ) {
     Box(
+        modifier = modifier,
         contentAlignment = Alignment.Center
     ) {
-        CircularProgressIndicator(
-            modifier = modifier
-        )
+        CircularProgressIndicator()
     }
 }
