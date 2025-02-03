@@ -58,6 +58,12 @@ kotlin {
             implementation(libs.androidx.lifecycle.runtime.compose)
             implementation(libs.androidx.navigation.compose)
 
+            // Coil
+            implementation(libs.coil.compose)
+            implementation(libs.coil.core)
+            implementation(libs.coil.ktor3)
+            implementation(libs.coil.cache)
+
             // Coroutines
             implementation(libs.kotlinx.coroutines.core)
 

@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -34,7 +35,7 @@ fun HomeTopBarActions(
     ) {
         Box(
             modifier = Modifier
-                .calculateIconButtonSize()
+                .size(calculateIconButtonSize())
                 .clip(CircleShape)
                 .clickable {
                     onNotificationsClick()
@@ -42,7 +43,7 @@ fun HomeTopBarActions(
             contentAlignment = Alignment.Center
         ) {
             IconComponent(
-                modifier = Modifier.calculateSmallIconSize(),
+                modifier = Modifier.size(calculateSmallIconSize()),
                 painter = painterResource(Res.drawable.ic_bell),
                 contentDescription = stringResource(Res.string.notifications),
             )

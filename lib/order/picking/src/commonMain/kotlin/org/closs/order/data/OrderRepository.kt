@@ -15,7 +15,6 @@ import org.closs.core.types.order.findOrderToOrder
 import org.closs.core.types.order.findOrdersToOrder
 import org.closs.core.types.order.toClossOrder
 import org.closs.core.types.order.toClossOrderLine
-import org.closs.core.types.shared.auth.Session
 import org.closs.core.types.shared.product.toDbProduct
 import org.closs.core.types.shared.state.RequestState
 import kotlin.coroutines.CoroutineContext
@@ -24,6 +23,7 @@ interface OrderRepository {
     fun getOrders(): Flow<RequestState<List<Order>>>
     fun getOrder(orderId: String): Flow<RequestState<Order?>>
     fun fetchOrders(): Flow<RequestState<Boolean>>
+    fun fetchOrder(orderId: String): Flow<RequestState<Boolean>>
 }
 
 class DefaultOrderRepository(
@@ -80,30 +80,16 @@ class DefaultOrderRepository(
             )
         }
 
-        when (val fetch = fetchOrder(session, orderId)) {
-            is RequestState.Error -> {
-                emit(
-                    RequestState.Error(
-                        error = fetch.error
-                    )
+        dbHelper.withDatabase { db ->
+            executeListAsFlow(
+                query = db.clossOrderQueries.findOrder(session.user!!.id, orderId)
+            )
+        }.collect { rows ->
+            emit(
+                RequestState.Success(
+                    data = rows.findOrderToOrder()
                 )
-            }
-            is RequestState.Success -> {
-                dbHelper.withDatabase { db ->
-                    executeListAsFlow(
-                        query = db.clossOrderQueries.findOrder(session.user!!.id, orderId)
-                    )
-                }.collect { rows ->
-                    emit(
-                        RequestState.Success(
-                            data = rows.findOrderToOrder()
-                        )
-                    )
-                }
-            }
-            else -> {
-                emit(RequestState.Loading)
-            }
+            )
         }
     }.flowOn(coroutineContext)
 
@@ -170,24 +156,54 @@ class DefaultOrderRepository(
                         }
                     }
                 }.await()
-                RequestState.Success(data = true)
+                emit(
+                    RequestState.Success(data = true)
+                )
             }
         }
     }
 
-    private suspend fun fetchOrder(session: Session, orderId: String): RequestState<Boolean> {
-        return when (val response = client.getOrder(session.accessToken, orderId)) {
+    override fun fetchOrder(orderId: String): Flow<RequestState<Boolean>> = flow {
+        if (!konnection.isConnected()) {
+            return@flow emit(
+                RequestState.Error(
+                    error = ""
+                )
+            )
+        }
+
+        val session = dbHelper.withDatabase { db ->
+            executeOne(db.sessionQueries.findActiveAccount())?.dbActiveToDomain()
+        } ?: return@flow emit(
+            RequestState.Error(
+                error = ""
+            )
+        )
+        if (session.user == null) {
+            return@flow emit(
+                RequestState.Error(
+                    error = "invalid state"
+                )
+            )
+        }
+
+        when (val response = client.getOrder(session.accessToken, orderId)) {
             is ApiOperation.Failure -> {
-                return RequestState.Error(
-                    error = response.error.message ?: ""
+                emit(
+                    RequestState.Error(
+                        error = response.error.message ?: ""
+                    )
                 )
             }
             is ApiOperation.Success -> {
                 val order = response.value.data
-                    ?: return RequestState.Error(
-                        error = response.value.message ?: ""
+                    ?: return@flow emit(
+                        RequestState.Error(
+                            error = response.value.message ?: ""
+                        )
                     )
 
+                // todo: refactor insertion in the database
                 scope.async {
                     dbHelper.withDatabase { db ->
                         db.transaction {
@@ -214,7 +230,9 @@ class DefaultOrderRepository(
                         }
                     }
                 }.await()
-                RequestState.Success(data = true)
+                emit(
+                    RequestState.Success(data = true)
+                )
             }
         }
     }

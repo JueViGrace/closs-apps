@@ -1,4 +1,4 @@
-import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
+import com.android.build.gradle.internal.cxx.configure.gradleLocalProperties
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
@@ -10,9 +10,11 @@ plugins {
 
 group = "org.closs.core.resources"
 
+val baseUrl: String = gradleLocalProperties(rootProject.rootDir, providers)
+    .getProperty("BASE_URL")
+
 kotlin {
     androidTarget {
-        @OptIn(ExperimentalKotlinGradlePluginApi::class)
         compilerOptions {
             jvmTarget.set(JvmTarget.JVM_21)
         }
@@ -40,6 +42,7 @@ android {
 
     defaultConfig {
         minSdk = libs.versions.android.minSdk.get().toInt()
+        resValue("string", "base_url", baseUrl)
     }
 
     compileOptions {

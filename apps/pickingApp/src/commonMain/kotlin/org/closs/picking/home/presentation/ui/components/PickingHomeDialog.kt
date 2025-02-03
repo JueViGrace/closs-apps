@@ -8,6 +8,7 @@ import androidx.compose.animation.core.infiniteRepeatable
 import androidx.compose.animation.core.rememberInfiniteTransition
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
@@ -28,6 +29,7 @@ import org.closs.shared.home.presentation.events.HomeEvents
 import org.closs.shared.home.presentation.state.HomeState
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
+import java.util.Collections.rotate
 
 @Composable
 fun PickingHomeDialog(
@@ -71,7 +73,9 @@ fun PickingHomeDialog(
                     )
 
                     IconComponent(
-                        modifier = Modifier.calculateSmallIconSize().rotate(angle),
+                        modifier = Modifier
+                            .size(calculateSmallIconSize())
+                            .rotate(angle),
                         painter = painterResource(Res.drawable.ic_refresh),
                         contentDescription = stringResource(Res.string.sync),
                     )

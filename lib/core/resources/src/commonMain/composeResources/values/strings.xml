@@ -26,11 +26,16 @@
     <string name="pending_orders">Pending orders</string>
     <string name="sync">Sync</string>
     <string name="route">Route</string>
+    <string name="emitted">Emitted</string>
     <string name="items_quantity">Items quantity</string>
     <string name="customer">Customer</string>
     <string name="status">Status</string>
     <string name="order_status_unspecified">Unspecified</string>
     <string name="order_status_ready_to_pick">Ready to pick</string>
+    <string name="order_not_available">Order not available</string>
+    <string name="stock">Stock</string>
+    <string name="ordered_quantity">Ordered stock</string>
+    <string name="shed">Shed</string>
     <!--Descriptions-->
     <string name="app_logo">App logo</string>
     <string name="company_logo">Company logo</string>
@@ -44,6 +49,7 @@
     <string name="show_password">Show password</string>
     <string name="hide_password">Hide password</string>
     <string name="picking_dash_image">Picking image</string>
+    <string name="product_image">Product image</string>
     <!--Error messages-->
     <string name="auth_no_data">No data found for this user.</string>
     <string name="company_invalid_input">Company must only contain numbers</string>

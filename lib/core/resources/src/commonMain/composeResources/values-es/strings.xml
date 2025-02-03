@@ -26,11 +26,16 @@
     <string name="pending_orders">Pedidos pendientes</string>
     <string name="sync">Sincronizar</string>
     <string name="route">Ruta</string>
+    <string name="emitted">Emisión</string>
     <string name="items_quantity">Cantidad de items</string>
     <string name="customer">Cliente</string>
     <string name="status">Estado</string>
     <string name="order_status_unspecified">No especificado</string>
     <string name="order_status_ready_to_pick">Listo para pickear</string>
+    <string name="order_not_available">Pedido no disponible</string>
+    <string name="stock">Existencia</string>
+    <string name="ordered_quantity">Cantidad pedida</string>
+    <string name="shed">Almacén</string>
     <!--Icon descriptions-->
     <string name="app_logo">App logo</string>
     <string name="company_logo">Logo de la empresa</string>
@@ -43,6 +48,7 @@
     <string name="show_password">Mostrar contraseña</string>
     <string name="hide_password">Ocultar contraseña</string>
     <string name="picking_dash_image">Picking imagen</string>
+    <string name="product_image">Imagen del producto</string>
     <!--Error messages-->
     <string name="auth_no_data">No se encontraron datos para este usuario.</string>
     <string name="company_invalid_input">Empresa solo puede contener números</string>

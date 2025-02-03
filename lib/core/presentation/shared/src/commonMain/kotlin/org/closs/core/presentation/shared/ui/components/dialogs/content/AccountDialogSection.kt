@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
@@ -41,7 +42,7 @@ fun AccountDialogSection(
         icon = {
             Box(
                 modifier = Modifier
-                    .calculateIconButtonSize()
+                    .size(calculateIconButtonSize())
                     .background(
                         color = MaterialTheme.colorScheme.primaryContainer,
                         shape = CircleShape

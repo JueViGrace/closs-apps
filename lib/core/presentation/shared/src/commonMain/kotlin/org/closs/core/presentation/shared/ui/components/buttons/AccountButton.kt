@@ -3,6 +3,7 @@ package org.closs.core.presentation.shared.ui.components.buttons
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
@@ -15,7 +16,7 @@ import org.closs.core.presentation.shared.utils.calculateIconButtonSize
 @Composable
 fun AccountButton(
     modifier: Modifier = Modifier
-        .calculateIconButtonSize()
+        .size(calculateIconButtonSize())
         .background(
             color = MaterialTheme.colorScheme.primaryContainer,
             shape = CircleShape,

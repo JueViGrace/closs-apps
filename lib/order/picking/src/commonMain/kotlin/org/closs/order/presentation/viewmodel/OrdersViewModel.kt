@@ -15,6 +15,7 @@ import org.closs.core.presentation.shared.navigation.Navigator
 import org.closs.core.resources.resources.generated.resources.Res
 import org.closs.core.resources.resources.generated.resources.unknown_error
 import org.closs.core.types.shared.common.Constants.REFRESH_ORDERS_KEY
+import org.closs.core.types.shared.common.Constants.REFRESH_ORDER_KEY
 import org.closs.core.types.shared.common.Constants.TOP_BAR_TITLE_KEY
 import org.closs.core.types.shared.state.RequestState
 import org.closs.core.types.shared.state.ResponseMessage
@@ -38,6 +39,7 @@ class OrdersViewModel(
         )
     }
     private val _orders = repository.getOrders()
+
     private val _reloadOrders = combine(
         _reload,
         _orders
@@ -53,7 +55,6 @@ class OrdersViewModel(
                     )
                 }
             }
-            handle[REFRESH_ORDERS_KEY] = false
         }
         orders
     }
@@ -70,12 +71,14 @@ class OrdersViewModel(
                         description = orders.error
                     )
                 )
+                handle[REFRESH_ORDERS_KEY] = false
                 state.copy(
                     isLoading = false
                 )
             }
 
             is RequestState.Success -> {
+                handle[REFRESH_ORDERS_KEY] = false
                 state.copy(
                     orders = orders.data,
                     isLoading = false
@@ -83,6 +86,7 @@ class OrdersViewModel(
             }
 
             else -> {
+                handle[REFRESH_ORDERS_KEY] = false
                 state.copy(
                     orders = emptyList(),
                     isLoading = true
@@ -97,6 +101,7 @@ class OrdersViewModel(
 
     fun navigateToDetails(orderId: String) {
         handle[TOP_BAR_TITLE_KEY] = ""
+        handle[REFRESH_ORDER_KEY] = true
         viewModelScope.launch {
             navigator.navigate(
                 destination = Destination.OrderDetails(orderId),

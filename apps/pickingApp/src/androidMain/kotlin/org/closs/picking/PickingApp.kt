@@ -1,8 +1,10 @@
 package org.closs.picking
 
 import android.app.Application
+import android.system.Os
 import org.closs.core.di.KoinBuilder
 import org.closs.core.di.coreModule
+import org.closs.core.resources.R
 import org.closs.picking.app.di.appModule
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
@@ -12,6 +14,8 @@ import org.koin.dsl.koinApplication
 class PickingApp : Application() {
     override fun onCreate() {
         super.onCreate()
+
+        Os.setenv("BASE_URL", getString(R.string.base_url), true)
 
         KoinBuilder(koinApplication())
             .addConfig(appDeclaration = {

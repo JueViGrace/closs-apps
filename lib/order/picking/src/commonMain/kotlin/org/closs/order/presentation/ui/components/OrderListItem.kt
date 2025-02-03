@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.requiredWidth
+import androidx.compose.foundation.layout.size
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedCard
@@ -52,15 +53,13 @@ fun OrderListItem(
         IconComponent(
             modifier = Modifier
                 .zIndex(1f)
-                .calculateMediumIconSize()
+                .size(calculateMediumIconSize())
                 .align(Alignment.CenterStart),
             painter = painterResource(Res.drawable.ic_basket),
         )
 
         val cardPadding = when (getScreenSize()) {
-            ScreenSize.Compact -> {
-                26.dp
-            }
+            ScreenSize.Compact -> 26.dp
             ScreenSize.Medium -> 34.dp
             ScreenSize.Large -> 44.dp
         }

@@ -4,6 +4,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -32,7 +33,7 @@ fun SyncDialogItem(
             .padding(8.dp),
         icon = {
             IconComponent(
-                modifier = Modifier.calculateSmallIconSize(),
+                modifier = Modifier.size(calculateSmallIconSize()),
                 painter = painterResource(Res.drawable.ic_cloud_down),
                 contentDescription = stringResource(Res.string.sync)
             )

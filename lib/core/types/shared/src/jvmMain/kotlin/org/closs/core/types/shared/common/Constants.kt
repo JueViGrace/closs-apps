@@ -10,9 +10,10 @@ actual object Constants {
         .toLocalDateTime(TimeZone.currentSystemDefault()).toString()
     actual const val MINIMUM_LENGTH: Int = 4
 
-    actual val SHOW_HOME_DIALOG_KEY: String = "SHOW_HOME_DIALOG_KEY"
-    actual val TOP_BAR_TITLE_KEY: String = "TOP_BAR_TITLE_KEY"
+    actual const val SHOW_HOME_DIALOG_KEY: String = "SHOW_HOME_DIALOG_KEY"
+    actual const val TOP_BAR_TITLE_KEY: String = "TOP_BAR_TITLE_KEY"
     actual const val SNACK_BAR_MESSAGE_KEY: String = "SNACK_BAR_MESSAGE_KEY"
     actual const val SEARCH_BAR_TEXT_KEY: String = "SEARCH_BAR_TEXT_KEY"
-    actual val REFRESH_ORDERS_KEY: String = "REFRESH_ORDERS_KEY"
+    actual const val REFRESH_ORDERS_KEY: String = "REFRESH_ORDERS_KEY"
+    actual const val REFRESH_ORDER_KEY: String = "REFRESH_ORDER_KEY"
 }
