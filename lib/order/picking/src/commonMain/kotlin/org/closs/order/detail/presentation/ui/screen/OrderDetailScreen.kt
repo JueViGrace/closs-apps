@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.HorizontalDivider
@@ -36,7 +35,7 @@ fun OrderDetailScreen(
     BackHandlerComponent(viewModel.navigator)
     LazyColumn(
         modifier = Modifier.fillMaxSize(),
-        verticalArrangement = Arrangement.spacedBy(4.dp, Alignment.Top),
+        verticalArrangement = Arrangement.spacedBy(8.dp, Alignment.Top),
         horizontalAlignment = Alignment.CenterHorizontally,
         contentPadding = PaddingValues(8.dp)
     ) {
@@ -59,8 +58,7 @@ fun OrderDetailScreen(
                     items(order.lines) { line ->
                         OrderProductsListItem(
                             modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(vertical = 8.dp),
+                                .fillMaxWidth(),
                             orderLine = line
                         )
                     }

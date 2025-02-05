@@ -61,8 +61,6 @@ class DefaultAppViewModel(
                 )
                 state.copy(
                     session = session.data,
-                    snackMessage = Res.string.welcome_back,
-                    description = session.data.name,
                 )
             }
             else -> {
@@ -75,7 +73,7 @@ class DefaultAppViewModel(
         }
     }.stateIn(
         viewModelScope,
-        SharingStarted.Lazily,
+        SharingStarted.WhileSubscribed(5_000),
         _state.value
     )
 

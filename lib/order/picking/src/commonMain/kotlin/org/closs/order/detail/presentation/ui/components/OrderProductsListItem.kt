@@ -12,10 +12,9 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.requiredWidth
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedCard
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -52,156 +51,161 @@ fun OrderProductsListItem(
     modifier: Modifier = Modifier,
     orderLine: OrderLine,
 ) {
-    Box(
+    Column(
         modifier = modifier,
-        contentAlignment = Alignment.Center
+        verticalArrangement = Arrangement.spacedBy(6.dp, Alignment.CenterVertically),
+        horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-        // todo:create component and observer state to avoid using this composable
-        SubcomposeAsyncImage(
-            modifier = Modifier
-                .zIndex(1f)
-                .align(Alignment.CenterStart)
-                .size(calculateDefaultImageSize())
-                .background(
-                    color = MaterialTheme.colorScheme.surfaceContainer,
-                    shape = RoundedCornerShape(10)
-                )
-                .clip(RoundedCornerShape(10))
-                .border(
-                    width = 1.dp,
-                    color = MaterialTheme.colorScheme.outline,
-                    shape = RoundedCornerShape(10)
-                ),
-            model = ImageRequest.Builder(LocalPlatformContext.current)
-                .data(orderLine.product.image)
-                .crossfade(true)
-                .build(),
-            loading = {
-                CircularProgressIndicator(
-                    modifier = Modifier.padding(4.dp)
-                )
-            },
-            error = {
-                ImageComponent(
-                    modifier = Modifier
-                        .size(calculateDefaultImageSize())
-                        .background(
-                            color = MaterialTheme.colorScheme.surfaceContainer,
-                            shape = RoundedCornerShape(10)
-                        )
-                        .clip(RoundedCornerShape(10))
-                        .border(
-                            width = 1.dp,
-                            color = MaterialTheme.colorScheme.outline,
-                            shape = RoundedCornerShape(10)
-                        )
-                        .padding(4.dp),
-                    painter = painterResource(Res.drawable.ic_photo_x),
-                    contentDescription = stringResource(Res.string.product_image),
-                    contentScale = contentScale,
-                )
-            },
-            success = {
-                ImageComponent(
-                    modifier = Modifier
-                        .size(calculateDefaultImageSize())
-                        .background(
-                            color = Color.White,
-                            shape = RoundedCornerShape(10)
-                        )
-                        .clip(RoundedCornerShape(10))
-                        .border(
-                            width = 1.dp,
-                            color = MaterialTheme.colorScheme.outlineVariant,
-                            shape = RoundedCornerShape(10)
-                        )
-                        .padding(4.dp),
-                    painter = painter,
-                    contentDescription = contentDescription,
-                    contentScale = contentScale,
-                )
-            },
-            contentDescription = orderLine.product.nombre,
-        )
-
-        val cardPadding = when (getScreenSize()) {
-            ScreenSize.Compact -> 54.dp
-            ScreenSize.Medium -> 59.dp
-            ScreenSize.Large -> 64.dp
-        }
-
-        OutlinedCard(
-            modifier = Modifier
-                .padding(start = cardPadding)
-                .align(Alignment.CenterEnd),
-            colors = CardDefaults.outlinedCardColors(
-                containerColor = MaterialTheme.colorScheme.surfaceContainer
-            )
+        Box(
+            modifier = Modifier.fillMaxWidth(),
+            contentAlignment = Alignment.Center
         ) {
-            val columnStartPadding = when (getScreenSize()) {
-                ScreenSize.Compact -> 58.dp
-                ScreenSize.Medium -> 68.dp
-                ScreenSize.Large -> 78.dp
+            // todo:create component and observer state to avoid using this composable
+            SubcomposeAsyncImage(
+                modifier = Modifier
+                    .zIndex(1f)
+                    .align(Alignment.CenterStart)
+                    .size(calculateDefaultImageSize())
+                    .background(
+                        color = MaterialTheme.colorScheme.surfaceContainer,
+                        shape = RoundedCornerShape(10)
+                    )
+                    .clip(RoundedCornerShape(10))
+                    .border(
+                        width = 1.dp,
+                        color = MaterialTheme.colorScheme.outline,
+                        shape = RoundedCornerShape(10)
+                    ),
+                model = ImageRequest.Builder(LocalPlatformContext.current)
+                    .data(orderLine.product.image)
+                    .crossfade(true)
+                    .build(),
+                loading = {
+                    CircularProgressIndicator(
+                        modifier = Modifier.padding(4.dp)
+                    )
+                },
+                error = {
+                    ImageComponent(
+                        modifier = Modifier
+                            .size(calculateDefaultImageSize())
+                            .background(
+                                color = MaterialTheme.colorScheme.surfaceContainer,
+                                shape = RoundedCornerShape(10)
+                            )
+                            .clip(RoundedCornerShape(10))
+                            .border(
+                                width = 1.dp,
+                                color = MaterialTheme.colorScheme.outline,
+                                shape = RoundedCornerShape(10)
+                            )
+                            .padding(4.dp),
+                        painter = painterResource(Res.drawable.ic_photo_x),
+                        contentDescription = stringResource(Res.string.product_image),
+                        contentScale = contentScale,
+                    )
+                },
+                success = {
+                    ImageComponent(
+                        modifier = Modifier
+                            .size(calculateDefaultImageSize())
+                            .background(
+                                color = Color.White,
+                                shape = RoundedCornerShape(10)
+                            )
+                            .clip(RoundedCornerShape(10))
+                            .border(
+                                width = 1.dp,
+                                color = MaterialTheme.colorScheme.outlineVariant,
+                                shape = RoundedCornerShape(10)
+                            )
+                            .padding(4.dp),
+                        painter = painter,
+                        contentDescription = contentDescription,
+                        contentScale = contentScale,
+                    )
+                },
+                contentDescription = orderLine.product.nombre,
+            )
+
+            val cardPadding = when (getScreenSize()) {
+                ScreenSize.Compact -> 54.dp
+                ScreenSize.Medium -> 59.dp
+                ScreenSize.Large -> 64.dp
             }
+
             Column(
                 modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(
-                        start = columnStartPadding,
-                        end = 12.dp,
-                        top = 12.dp,
-                        bottom = 12.dp
-                    ),
-                verticalArrangement = Arrangement.spacedBy(8.dp, Alignment.CenterVertically),
-                horizontalAlignment = Alignment.CenterHorizontally
+                    .padding(start = cardPadding)
+                    .align(Alignment.CenterEnd),
             ) {
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                    verticalAlignment = Alignment.CenterVertically
+                val columnStartPadding = when (getScreenSize()) {
+                    ScreenSize.Compact -> 58.dp
+                    ScreenSize.Medium -> 68.dp
+                    ScreenSize.Large -> 78.dp
+                }
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(
+                            start = columnStartPadding,
+                            end = 12.dp,
+                            top = 12.dp,
+                            bottom = 12.dp
+                        ),
+                    verticalArrangement = Arrangement.spacedBy(8.dp, Alignment.CenterVertically),
+                    horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     Row(
-                        modifier = Modifier.weight(1f),
-                        horizontalArrangement = Arrangement.spacedBy(4.dp, Alignment.Start),
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.SpaceBetween,
                         verticalAlignment = Alignment.CenterVertically
                     ) {
+                        Row(
+                            modifier = Modifier.weight(1f),
+                            horizontalArrangement = Arrangement.spacedBy(4.dp, Alignment.Start),
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            TextComponent(
+                                text = orderLine.product.codigo,
+                                fontSize = calculateMediumFontSize(),
+                                fontWeight = calculateMediumFontWeight(),
+                            )
+                            TextComponent(
+                                text = "(${orderLine.product.referencia})",
+                                color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.7f)
+                            )
+                        }
                         TextComponent(
-                            text = orderLine.product.codigo,
-                            fontSize = calculateMediumFontSize(),
-                            fontWeight = calculateMediumFontWeight(),
-                        )
-                        TextComponent(
-                            text = "(${orderLine.product.referencia})",
+                            modifier = Modifier.requiredWidth(IntrinsicSize.Min),
+                            text = orderLine.product.marca,
+                            fontSize = calculateLabelFontSize(),
+                            fontWeight = calculateLabelFontWeight(),
                             color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.7f)
                         )
                     }
                     TextComponent(
-                        modifier = Modifier.requiredWidth(IntrinsicSize.Min),
-                        text = orderLine.product.marca,
-                        fontSize = calculateLabelFontSize(),
-                        fontWeight = calculateLabelFontWeight(),
-                        color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.7f)
+                        modifier = Modifier.fillMaxWidth(),
+                        text = orderLine.product.nombre,
+                        textAlign = TextAlign.Start,
                     )
-                }
-                TextComponent(
-                    modifier = Modifier.fillMaxWidth(),
-                    text = orderLine.product.nombre,
-                    textAlign = TextAlign.Start,
-                )
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.spacedBy(2.dp, Alignment.Start),
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    TextComponent(
-                        text = "${stringResource(Res.string.ordered_quantity)}:",
-                    )
-                    TextComponent(
-                        text = orderLine.cantref.toString(),
-                        fontWeight = FontWeight.Bold,
-                    )
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.spacedBy(2.dp, Alignment.Start),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        TextComponent(
+                            text = "${stringResource(Res.string.ordered_quantity)}:",
+                        )
+                        TextComponent(
+                            text = orderLine.cantref.toString(),
+                            fontWeight = FontWeight.Bold,
+                        )
+                    }
                 }
             }
         }
+
+        HorizontalDivider()
     }
 }
