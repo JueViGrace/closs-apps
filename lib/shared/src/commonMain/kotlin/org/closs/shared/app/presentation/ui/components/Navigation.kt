@@ -20,8 +20,6 @@ fun Navigation(
     content: @Composable (
         NavHostController,
         Navigator,
-        SnackbarHostState,
-        AppViewModel,
     ) -> Unit,
 ) {
     val viewModel: AppViewModel = koinViewModel()
@@ -43,6 +41,7 @@ fun Navigation(
         }
     }
 
+    // todo: move this
     ObserveAsEvents(
         flow = viewModel.messages.messages,
     ) { msg ->
@@ -66,7 +65,5 @@ fun Navigation(
     content(
         navController,
         navigator,
-        snackBarHostState,
-        viewModel
     )
 }

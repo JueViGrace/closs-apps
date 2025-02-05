@@ -24,7 +24,7 @@ abstract class HomeViewModel(
 
     abstract fun onEvent(event: HomeEvents)
 
-    abstract fun toggleDialog()
+    protected abstract fun toggleDialog()
 
     protected open fun navigateToProfile() {
         toggleDialog()

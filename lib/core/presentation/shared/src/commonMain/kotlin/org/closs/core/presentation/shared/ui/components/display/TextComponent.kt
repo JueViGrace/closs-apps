@@ -18,7 +18,7 @@ fun TextComponent(
     modifier: Modifier = Modifier,
     text: String,
     fontSize: TextUnit = calculateDefaultFontSize(),
-    fontWeight: FontWeight? = calculateDefaultFontWeight(),
+    fontWeight: FontWeight? = FontWeight.Normal,
     textAlign: TextAlign = TextAlign.Start,
     maxLines: Int = 2,
     color: Color = LocalContentColor.current,

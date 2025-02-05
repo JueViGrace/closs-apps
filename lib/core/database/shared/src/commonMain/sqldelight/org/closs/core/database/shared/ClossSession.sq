@@ -38,3 +38,6 @@ WHERE user_id != :id;
 deleteSession:
 DELETE FROM closs_session
 WHERE user_id = :id;
+
+delete:
+DELETE FROM closs_session;

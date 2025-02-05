@@ -19,7 +19,7 @@ import org.closs.core.presentation.shared.navigation.Navigator
 
 abstract class SignInViewModel(
     protected open val navigator: Navigator,
-    protected open val messages: Messages,
+    open val messages: Messages,
     protected open val authRepository: AuthRepository
 ) : ViewModel() {
     protected open val _state: MutableStateFlow<SignInState> = MutableStateFlow(SignInState())

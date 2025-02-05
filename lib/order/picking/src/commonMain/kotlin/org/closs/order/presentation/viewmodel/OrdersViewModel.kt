@@ -15,17 +15,16 @@ import org.closs.core.presentation.shared.navigation.Navigator
 import org.closs.core.resources.resources.generated.resources.Res
 import org.closs.core.resources.resources.generated.resources.unknown_error
 import org.closs.core.types.shared.common.Constants.REFRESH_ORDERS_KEY
-import org.closs.core.types.shared.common.Constants.REFRESH_ORDER_KEY
-import org.closs.core.types.shared.common.Constants.TOP_BAR_TITLE_KEY
 import org.closs.core.types.shared.state.RequestState
 import org.closs.core.types.shared.state.ResponseMessage
 import org.closs.order.data.OrderRepository
+import org.closs.order.presentation.events.OrdersEvents
 import org.closs.order.presentation.state.OrdersState
 
 class OrdersViewModel(
     private val repository: OrderRepository,
     val navigator: Navigator,
-    private val messages: Messages,
+    val messages: Messages,
     private val handle: SavedStateHandle,
 ) : ViewModel() {
     private val _state = MutableStateFlow(OrdersState(isLoading = true))
@@ -99,12 +98,21 @@ class OrdersViewModel(
         _state.value
     )
 
-    fun navigateToDetails(orderId: String) {
-        handle[TOP_BAR_TITLE_KEY] = ""
-        handle[REFRESH_ORDER_KEY] = true
+    fun onEvent(event: OrdersEvents) {
+        when (event) {
+            OrdersEvents.Refresh -> refresh()
+            is OrdersEvents.NavigateToDetails -> navigateToDetails(event.id)
+        }
+    }
+
+    private fun refresh() {
+        handle[REFRESH_ORDERS_KEY] = true
+    }
+
+    private fun navigateToDetails(id: String) {
         viewModelScope.launch {
             navigator.navigate(
-                destination = Destination.OrderDetails(orderId),
+                destination = Destination.OrderDetails(id),
                 navOptions = NavOptions.Builder().apply {
                     setPopUpTo(Destination.Orders, false)
                     setLaunchSingleTop(true)

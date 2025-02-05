@@ -36,6 +36,7 @@
     <string name="stock">Stock</string>
     <string name="ordered_quantity">Ordered stock</string>
     <string name="shed">Shed</string>
+    <string name="pick_up">Pick up</string>
     <!--Descriptions-->
     <string name="app_logo">App logo</string>
     <string name="company_logo">Company logo</string>

@@ -5,15 +5,11 @@ import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavOptions
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 import org.closs.core.presentation.shared.messages.Messages
 import org.closs.core.presentation.shared.navigation.Destination
 import org.closs.core.presentation.shared.navigation.Navigator
-import org.closs.core.resources.resources.generated.resources.Res
-import org.closs.core.resources.resources.generated.resources.welcome_back
-import org.closs.core.types.shared.common.Constants
 import org.closs.core.types.shared.state.RequestState
 import org.closs.shared.app.data.AppRepository
 import org.closs.shared.app.presentation.state.AppState
@@ -30,9 +26,6 @@ class DefaultAppViewModel(
     handle = handle,
     appRepository = appRepository
 ) {
-    private val reloadData = handle.getStateFlow(Constants.REFRESH_ORDERS_KEY, true)
-    private val showDialog = handle.getStateFlow(Constants.SHOW_HOME_DIALOG_KEY, false)
-
     private val _state: MutableStateFlow<AppState> = MutableStateFlow(AppState())
     override val state = combine(
         _state,
@@ -76,12 +69,4 @@ class DefaultAppViewModel(
         SharingStarted.WhileSubscribed(5_000),
         _state.value
     )
-
-    override fun toggleDialog() {
-        handle[Constants.SHOW_HOME_DIALOG_KEY] = !showDialog.value
-    }
-
-    override fun reloadOrders() {
-        handle[Constants.REFRESH_ORDERS_KEY] = !reloadData.value
-    }
 }

@@ -109,6 +109,7 @@ class DefaultAppRepository(
                 }
 
                 getUserData(
+                    id = session.user!!.id,
                     session = refreshCall.value.data!!.dtoToDomain(),
                 )
             }
@@ -116,7 +117,7 @@ class DefaultAppRepository(
     }
 
     // refactor this sht
-    private suspend fun getUserData(session: Session): RequestState<Session> {
+    private suspend fun getUserData(id: String, session: Session): RequestState<Session> {
         return when (val call = userClient.getUserById(session.accessToken)) {
             is ApiOperation.Failure -> {
                 RequestState.Error(
@@ -144,6 +145,7 @@ class DefaultAppRepository(
                         }
 
                         val newSession = saveSession(
+                            id = id,
                             session = session.copy(user = call.value.data?.dtoToDomain()),
                             picker = infoCall.value.data!!.toPicker()
                         )
@@ -160,13 +162,14 @@ class DefaultAppRepository(
         }
     }
 
-    private suspend fun saveSession(session: Session, picker: Picker): Session? {
+    private suspend fun saveSession(id: String, session: Session, picker: Picker): Session? {
         return scope.async {
             dbHelper.withDatabase { db ->
                 db.transactionWithResult {
                     if (session.user == null) {
                         rollback(null)
                     }
+                    db.clossSessionQueries.deleteSession(id)
 
                     db.clossSessionQueries.insert(
                         closs_session = session.copy(active = true).sessionToDb()

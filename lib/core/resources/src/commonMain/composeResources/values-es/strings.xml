@@ -36,6 +36,7 @@
     <string name="stock">Existencia</string>
     <string name="ordered_quantity">Cantidad pedida</string>
     <string name="shed">Almacén</string>
+    <string name="pick_up">Pick up</string>
     <!--Icon descriptions-->
     <string name="app_logo">App logo</string>
     <string name="company_logo">Logo de la empresa</string>

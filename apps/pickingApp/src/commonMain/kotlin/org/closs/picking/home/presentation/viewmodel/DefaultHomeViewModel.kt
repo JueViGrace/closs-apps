@@ -12,7 +12,6 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import org.closs.core.presentation.shared.navigation.Destination
 import org.closs.core.presentation.shared.navigation.Navigator
-import org.closs.core.types.shared.common.Constants
 import org.closs.core.types.shared.state.RequestState
 import org.closs.shared.home.data.HomeRepository
 import org.closs.shared.home.presentation.events.HomeEvents
@@ -28,43 +27,38 @@ class DefaultHomeViewModel(
     navigator = navigator,
     handle = handle
 ) {
-    private val _showDialog = handle.getStateFlow(Constants.SHOW_HOME_DIALOG_KEY, false)
     private val _session = repository.getSession()
     private val _orderCount = repository.getOrdersCount()
 
     private val _state = MutableStateFlow(HomeState())
     override val state = combine(
         _state,
-        _showDialog,
         _session,
         _orderCount,
-    ) { state, showDialog, session, orderCount ->
+    ) { state, session, orderCount ->
         when (session) {
             is RequestState.Error -> {
                 state.copy(
                     orderCount = orderCount,
                     session = null,
-                    showDialog = showDialog
                 )
             }
             is RequestState.Success -> {
                 state.copy(
                     orderCount = orderCount,
                     session = session.data,
-                    showDialog = showDialog
                 )
             }
             else -> {
                 state.copy(
                     orderCount = orderCount,
                     session = null,
-                    showDialog = showDialog
                 )
             }
         }
     }.stateIn(
         viewModelScope,
-        SharingStarted.Eagerly,
+        SharingStarted.WhileSubscribed(5_000),
         _state.value
     )
 
@@ -83,7 +77,11 @@ class DefaultHomeViewModel(
     }
 
     override fun toggleDialog() {
-        handle[Constants.SHOW_HOME_DIALOG_KEY] = !_showDialog.value
+        _state.update { state ->
+            state.copy(
+                showDialog = !state.showDialog
+            )
+        }
     }
 
     private fun navigateToPickingHistory() {
