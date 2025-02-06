@@ -1,6 +1,7 @@
 package org.closs.core.types.order
 
 data class Order(
+    val userId: String,
     val agencia: String,
     val tipodoc: String,
     val documento: String,

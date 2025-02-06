@@ -37,6 +37,17 @@
     <string name="ordered_quantity">Cantidad pedida</string>
     <string name="shed">Almacén</string>
     <string name="pick_up">Pick up</string>
+    <string name="cancel_pick_up">¿Cancelar pick up?</string>
+    <string name="cancel_pick_up_desc">Si confirma la cancelación perderás el progreso realizado en este pedido.</string>
+    <string name="before_continuing">Antes de continuar...</string>
+    <string name="type_cart_id">Escriba el numero de carrito para este pedido</string>
+    <string name="token_empty">La ficha del carrito no puede estar vacía</string>
+    <string name="token_placeholder">Ficha del carrito...</string>
+    <string name="token">Ficha</string>
+    <string name="dismiss">Descartar</string>
+    <string name="ok">Ok</string>
+    <string name="cancel">Cancelar</string>
+    <string name="confirm">Confirmar</string>
     <!--Icon descriptions-->
     <string name="app_logo">App logo</string>
     <string name="company_logo">Logo de la empresa</string>

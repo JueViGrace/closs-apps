@@ -9,21 +9,18 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.platform.LocalConfiguration
-import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 
 @Composable
 actual fun getScreenWidth(): Dp {
     val windowInfo = LocalConfiguration.current
-    val density = LocalDensity.current
     return windowInfo.screenWidthDp.dp
 }
 
 @Composable
 actual fun getScreenHeight(): Dp {
     val windowInfo = LocalConfiguration.current
-    val density = LocalDensity.current
     return windowInfo.screenHeightDp.dp
 }
 

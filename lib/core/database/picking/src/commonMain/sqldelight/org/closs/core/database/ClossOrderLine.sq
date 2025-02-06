@@ -26,6 +26,11 @@ INSERT OR REPLACE INTO closs_order_line(
 )
 VALUES ?;
 
+updateQuantity:
+UPDATE closs_order_line SET
+    cantidad = :qty
+WHERE documento = :doc AND codigo = :cod AND user_id = :id;
+
 deleteOne:
 DELETE FROM closs_order_line
 WHERE

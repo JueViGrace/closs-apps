@@ -15,6 +15,7 @@ import org.closs.core.presentation.shared.navigation.Navigator
 import org.closs.core.resources.resources.generated.resources.Res
 import org.closs.core.resources.resources.generated.resources.unknown_error
 import org.closs.core.types.shared.common.Constants.REFRESH_ORDERS_KEY
+import org.closs.core.types.shared.common.Constants.REFRESH_ORDER_KEY
 import org.closs.core.types.shared.state.RequestState
 import org.closs.core.types.shared.state.ResponseMessage
 import org.closs.order.data.OrderRepository
@@ -110,6 +111,9 @@ class OrdersViewModel(
     }
 
     private fun navigateToDetails(id: String) {
+        // warn: this will trigger a refresh every time
+        // consider changing refresh logic
+        handle[REFRESH_ORDER_KEY] = true
         viewModelScope.launch {
             navigator.navigate(
                 destination = Destination.OrderDetails(id),

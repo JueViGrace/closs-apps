@@ -11,6 +11,7 @@ import org.closs.core.api.shared.client.ApiOperation
 import org.closs.core.database.helper.PickingDbHelper
 import org.closs.core.types.auth.dbActiveToDomain
 import org.closs.core.types.order.Order
+import org.closs.core.types.order.OrderLine
 import org.closs.core.types.order.findOrderToOrder
 import org.closs.core.types.order.findOrdersToOrder
 import org.closs.core.types.order.toClossOrder
@@ -24,6 +25,8 @@ interface OrderRepository {
     fun getOrder(orderId: String): Flow<RequestState<Order?>>
     fun fetchOrders(): Flow<RequestState<Boolean>>
     fun fetchOrder(orderId: String): Flow<RequestState<Boolean>>
+    suspend fun updateOrderCart(order: Order)
+    suspend fun updateOrderLineQty(orderLine: OrderLine)
 }
 
 class DefaultOrderRepository(
@@ -235,5 +238,36 @@ class DefaultOrderRepository(
                 )
             }
         }
+    }
+
+    // todo: consider updating server idCarrito instead
+    override suspend fun updateOrderCart(order: Order) {
+        scope.async {
+            dbHelper.withDatabase { db ->
+                db.transaction {
+                    db.clossOrderQueries.updateIdCart(
+                        cart = order.idcarrito,
+                        doc = order.documento,
+                        id = order.userId
+                    )
+                }
+            }
+        }.await()
+    }
+
+    // todo: consider updating server line instead
+    override suspend fun updateOrderLineQty(orderLine: OrderLine) {
+        scope.async {
+            dbHelper.withDatabase { db ->
+                db.transaction {
+                    db.clossOrderLineQueries.updateQuantity(
+                        qty = orderLine.cantidad.toLong(),
+                        doc = orderLine.documento,
+                        cod = orderLine.product.codigo,
+                        id = orderLine.userId
+                    )
+                }
+            }
+        }.await()
     }
 }

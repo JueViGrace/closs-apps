@@ -9,12 +9,16 @@ import kotlinx.coroutines.launch
 import org.closs.core.presentation.shared.navigation.Navigator
 
 @Composable
-fun BackHandlerComponent(navigator: Navigator) {
+fun BackHandlerComponent(navigator: Navigator, callBack: (() -> Unit)? = null) {
     val scope = rememberCoroutineScope()
     BackHandler {
-        scope.launch(Dispatchers.Main.immediate) {
-            awaitFrame()
-            navigator.navigateUp()
+        if (callBack != null) {
+            callBack()
+        } else {
+            scope.launch(Dispatchers.Main.immediate) {
+                awaitFrame()
+                navigator.navigateUp()
+            }
         }
     }
 }

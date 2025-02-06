@@ -42,6 +42,24 @@ fun calculateMediumFontWeight(): FontWeight? {
 }
 
 @Composable
+fun calculateLargeFontSize(): TextUnit {
+    return when (getScreenSize()) {
+        ScreenSize.Compact -> MaterialTheme.typography.titleMedium.fontSize
+        ScreenSize.Medium -> MaterialTheme.typography.titleLarge.fontSize
+        ScreenSize.Large -> MaterialTheme.typography.displaySmall.fontSize
+    }
+}
+
+@Composable
+fun calculateLargeFontWeight(): FontWeight? {
+    return when (getScreenSize()) {
+        ScreenSize.Compact -> MaterialTheme.typography.titleMedium.fontWeight
+        ScreenSize.Medium -> MaterialTheme.typography.titleLarge.fontWeight
+        ScreenSize.Large -> MaterialTheme.typography.displaySmall.fontWeight
+    }
+}
+
+@Composable
 fun calculateSmallFontSize(): TextUnit {
     return when (getScreenSize()) {
         ScreenSize.Compact -> MaterialTheme.typography.labelLarge.fontSize

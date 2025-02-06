@@ -26,7 +26,7 @@ import kotlinx.coroutines.launch
 import org.closs.core.presentation.shared.actions.FABActions
 import org.closs.core.presentation.shared.navigation.ObserveAsEvents
 import org.closs.core.presentation.shared.ui.components.buttons.BackArrowButton
-import org.closs.core.presentation.shared.ui.components.buttons.FABComponent
+import org.closs.core.presentation.shared.ui.components.buttons.FABMenuComponent
 import org.closs.core.presentation.shared.ui.components.layout.bars.TopBarComponent
 import org.closs.core.presentation.shared.ui.components.layout.loading.CircularLoadingComponent
 import org.closs.core.presentation.shared.ui.components.navigation.BackHandlerComponent
@@ -75,7 +75,7 @@ fun OrderDetailScreen(
             )
         },
         floatingActionButton = {
-            FABComponent(
+            FABMenuComponent(
                 showMenu = state.showFABMenu,
                 toggleMenu = {
                     viewModel.onEvent(OrderDetailEvents.ToggleFABMenu)

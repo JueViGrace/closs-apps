@@ -37,6 +37,7 @@ fun OrderLineDto.toClossOrderLine(userId: String): DbOrderLine = DbOrderLine(
 )
 
 fun DbOrder.toOrder(): Order = Order(
+    userId = user_id,
     agencia = agencia,
     tipodoc = tipodoc,
     documento = documento,
@@ -55,6 +56,7 @@ fun DbOrder.toOrder(): Order = Order(
 fun List<FindOrders>.findOrdersToOrder(): List<Order> {
     val group: Map<Order, List<FindOrders>> = this.groupBy { row ->
         Order(
+            userId = row.user_id,
             agencia = row.agencia,
             tipodoc = row.tipodoc,
             documento = row.documento,
@@ -72,6 +74,7 @@ fun List<FindOrders>.findOrdersToOrder(): List<Order> {
 
     val order: List<Order> = group.map { (key: Order, rows: List<FindOrders>) ->
         return@map Order(
+            userId = key.userId,
             agencia = key.agencia,
             tipodoc = key.tipodoc,
             documento = key.documento,
@@ -95,6 +98,7 @@ fun List<FindOrders>.findOrdersToOrderLines(): List<OrderLine> {
 
     val details: List<OrderLine> = this.map { row ->
         return@map OrderLine(
+            userId = row.user_id_ ?: "",
             agencia = row.agencia_ ?: "",
             tipodoc = row.tipodoc_ ?: "",
             documento = row.documento_ ?: "",
@@ -113,6 +117,7 @@ fun List<FindOrders>.findOrdersToOrderLines(): List<OrderLine> {
 fun List<FindOrder>.findOrderToOrder(): Order? {
     val group: Map<Order, List<FindOrder>> = this.groupBy { row ->
         Order(
+            userId = row.user_id,
             agencia = row.agencia,
             tipodoc = row.tipodoc,
             documento = row.documento,
@@ -130,6 +135,7 @@ fun List<FindOrder>.findOrderToOrder(): Order? {
 
     val order: Order? = group.map { (key: Order, rows: List<FindOrder>) ->
         return@map Order(
+            userId = key.userId,
             agencia = key.agencia,
             tipodoc = key.tipodoc,
             documento = key.documento,
@@ -153,6 +159,7 @@ fun List<FindOrder>.findOrderToOrderLines(): List<OrderLine> {
 
     val details: List<OrderLine> = this.map { row ->
         return@map OrderLine(
+            userId = row.user_id_ ?: "",
             agencia = row.agencia_ ?: "",
             tipodoc = row.tipodoc_ ?: "",
             documento = row.documento_ ?: "",

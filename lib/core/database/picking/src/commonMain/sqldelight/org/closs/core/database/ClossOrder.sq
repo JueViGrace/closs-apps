@@ -64,6 +64,11 @@ INSERT OR REPLACE INTO closs_order(
 )
 VALUES ?;
 
+updateIdCart:
+UPDATE closs_order SET
+    idcarrito = :cart
+WHERE documento = :doc AND user_id = :id;
+
 deleteOne:
 DELETE FROM closs_order
 WHERE

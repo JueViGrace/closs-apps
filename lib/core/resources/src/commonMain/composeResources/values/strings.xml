@@ -37,6 +37,17 @@
     <string name="ordered_quantity">Ordered stock</string>
     <string name="shed">Shed</string>
     <string name="pick_up">Pick up</string>
+    <string name="cancel_pick_up">Cancel pick up?</string>
+    <string name="cancel_pick_up_desc">By confirming cancellation you will lose all the progress made on this order.</string>
+    <string name="before_continuing">Before continuing...</string>
+    <string name="type_cart_id">Type in the cart id for this order</string>
+    <string name="token_empty">Token cannot be empty</string>
+    <string name="token_placeholder">Token...</string>
+    <string name="token">Token</string>
+    <string name="dismiss">Dismiss</string>
+    <string name="ok">Ok</string>
+    <string name="cancel">Cancel</string>
+    <string name="confirm">Confirm</string>
     <!--Descriptions-->
     <string name="app_logo">App logo</string>
     <string name="company_logo">Company logo</string>
