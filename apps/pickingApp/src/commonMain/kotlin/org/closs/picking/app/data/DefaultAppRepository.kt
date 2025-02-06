@@ -33,36 +33,104 @@ class DefaultAppRepository(
     override val coroutineContext: CoroutineContext,
     override val scope: CoroutineScope,
 ) : AppRepository {
-    override fun validateSession(): Flow<RequestState<Session>> {
-        return flow {
-            emit(RequestState.Loading)
+    override fun validateSession(): Flow<RequestState<Boolean>> = flow {
+        emit(RequestState.Loading)
 
-            val session = dbHelper.withDatabase { db ->
-                executeOne(
-                    query = db.sessionQueries.findActiveAccount()
-                )
-            }
-            if (session == null) {
-                return@flow emit(
+        dbHelper.withDatabase { db ->
+            executeOneAsFlow(
+                query = db.sessionQueries.findActiveAccount()
+            )
+        }.collect { value ->
+            if (value == null) {
+                return@collect emit(
                     RequestState.Error(
                         error = ""
                     )
                 )
             }
-            if (konnection.isConnected()) {
-                when (val call = refresh(session.dbActiveToDomain())) {
+
+            emit(
+                RequestState.Success(
+                    data = true
+                )
+            )
+        }
+    }.flowOn(coroutineContext)
+
+    override fun getAccounts(): Flow<RequestState<List<Session>>> {
+        return emptyFlow()
+    }
+
+    override fun refresh(): Flow<RequestState<Boolean>> = flow {
+        emit(RequestState.Loading)
+        if (!konnection.isConnected()) {
+            return@flow emit(
+                RequestState.Success(
+                    data = true
+                )
+            )
+        }
+
+        val session = dbHelper.withDatabase { db ->
+            executeOne(
+                query = db.sessionQueries.findActiveAccount()
+            )
+        }?.dbActiveToDomain()
+            ?: return@flow emit(
+                RequestState.Error(
+                    error = ""
+                )
+            )
+
+        when (val refreshCall = authClient.refresh(refreshToken = session.refreshToken)) {
+            is ApiOperation.Failure -> when (refreshCall.error.status) {
+                AppCodes.UnknownError.value,
+                AppCodes.InternalServerError.value,
+                AppCodes.ServiceUnavailable.value,
+                AppCodes.RequestTimeout.value -> {
+                    emit(
+                        RequestState.Success(
+                            data = true
+                        )
+                    )
+                }
+                else -> {
+                    endSession()
+                    emit(
+                        RequestState.Error(
+                            error = refreshCall.error.message ?: ""
+                        )
+                    )
+                }
+            }
+            is ApiOperation.Success -> {
+                if (refreshCall.value.data == null) {
+                    endSession()
+                    emit(
+                        RequestState.Error(
+                            error = refreshCall.value.message ?: ""
+                        )
+                    )
+                }
+
+                when (
+                    val result = getUserData(
+                        id = session.user!!.id,
+                        session = refreshCall.value.data!!.dtoToDomain(),
+                    )
+                ) {
                     is RequestState.Error -> {
                         endSession()
                         emit(
                             RequestState.Error(
-                                error = call.error
+                                error = result.error
                             )
                         )
                     }
                     is RequestState.Success -> {
                         emit(
                             RequestState.Success(
-                                data = call.data
+                                data = true
                             )
                         )
                     }
@@ -70,48 +138,6 @@ class DefaultAppRepository(
                         emit(RequestState.Loading)
                     }
                 }
-            } else {
-                return@flow emit(
-                    RequestState.Success(
-                        data = session.dbActiveToDomain()
-                    )
-                )
-            }
-        }.flowOn(coroutineContext)
-    }
-
-    override fun getAccounts(): Flow<RequestState<List<Session>>> {
-        return emptyFlow()
-    }
-
-    private suspend fun refresh(session: Session): RequestState<Session> {
-        return when (val refreshCall = authClient.refresh(refreshToken = session.refreshToken)) {
-            is ApiOperation.Failure -> when (refreshCall.error.status) {
-                AppCodes.UnknownError.value,
-                AppCodes.InternalServerError.value,
-                AppCodes.ServiceUnavailable.value,
-                AppCodes.RequestTimeout.value -> {
-                    return RequestState.Success(
-                        data = session
-                    )
-                }
-                else -> {
-                    return RequestState.Error(
-                        error = refreshCall.error.message ?: ""
-                    )
-                }
-            }
-            is ApiOperation.Success -> {
-                if (refreshCall.value.data == null) {
-                    return RequestState.Error(
-                        error = refreshCall.value.message ?: ""
-                    )
-                }
-
-                getUserData(
-                    id = session.user!!.id,
-                    session = refreshCall.value.data!!.dtoToDomain(),
-                )
             }
         }
     }
@@ -169,14 +195,14 @@ class DefaultAppRepository(
                     if (session.user == null) {
                         rollback(null)
                     }
-                    db.clossSessionQueries.deleteSession(id)
-
-                    db.clossSessionQueries.insert(
-                        closs_session = session.copy(active = true).sessionToDb()
-                    )
+                    db.clossUserQueries.delete(id)
 
                     db.clossUserQueries.insert(
                         closs_user = session.user!!.domainToDb()
+                    )
+
+                    db.clossSessionQueries.insert(
+                        closs_session = session.copy(active = true).sessionToDb()
                     )
 
                     db.clossPickerQueries.insert(
@@ -196,13 +222,7 @@ class DefaultAppRepository(
                     .executeAsOneOrNull()
                     ?: rollback()
 
-                db.clossSessionQueries.deleteSession(session.user_id)
                 db.clossUserQueries.delete(session.user_id)
-                db.clossPickerQueries.deleteByUser(session.user_id)
-                db.clossConfigQueries.deleteByUser(session.user_id)
-                db.clossProductQueries.deleteByUser(session.user_id)
-                db.clossOrderQueries.deleteByUser(session.user_id)
-                db.clossOrderLineQueries.deleteByUser(session.user_id)
             }
         }
     }

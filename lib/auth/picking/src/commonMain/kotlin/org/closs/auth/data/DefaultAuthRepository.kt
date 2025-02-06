@@ -168,12 +168,12 @@ class DefaultAuthRepository(
                         rollback(null)
                     }
 
-                    db.clossSessionQueries.insert(
-                        closs_session = session.copy(active = true).sessionToDb()
-                    )
-
                     db.clossUserQueries.insert(
                         closs_user = session.user!!.domainToDb()
+                    )
+
+                    db.clossSessionQueries.insert(
+                        closs_session = session.copy(active = true).sessionToDb()
                     )
 
                     db.clossPickerQueries.insert(

@@ -15,7 +15,7 @@ CREATE TABLE IF NOT EXISTS closs_config(
     created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
     UNIQUE (cnfg_idconfig, user_id),
-    FOREIGN KEY (user_id) REFERENCES closs_user(id)
+    FOREIGN KEY (user_id) REFERENCES closs_user(id) ON DELETE CASCADE
 );
 
 findUserConfigById:

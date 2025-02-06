@@ -10,6 +10,7 @@ import kotlinx.coroutines.flow.stateIn
 import org.closs.core.presentation.shared.messages.Messages
 import org.closs.core.presentation.shared.navigation.Destination
 import org.closs.core.presentation.shared.navigation.Navigator
+import org.closs.core.types.shared.common.Constants.REFRESH_SESSION_KEY
 import org.closs.core.types.shared.state.RequestState
 import org.closs.shared.app.data.AppRepository
 import org.closs.shared.app.presentation.state.AppState
@@ -27,9 +28,41 @@ class DefaultAppViewModel(
     appRepository = appRepository
 ) {
     private val _state: MutableStateFlow<AppState> = MutableStateFlow(AppState())
+
+    private val _refresh = combine(
+        _state,
+        handle.getStateFlow(REFRESH_SESSION_KEY, true)
+    ) { state, refresh ->
+        state.copy(
+            refresh = refresh
+        )
+    }
+
+    private val _session = appRepository.validateSession()
+
+    private val _refreshSession = combine(
+        _refresh,
+        _session
+    ) { refresh, session ->
+        if (refresh.refresh) {
+            appRepository.refresh().collect { result ->
+                if (result is RequestState.Error) {
+                    navigator.navigate(
+                        destination = Destination.SignIn,
+                        navOptions = NavOptions.Builder().apply {
+                            setPopUpTo(route = Destination.Splash, inclusive = true)
+                            setLaunchSingleTop(true)
+                        }.build()
+                    )
+                }
+            }
+        }
+        session
+    }
+
     override val state = combine(
         _state,
-        appRepository.validateSession(),
+        _refreshSession,
     ) { state, session ->
         when (session) {
             is RequestState.Error -> {
@@ -40,11 +73,11 @@ class DefaultAppViewModel(
                         setLaunchSingleTop(true)
                     }.build()
                 )
-                state.copy(
-                    session = null,
-                )
+                handle[REFRESH_SESSION_KEY] = false
+                state
             }
             is RequestState.Success -> {
+                handle[REFRESH_SESSION_KEY] = false
                 navigator.navigate(
                     destination = Destination.Home,
                     navOptions = NavOptions.Builder().apply {
@@ -52,13 +85,11 @@ class DefaultAppViewModel(
                         setLaunchSingleTop(true)
                     }.build()
                 )
-                state.copy(
-                    session = session.data,
-                )
+                state
             }
             else -> {
+                handle[REFRESH_SESSION_KEY] = false
                 state.copy(
-                    session = null,
                     snackMessage = null,
                     description = ""
                 )

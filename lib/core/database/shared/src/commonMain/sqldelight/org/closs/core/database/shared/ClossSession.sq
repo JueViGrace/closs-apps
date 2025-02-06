@@ -7,7 +7,7 @@ CREATE TABLE IF NOT EXISTS closs_session(
     company_host TEXT NOT NULL DEFAULT '',
     active INTEGER AS Boolean NOT NULL,
     PRIMARY KEY(user_id),
-    FOREIGN KEY(user_id) REFERENCES closs_user(id)
+    FOREIGN KEY(user_id) REFERENCES closs_user(id) ON DELETE CASCADE
 );
 
 insert:

@@ -2,7 +2,7 @@ CREATE TABLE IF NOT EXISTS closs_picker(
     user_id TEXT NOT NULL PRIMARY KEY,
     name TEXT NOT NULL DEFAULT '',
     almacen TEXT NOT NULL DEFAULT '',
-    FOREIGN KEY (user_id) REFERENCES closs_user(id)
+    FOREIGN KEY (user_id) REFERENCES closs_user(id) ON DELETE CASCADE
 );
 
 insert:

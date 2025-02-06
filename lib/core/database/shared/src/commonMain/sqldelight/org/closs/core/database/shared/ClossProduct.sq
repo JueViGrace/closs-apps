@@ -1,7 +1,7 @@
 CREATE TABLE IF NOT EXISTS closs_product(
     user_id TEXT NOT NULL,
     agencia TEXT NOT NULL DEFAULT '',
-    codigo TEXT NOT NULL DEFAULT '' PRIMARY KEY,
+    codigo TEXT NOT NULL DEFAULT '',
     grupo TEXT NOT NULL DEFAULT '',
     subgrupo TEXT NOT NULL DEFAULT '',
     nombre TEXT NOT NULL DEFAULT '',
@@ -36,7 +36,8 @@ CREATE TABLE IF NOT EXISTS closs_product(
     images TEXT NOT NULL DEFAULT '',
     created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (user_id) REFERENCES closs_user(id)
+    PRIMARY KEY (codigo, user_id),
+    FOREIGN KEY (user_id) REFERENCES closs_user(id) ON DELETE CASCADE
 );
 
 findProductsByUser:

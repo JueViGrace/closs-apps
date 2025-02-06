@@ -12,8 +12,8 @@ CREATE TABLE IF NOT EXISTS closs_order(
     ruta_descrip TEXT NOT NULL DEFAULT '',
     ke_pedstatus TEXT NOT NULL DEFAULT '',
     user_id TEXT NOT NULL,
-    PRIMARY KEY (documento),
-    FOREIGN KEY (user_id) REFERENCES closs_user(id)
+    PRIMARY KEY (documento, user_id),
+    FOREIGN KEY (user_id) REFERENCES closs_user(id) ON DELETE CASCADE
 );
 
 countOrders:
@@ -27,7 +27,7 @@ FROM closs_order
 LEFT JOIN closs_order_line
     ON closs_order.documento = closs_order_line.documento
     AND closs_order.user_id = closs_order_line.user_id
-WHERE closs_order.user_id = :id
+WHERE closs_order.user_id = :id AND closs_order.idcarrito = ''
 ORDER BY closs_order.emision ASC, closs_order.documento ASC, closs_order.almacen ASC;
 
 findOrder:
