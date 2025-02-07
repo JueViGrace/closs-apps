@@ -7,6 +7,8 @@ CREATE TABLE IF NOT EXISTS closs_order(
     emision TEXT NOT NULL DEFAULT '',
     upickup TEXT NOT NULL DEFAULT '',
     idcarrito TEXT NOT NULL DEFAULT '',
+    pickStartedAt TEXT NOT NULL DEFAULT '',
+    pickEndedAt TEXT NOT NULL DEFAULT '',
     almacen TEXT NOT NULL DEFAULT '',
     ruta_codigo TEXT NOT NULL DEFAULT '',
     ruta_descrip TEXT NOT NULL DEFAULT '',
@@ -63,11 +65,6 @@ INSERT OR REPLACE INTO closs_order(
     user_id
 )
 VALUES ?;
-
-updateIdCart:
-UPDATE closs_order SET
-    idcarrito = :cart
-WHERE documento = :doc AND user_id = :id;
 
 deleteOne:
 DELETE FROM closs_order

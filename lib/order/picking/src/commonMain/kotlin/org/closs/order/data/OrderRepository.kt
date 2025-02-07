@@ -11,12 +11,13 @@ import org.closs.core.api.shared.client.ApiOperation
 import org.closs.core.database.helper.PickingDbHelper
 import org.closs.core.types.auth.dbActiveToDomain
 import org.closs.core.types.order.Order
-import org.closs.core.types.order.OrderLine
-import org.closs.core.types.order.findOrderToOrder
-import org.closs.core.types.order.findOrdersToOrder
-import org.closs.core.types.order.toClossOrder
-import org.closs.core.types.order.toClossOrderLine
-import org.closs.core.types.shared.product.toDbProduct
+import org.closs.core.types.order.mappers.findOrderToOrder
+import org.closs.core.types.order.mappers.findOrdersToOrder
+import org.closs.core.types.order.mappers.toDbOrder
+import org.closs.core.types.order.mappers.toDbOrderLine
+import org.closs.core.types.order.mappers.toDto
+import org.closs.core.types.order.mappers.toOrder
+import org.closs.core.types.shared.product.mappers.toDbProduct
 import org.closs.core.types.shared.state.RequestState
 import kotlin.coroutines.CoroutineContext
 
@@ -25,10 +26,11 @@ interface OrderRepository {
     fun getOrder(orderId: String): Flow<RequestState<Order?>>
     fun fetchOrders(): Flow<RequestState<Boolean>>
     fun fetchOrder(orderId: String): Flow<RequestState<Boolean>>
-    suspend fun updateOrderCart(order: Order)
-    suspend fun updateOrderLineQty(orderLine: OrderLine)
+    fun submitOrder(order: Order): Flow<RequestState<Order>>
+    suspend fun deleteOrder(orderId: String, userId: String)
 }
 
+// todo: move konnection to viewmodels better
 class DefaultOrderRepository(
     private val client: OrderClient,
     private val dbHelper: PickingDbHelper,
@@ -145,11 +147,11 @@ class DefaultOrderRepository(
 
                             orders.forEach { order ->
                                 db.clossOrderQueries.insert(
-                                    closs_order = order.toClossOrder(session.user!!.id)
+                                    closs_order = order.toDbOrder(session.user!!.id)
                                 )
                                 order.lines.forEach { line ->
                                     db.clossOrderLineQueries.insert(
-                                        closs_order_line = line.toClossOrderLine(session.user!!.id)
+                                        closs_order_line = line.toDbOrderLine(session.user!!.id)
                                     )
                                     db.clossProductQueries.insert(
                                         closs_product = line.productDto.toDbProduct(session.user!!.id)
@@ -213,7 +215,7 @@ class DefaultOrderRepository(
                             db.clossOrderQueries.deleteOne(session.user!!.id, orderId)
 
                             db.clossOrderQueries.insert(
-                                closs_order = order.toClossOrder(session.user!!.id)
+                                closs_order = order.toDbOrder(session.user!!.id)
                             )
                             order.lines.forEach { line ->
                                 db.clossOrderLineQueries.deleteOne(
@@ -224,7 +226,7 @@ class DefaultOrderRepository(
                                 db.clossProductQueries.deleteByOne(session.user!!.id, line.productDto.codigo)
 
                                 db.clossOrderLineQueries.insert(
-                                    closs_order_line = line.toClossOrderLine(session.user!!.id)
+                                    closs_order_line = line.toDbOrderLine(session.user!!.id)
                                 )
                                 db.clossProductQueries.insert(
                                     closs_product = line.productDto.toDbProduct(session.user!!.id)
@@ -240,6 +242,7 @@ class DefaultOrderRepository(
         }
     }
 
+/*
     // todo: consider updating server idCarrito instead
     override suspend fun updateOrderCart(order: Order) {
         scope.async {
@@ -266,6 +269,62 @@ class DefaultOrderRepository(
                         cod = orderLine.product.codigo,
                         id = orderLine.userId
                     )
+                }
+            }
+        }.await()
+    }
+*/
+
+    override fun submitOrder(order: Order): Flow<RequestState<Order>> = flow {
+        emit(RequestState.Loading)
+        if (!konnection.isConnected()) {
+            return@flow emit(
+                RequestState.Error(
+                    error = "No connection"
+                )
+            )
+        }
+
+        val session = dbHelper.withDatabase { db ->
+            executeOne(db.sessionQueries.findActiveAccount())
+        }?.dbActiveToDomain()
+            ?: return@flow emit(
+                RequestState.Error(
+                    error = ""
+                )
+            )
+
+        when (val call = client.updateOrder(session.accessToken, order.toDto())) {
+            is ApiOperation.Failure -> {
+                emit(
+                    RequestState.Error(
+                        error = call.error.message ?: ""
+                    )
+                )
+            }
+            is ApiOperation.Success -> {
+                val data = call.value.data
+                    ?: return@flow emit(
+                        RequestState.Error(
+                            error = call.value.message ?: ""
+                        )
+                    )
+
+                emit(
+                    RequestState.Success(
+                        data = data.toOrder()
+                    )
+                )
+            }
+        }
+    }.flowOn(coroutineContext)
+
+    override suspend fun deleteOrder(orderId: String, userId: String) {
+        scope.async {
+            dbHelper.withDatabase { db ->
+                db.transaction {
+                    db.clossOrderQueries.deleteOne(orderId, userId)
+                    db.clossOrderLineQueries.deleteByDoc(orderId, userId)
                 }
             }
         }.await()

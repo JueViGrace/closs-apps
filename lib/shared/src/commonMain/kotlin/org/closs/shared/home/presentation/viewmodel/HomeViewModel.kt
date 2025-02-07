@@ -33,8 +33,13 @@ abstract class HomeViewModel(
             navigator.navigate(
                 destination = Destination.Profile,
                 navOptions = NavOptions.Builder().apply {
-                    setPopUpTo(Destination.Home, false)
+                    setPopUpTo(
+                        route = Destination.Home,
+                        inclusive = false,
+                        saveState = true
+                    )
                     setLaunchSingleTop(true)
+                    setRestoreState(true)
                 }.build()
             )
         }
@@ -47,8 +52,13 @@ abstract class HomeViewModel(
             navigator.navigate(
                 destination = Destination.Notifications,
                 navOptions = NavOptions.Builder().apply {
-                    setPopUpTo(Destination.Home, false)
+                    setPopUpTo(
+                        route = Destination.Home,
+                        inclusive = false,
+                        saveState = true
+                    )
                     setLaunchSingleTop(true)
+                    setRestoreState(true)
                 }.build()
             )
         }
@@ -61,8 +71,13 @@ abstract class HomeViewModel(
             navigator.navigate(
                 destination = Destination.Settings,
                 navOptions = NavOptions.Builder().apply {
-                    setPopUpTo(Destination.Home, false)
+                    setPopUpTo(
+                        route = Destination.Home,
+                        inclusive = false,
+                        saveState = true
+                    )
                     setLaunchSingleTop(true)
+                    setRestoreState(true)
                 }.build()
             )
         }

@@ -5,10 +5,10 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navigation
 import androidx.navigation.toRoute
 import org.closs.core.presentation.shared.navigation.Destination
-import org.closs.order.detail.presentation.ui.screen.OrderDetailScreen
-import org.closs.order.history.presentation.ui.screen.HistoryScreen
-import org.closs.order.pickup.presentation.ui.screen.PickUpScreen
-import org.closs.order.presentation.ui.screen.OrdersScreen
+import org.closs.order.presentation.detail.ui.screen.OrderDetailScreen
+import org.closs.order.presentation.history.ui.screen.HistoryScreen
+import org.closs.order.presentation.orders.ui.screen.OrdersScreen
+import org.closs.order.presentation.pickup.ui.screen.PickUpScreen
 import org.closs.picking.home.presentation.ui.screen.HomeScreen
 import org.closs.picking.notifications.presentation.ui.screen.NotificationsScreen
 import org.closs.picking.profile.presentation.ui.screen.ProfileScreen

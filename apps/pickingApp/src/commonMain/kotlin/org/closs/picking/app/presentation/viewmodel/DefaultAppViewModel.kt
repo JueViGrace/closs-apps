@@ -27,7 +27,7 @@ class DefaultAppViewModel(
     handle = handle,
     appRepository = appRepository
 ) {
-    private val _state: MutableStateFlow<AppState> = MutableStateFlow(AppState())
+    private val _state: MutableStateFlow<AppState> = MutableStateFlow(AppState(refresh = true))
 
     private val _refresh = combine(
         _state,

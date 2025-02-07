@@ -21,6 +21,10 @@ data class OrderDto(
     val upickup: String,
     @SerialName("idcarrito")
     val idcarrito: String,
+    @SerialName("pick_started_at")
+    val pickStartedAt: String,
+    @SerialName("pick_ended_at")
+    val pickEndedAt: String,
     @SerialName("almacen")
     val almacen: String,
     @SerialName("ruta_codigo")

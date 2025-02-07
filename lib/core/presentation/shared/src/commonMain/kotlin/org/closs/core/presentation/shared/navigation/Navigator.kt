@@ -34,6 +34,7 @@ class DefaultNavigator(
     private val _stack = MutableStateFlow(NavigationStack(mutableListOf(startDestination), startDestination))
     override val stack: StateFlow<NavigationStack> = _stack.asStateFlow()
 
+    // todo: save stack in the state handle?
     override suspend fun navigate(
         destination: Destination,
         navOptions: NavOptions?

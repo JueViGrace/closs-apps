@@ -38,6 +38,12 @@ WHERE
     documento = :doc AND
     codigo = :cod;
 
+deleteByDoc:
+DELETE FROM closs_order_line
+WHERE
+    documento = :doc AND
+    user_id = :id;
+
 deleteByUser:
 DELETE FROM closs_order_line
 WHERE

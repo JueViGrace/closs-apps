@@ -89,8 +89,13 @@ class DefaultHomeViewModel(
             navigator.navigate(
                 destination = Destination.PickingHistory,
                 navOptions = NavOptions.Builder().apply {
-                    setPopUpTo(Destination.Home, false)
+                    setPopUpTo(
+                        route = Destination.Home,
+                        inclusive = false,
+                        saveState = true
+                    )
                     setLaunchSingleTop(true)
+                    setRestoreState(true)
                 }.build()
             )
         }
@@ -101,8 +106,13 @@ class DefaultHomeViewModel(
             navigator.navigate(
                 destination = Destination.Orders,
                 navOptions = NavOptions.Builder().apply {
-                    setPopUpTo(Destination.Home, false)
+                    setPopUpTo(
+                        route = Destination.Home,
+                        inclusive = false,
+                        saveState = true
+                    )
                     setLaunchSingleTop(true)
+                    setRestoreState(true)
                 }.build()
             )
         }

@@ -11,4 +11,5 @@ data class OrderLine(
     val product: Product,
     val cantref: Int,
     val cantidad: Int,
+    val checked: Boolean = false
 )

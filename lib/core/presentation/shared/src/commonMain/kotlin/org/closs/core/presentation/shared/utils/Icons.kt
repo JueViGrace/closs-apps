@@ -43,9 +43,9 @@ fun calculateMediumIconSize(): Dp {
 @Composable
 fun calculateDefaultImageSize(): Dp {
     return when (getScreenSize()) {
-        ScreenSize.Compact -> 108.dp
-        ScreenSize.Medium -> 118.dp
-        ScreenSize.Large -> 128.dp
+        ScreenSize.Compact -> 100.dp
+        ScreenSize.Medium -> 110.dp
+        ScreenSize.Large -> 120.dp
     }
 }
 

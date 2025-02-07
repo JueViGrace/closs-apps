@@ -1,0 +1,43 @@
+package org.closs.core.types.shared.product.mappers
+
+import org.closs.core.types.shared.product.Product
+import org.closs.core.types.shared.product.dto.ProductDto
+
+fun Product.toProductDto(): ProductDto = ProductDto(
+    agencia = agencia,
+    codigo = codigo,
+    grupo = grupo,
+    subgrupo = subGrupo,
+    nombre = nombre,
+    referencia = referencia,
+    marca = marca,
+    unidad = unidad,
+    existencia = existencia.toLong(),
+    discont = 0,
+    vtaMax = 0,
+    vtaMin = 0,
+    vtaMinEx = 0,
+    comprometido = comprometido.toLong(),
+    precio1 = 0.0,
+    precio2 = 0.0,
+    precio3 = 0.0,
+    precio4 = 0.0,
+    precio5 = 0.0,
+    precio6 = 0.0,
+    precio7 = 0.0,
+    preventa = 0,
+    vtaSoloFac = 0,
+    vtaSolOne = 0,
+    codBarras = 0,
+    detalles = "",
+    cantBulto = 0.0,
+    costoProm = 0.0,
+    util1 = "",
+    util2 = "",
+    util3 = "",
+    fchUltComp = "",
+    qtyUltComp = "",
+    image = image,
+    createdAt = createdAt,
+    updatedAt = "",
+)

@@ -33,8 +33,8 @@
     <string name="order_status_unspecified">Unspecified</string>
     <string name="order_status_ready_to_pick">Ready to pick</string>
     <string name="order_not_available">Order not available</string>
-    <string name="stock">Stock</string>
-    <string name="ordered_quantity">Ordered stock</string>
+    <string name="picked_quantity">Picked quantity</string>
+    <string name="ordered">Ordered</string>
     <string name="shed">Shed</string>
     <string name="pick_up">Pick up</string>
     <string name="cancel_pick_up">Cancel pick up?</string>
@@ -44,10 +44,13 @@
     <string name="token_empty">Token cannot be empty</string>
     <string name="token_placeholder">Token...</string>
     <string name="token">Token</string>
+    <string name="quantity_empty">Quantity cannot be empty</string>
     <string name="dismiss">Dismiss</string>
     <string name="ok">Ok</string>
     <string name="cancel">Cancel</string>
     <string name="confirm">Confirm</string>
+    <string name="quantity_exceeds_ordered">Picked quantity must not be more than ordered</string>
+    <string name="order_submitted">Order submitted!</string>
     <!--Descriptions-->
     <string name="app_logo">App logo</string>
     <string name="company_logo">Company logo</string>

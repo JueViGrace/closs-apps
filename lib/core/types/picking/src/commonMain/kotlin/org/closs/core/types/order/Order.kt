@@ -10,6 +10,8 @@ data class Order(
     val emision: String,
     val upickup: String,
     val idcarrito: String,
+    val pickStartedAt: String = "",
+    val pickEndedAt: String = "",
     val almacen: String,
     val rutaCodigo: String,
     val rutaDescrip: String,

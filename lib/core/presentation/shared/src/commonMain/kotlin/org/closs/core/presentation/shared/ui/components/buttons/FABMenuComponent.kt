@@ -25,6 +25,8 @@ import org.closs.core.presentation.shared.ui.components.display.TextComponent
 import org.closs.core.presentation.shared.ui.components.icons.IconComponent
 import org.closs.core.presentation.shared.utils.calculateDefaultIconSize
 import org.closs.core.presentation.shared.utils.calculateFABSize
+import org.closs.core.presentation.shared.utils.calculateLabelFontWeight
+import org.closs.core.presentation.shared.utils.calculateLargeFontSize
 import org.closs.core.presentation.shared.utils.calculateMediumFontSize
 import org.closs.core.resources.resources.generated.resources.Res
 import org.closs.core.resources.resources.generated.resources.ic_edit
@@ -58,15 +60,16 @@ fun FABMenuComponent(
                     },
                     text = {
                         ElevatedCard(
-                            shape = RoundedCornerShape(5.dp),
+                            shape = RoundedCornerShape(7.dp),
                             colors = CardDefaults.elevatedCardColors(
-                                containerColor = MaterialTheme.colorScheme.surfaceContainer
+                                containerColor = MaterialTheme.colorScheme.surfaceContainerHigh
                             ),
                         ) {
                             TextComponent(
                                 modifier = Modifier.padding(horizontal = 12.dp, vertical = 6.dp),
                                 text = stringResource(action.title),
-                                fontSize = calculateMediumFontSize(),
+                                fontSize = calculateLargeFontSize(),
+                                fontWeight = calculateLabelFontWeight(),
                             )
                         }
                     },
@@ -74,7 +77,7 @@ fun FABMenuComponent(
                         IconComponent(
                             modifier = Modifier
                                 .background(
-                                    color = MaterialTheme.colorScheme.surfaceContainer,
+                                    color = MaterialTheme.colorScheme.surfaceContainerHigh,
                                     shape = CircleShape
                                 )
                                 .clip(CircleShape)

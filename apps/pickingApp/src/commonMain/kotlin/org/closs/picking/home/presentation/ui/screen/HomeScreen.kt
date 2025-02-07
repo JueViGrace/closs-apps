@@ -101,10 +101,10 @@ fun HomeScreen(
                     .fillMaxSize()
                     .weight(1f)
                     .clickable {
-                        viewModel.onEvent(HomeEvents.NavigateToPickingHistory)
+                        viewModel.onEvent(HomeEvents.NavigateToPendingOrders)
                     }
                     .padding(horizontal = 16.dp),
-                title = stringResource(Res.string.picking_history),
+                title = stringResource(Res.string.pending_orders),
                 image = painterResource(Res.drawable.ic_shopping_bag),
                 icon = painterResource(Res.drawable.ic_arrow_big_right)
             )
@@ -116,10 +116,10 @@ fun HomeScreen(
                     .fillMaxSize()
                     .weight(1f)
                     .clickable {
-                        viewModel.onEvent(HomeEvents.NavigateToPendingOrders)
+                        viewModel.onEvent(HomeEvents.NavigateToPickingHistory)
                     }
                     .padding(horizontal = 16.dp),
-                title = stringResource(Res.string.pending_orders),
+                title = stringResource(Res.string.picking_history),
                 image = painterResource(Res.drawable.ic_shopping_bag),
                 icon = painterResource(Res.drawable.ic_arrow_big_right)
             )

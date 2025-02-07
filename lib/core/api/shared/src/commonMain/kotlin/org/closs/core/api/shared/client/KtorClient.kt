@@ -14,6 +14,7 @@ import io.ktor.client.request.get
 import io.ktor.client.request.headers
 import io.ktor.client.request.patch
 import io.ktor.client.request.post
+import io.ktor.client.request.put
 import io.ktor.client.request.setBody
 import io.ktor.http.ContentType
 import io.ktor.http.HttpHeaders
@@ -55,45 +56,45 @@ interface KtorClient {
 
 suspend inline fun <reified T> KtorClient.call(callback: KtorClient.() -> APIResponse<T>): ApiOperation<T> {
     return try {
-        val body: APIResponse<T> = callback()
-        when (body.status) {
+        val response: APIResponse<T> = callback()
+        when (response.status) {
             HttpStatusCode.ServiceUnavailable.value -> {
                 ApiOperation.Failure(
-                    error = body,
+                    error = response,
                 )
             }
             HttpStatusCode.InternalServerError.value -> {
                 ApiOperation.Failure(
-                    error = body
+                    error = response
                 )
             }
             HttpStatusCode.NotFound.value -> {
                 ApiOperation.Failure(
-                    error = body
+                    error = response
                 )
             }
             HttpStatusCode.Unauthorized.value -> {
                 ApiOperation.Failure(
-                    error = body
+                    error = response
                 )
             }
             HttpStatusCode.Forbidden.value -> {
                 ApiOperation.Failure(
-                    error = body
+                    error = response
                 )
             }
             HttpStatusCode.BadRequest.value -> {
                 ApiOperation.Failure(
-                    error = body
+                    error = response
                 )
             }
             HttpStatusCode.Conflict.value -> {
                 ApiOperation.Failure(
-                    error = body
+                    error = response
                 )
             }
             else -> {
-                ApiOperation.Success(value = body)
+                ApiOperation.Success(value = response)
             }
         }
     } catch (e: Exception) {
@@ -137,6 +138,26 @@ suspend inline fun<reified T, reified R> KtorClient.post(
 ): R {
     return client(baseUrl = baseUrl)
         .post(urlString = urlString) {
+            headers.forEach { (key, value) ->
+                headers {
+                    append(key, value)
+                }
+            }
+            contentType(contentType)
+            setBody(body)
+        }
+        .body<R>()
+}
+
+suspend inline fun <reified T, reified R> KtorClient.put(
+    baseUrl: String? = null,
+    urlString: String,
+    body: T,
+    headers: Map<String, String> = emptyMap(),
+    contentType: ContentType = ContentType.Application.Json
+): R {
+    return client(baseUrl = baseUrl)
+        .put(urlString = urlString) {
             headers.forEach { (key, value) ->
                 headers {
                     append(key, value)
