@@ -46,8 +46,7 @@ fun SetIdCartDialog(
     value: String,
     onValueChange: (String) -> Unit,
     errorMessage: StringResource?,
-    error: Boolean,
-    enabled: Boolean,
+    isError: Boolean,
     onSubmit: () -> Unit
 ) {
     val focusManager = LocalFocusManager.current
@@ -122,7 +121,7 @@ fun SetIdCartDialog(
                         focusManager.clearFocus()
                     }
                 ),
-                isError = error
+                isError = isError
             )
 
             Row(
@@ -140,7 +139,7 @@ fun SetIdCartDialog(
 
                 ElevatedButton(
                     onClick = onSubmit,
-                    enabled = enabled
+                    enabled = !isError
                 ) {
                     TextComponent(
                         text = stringResource(Res.string.ok)

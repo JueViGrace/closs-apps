@@ -7,7 +7,7 @@ import kotlinx.datetime.toLocalDateTime
 actual object Constants {
     actual const val APP_VERSION: String = "0.0.1"
     actual val currentTime: String = Clock.System.now()
-        .toLocalDateTime(TimeZone.currentSystemDefault()).toString()
+        .toLocalDateTime(TimeZone.currentSystemDefault()).formatDate()
     actual const val MINIMUM_LENGTH: Int = 4
 
     actual const val SHOW_HOME_DIALOG_KEY: String = "SHOW_HOME_DIALOG_KEY"

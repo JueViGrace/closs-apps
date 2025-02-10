@@ -44,13 +44,15 @@
     <string name="token_empty">Token cannot be empty</string>
     <string name="token_placeholder">Token...</string>
     <string name="token">Token</string>
-    <string name="quantity_empty">Quantity cannot be empty</string>
     <string name="dismiss">Dismiss</string>
     <string name="ok">Ok</string>
     <string name="cancel">Cancel</string>
     <string name="confirm">Confirm</string>
+    <string name="quantity_empty">Quantity cannot be empty</string>
+    <string name="quantity_not_a_number">Quantity must be a number</string>
     <string name="quantity_exceeds_ordered">Picked quantity must not be more than ordered</string>
     <string name="order_submitted">Order submitted!</string>
+    <string name="connection_unavailable">Connection unavailable</string>
     <!--Descriptions-->
     <string name="app_logo">App logo</string>
     <string name="company_logo">Company logo</string>

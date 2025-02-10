@@ -40,6 +40,7 @@ import org.closs.core.resources.resources.generated.resources.Res
 import org.closs.core.resources.resources.generated.resources.ic_photo_x
 import org.closs.core.resources.resources.generated.resources.ordered
 import org.closs.core.resources.resources.generated.resources.product_image
+import org.closs.core.resources.resources.generated.resources.stock
 import org.closs.core.types.order.OrderLine
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
@@ -183,19 +184,36 @@ fun OrderProductItem(
                     text = line.product.nombre,
                     textAlign = TextAlign.Start,
                 )
-                // todo: add all stock
                 Row(
                     modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.spacedBy(2.dp, Alignment.Start),
+                    horizontalArrangement = Arrangement.SpaceBetween,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    TextComponent(
-                        text = "${stringResource(Res.string.ordered)}:",
-                    )
-                    TextComponent(
-                        text = line.cantref.toString(),
-                        fontWeight = FontWeight.Bold,
-                    )
+                    Row(
+                        horizontalArrangement = Arrangement.spacedBy(2.dp, Alignment.Start),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        TextComponent(
+                            text = "${stringResource(Res.string.ordered)}:",
+                        )
+                        TextComponent(
+                            text = line.cantref.toString(),
+                            fontWeight = FontWeight.Bold,
+                        )
+                    }
+
+                    Row(
+                        horizontalArrangement = Arrangement.spacedBy(2.dp, Alignment.Start),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        TextComponent(
+                            text = "${stringResource(Res.string.stock)}:",
+                        )
+                        TextComponent(
+                            text = line.product.existencia.toString(),
+                            fontWeight = FontWeight.Bold,
+                        )
+                    }
                 }
             }
         }

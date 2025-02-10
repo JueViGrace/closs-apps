@@ -73,13 +73,12 @@ fun PickUpScreen(
             onDismiss = {
                 viewModel.onEvent(PickUpEvents.Dismiss)
             },
-            value = state.cartId,
+            value = state.cartIdValue,
             onValueChange = { cartId ->
                 viewModel.onEvent(PickUpEvents.OnCartChange(cartId))
             },
             errorMessage = state.cartIdError,
-            error = state.cartIdError != null,
-            enabled = state.submitCartEnabled,
+            isError = state.cartIdError != null,
             onSubmit = {
                 viewModel.onEvent(PickUpEvents.OnSubmitCartId)
             }
@@ -181,6 +180,9 @@ fun PickUpScreen(
                                 PickUpListItem(
                                     modifier = Modifier.fillMaxWidth(),
                                     line = line,
+                                    value = state.quantityValue,
+                                    errorMessage = state.quantityError,
+                                    isError = state.quantityError != null,
                                     onQuantityChange = { quantity ->
                                         viewModel.onEvent(PickUpEvents.OnQuantityChange(index, quantity))
                                     },

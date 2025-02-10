@@ -9,10 +9,12 @@ data class PickUpState(
     val isLoading: Boolean = false,
     val updateLoading: Boolean = false,
 
-    val cartId: String = "",
     val showCartDialog: Boolean = true,
+    val cartIdValue: String = "",
     val cartIdError: StringResource? = null,
-    val submitCartEnabled: Boolean = false,
+
+    val quantityValue: String = "",
+    val quantityError: StringResource? = null,
 
     val showFilters: Boolean = false,
 

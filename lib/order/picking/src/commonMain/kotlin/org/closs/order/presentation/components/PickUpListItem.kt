@@ -22,20 +22,21 @@ import org.closs.core.presentation.shared.utils.calculateLabelFontSize
 import org.closs.core.presentation.shared.utils.calculateLabelFontWeight
 import org.closs.core.resources.resources.generated.resources.Res
 import org.closs.core.resources.resources.generated.resources.picked_quantity
-import org.closs.core.resources.resources.generated.resources.quantity_empty
-import org.closs.core.resources.resources.generated.resources.quantity_exceeds_ordered
 import org.closs.core.types.order.OrderLine
+import org.jetbrains.compose.resources.StringResource
 import org.jetbrains.compose.resources.stringResource
 
 @Composable
 fun PickUpListItem(
     modifier: Modifier = Modifier,
     line: OrderLine,
+    value: String,
+    errorMessage: StringResource?,
+    isError: Boolean,
     onQuantityChange: (String) -> Unit,
     onCheckedChange: (Boolean) -> Unit,
 ) {
     val focusManager = LocalFocusManager.current
-    val value = line.cantidad.toString()
 
     Column(
         modifier = modifier,
@@ -58,39 +59,22 @@ fun PickUpListItem(
             ) {
                 OutlinedTextField(
                     value = value,
-                    onValueChange = { newValue ->
-                        if (newValue.any { !it.isDigit() }) {
-                            onQuantityChange(line.cantidad.toString())
-                        } else {
-                            onQuantityChange(newValue)
-                        }
-                    },
+                    onValueChange = onQuantityChange,
                     label = {
                         TextComponent(
                             text = stringResource(Res.string.picked_quantity)
                         )
                     },
-                    supportingText = when {
-                        // todo: move this to viewmodel
-                        value.isEmpty() -> {
-                            {
-                                TextComponent(
-                                    text = stringResource(Res.string.quantity_empty),
-                                    fontSize = calculateLabelFontSize(),
-                                    fontWeight = calculateLabelFontWeight(),
-                                )
-                            }
+                    supportingText = if (errorMessage != null) {
+                        {
+                            TextComponent(
+                                text = stringResource(errorMessage),
+                                fontSize = calculateLabelFontSize(),
+                                fontWeight = calculateLabelFontWeight()
+                            )
                         }
-                        value.toInt() > line.cantref -> {
-                            {
-                                TextComponent(
-                                    text = stringResource(Res.string.quantity_exceeds_ordered),
-                                    fontSize = calculateLabelFontSize(),
-                                    fontWeight = calculateLabelFontWeight(),
-                                )
-                            }
-                        }
-                        else -> null
+                    } else {
+                        null
                     },
                     enabled = !line.checked,
                     readOnly = line.checked,
@@ -104,11 +88,12 @@ fun PickUpListItem(
                             focusManager.clearFocus()
                         }
                     ),
-                    isError = value.isEmpty() || value.toInt() > line.cantref,
+                    isError = isError,
                 )
                 Checkbox(
                     checked = line.checked,
                     onCheckedChange = onCheckedChange,
+                    enabled = !isError
                 )
             }
         }

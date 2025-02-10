@@ -4,6 +4,7 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavOptions
+import dev.tmapps.konnection.Konnection
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.combine
@@ -27,6 +28,7 @@ class OrdersViewModel(
     val navigator: Navigator,
     val messages: Messages,
     private val handle: SavedStateHandle,
+    private val konnection: Konnection,
 ) : ViewModel() {
     private val _state = MutableStateFlow(OrdersState(isLoading = true))
 
@@ -34,6 +36,11 @@ class OrdersViewModel(
         _state,
         handle.getStateFlow(REFRESH_ORDERS_KEY, true)
     ) { state, reload ->
+        if (!konnection.isConnected()) {
+            return@combine state.copy(
+                isLoading = false
+            )
+        }
         state.copy(
             isLoading = reload
         )

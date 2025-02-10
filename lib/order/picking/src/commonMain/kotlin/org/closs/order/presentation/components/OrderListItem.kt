@@ -37,6 +37,7 @@ import org.closs.core.types.shared.common.calculateOrderStatus
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 
+// todo: add almacen
 @Composable
 fun OrderListItem(
     order: Order,

@@ -45,13 +45,15 @@
     <string name="token_empty">La ficha del carrito no puede estar vacía</string>
     <string name="token_placeholder">Ficha del carrito...</string>
     <string name="token">Ficha</string>
-    <string name="quantity_empty">La cantidad no puede estar vacía</string>
     <string name="dismiss">Descartar</string>
     <string name="ok">Ok</string>
     <string name="cancel">Cancelar</string>
     <string name="confirm">Confirmar</string>
-    <string name="quantity_exceeds_ordered">La cantidad recogida no debe ser mayor a la recogida</string>
+    <string name="quantity_empty">La cantidad no puede estar vacía</string>
+    <string name="quantity_not_a_number">La cantidad debe ser un número</string>
+    <string name="quantity_exceeds_ordered">La cantidad recogida no debe ser mayor a la pedida</string>
     <string name="order_submitted">¡Pedido enviado!</string>
+    <string name="connection_unavailable">No tiene conexión a internet</string>
     <!--Icon descriptions-->
     <string name="app_logo">App logo</string>
     <string name="company_logo">Logo de la empresa</string>

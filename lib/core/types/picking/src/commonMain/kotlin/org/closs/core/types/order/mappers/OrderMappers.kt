@@ -6,6 +6,9 @@ import org.closs.core.types.order.Order
 import org.closs.core.types.order.OrderLine
 import org.closs.core.types.order.dto.OrderDto
 import org.closs.core.types.order.dto.OrderLineDto
+import org.closs.core.types.order.dto.UpdateOrderCartDto
+import org.closs.core.types.order.dto.UpdateOrderDto
+import org.closs.core.types.order.dto.UpdateOrderLineDto
 import org.closs.core.types.shared.product.Product
 import org.closs.core.types.shared.product.mappers.toProductDto
 
@@ -44,6 +47,41 @@ fun List<OrderLine>.toLineDto(): List<OrderLineDto> {
     }
     return lines.toList()
 }
+
+fun Order.toUpdateDto(): UpdateOrderDto = UpdateOrderDto(
+    agencia = agencia,
+    tipodoc = tipodoc,
+    documento = documento,
+    upickup = upickup,
+    idcarrito = idcarrito,
+    pickStartedAt = pickStartedAt,
+    pickEndedAt = pickEndedAt,
+    almacen = almacen,
+    lines = lines.toUpdateLineDto()
+)
+
+fun List<OrderLine>.toUpdateLineDto(): List<UpdateOrderLineDto> {
+    val lines: MutableList<UpdateOrderLineDto> = mutableListOf()
+    for (line in this) {
+        lines.add(
+            UpdateOrderLineDto(
+                agencia = line.agencia,
+                tipodoc = line.tipodoc,
+                documento = line.documento,
+                almacen = line.almacen,
+                codigo = line.product.codigo,
+                cantidad = line.cantidad,
+            )
+        )
+    }
+    return lines
+}
+
+fun Order.toUpdateCartDto(): UpdateOrderCartDto = UpdateOrderCartDto(
+    documento = documento,
+    upickup = upickup,
+    idcarrito = idcarrito
+)
 
 fun List<FindOrders>.findOrdersToOrder(): List<Order> {
     val group: Map<Order, List<FindOrders>> = this.groupBy { row ->

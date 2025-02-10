@@ -4,8 +4,11 @@ import org.closs.core.api.shared.client.ApiOperation
 import org.closs.core.api.shared.client.KtorClient
 import org.closs.core.api.shared.client.call
 import org.closs.core.api.shared.client.get
+import org.closs.core.api.shared.client.patch
 import org.closs.core.api.shared.client.put
 import org.closs.core.types.order.dto.OrderDto
+import org.closs.core.types.order.dto.UpdateOrderCartDto
+import org.closs.core.types.order.dto.UpdateOrderDto
 
 class OrderClient(
     private val client: KtorClient
@@ -28,10 +31,20 @@ class OrderClient(
         }
     }
 
-    suspend fun updateOrder(token: String, order: OrderDto): ApiOperation<OrderDto?> {
+    suspend fun updateCartId(token: String, order: UpdateOrderCartDto): ApiOperation<OrderDto?> {
+        return client.call {
+            patch(
+                urlString = "/api/orders/${order.documento}",
+                headers = mapOf("Authorization" to "Bearer $token"),
+                body = order
+            )
+        }
+    }
+
+    suspend fun updateOrder(token: String, order: UpdateOrderDto): ApiOperation<OrderDto?> {
         return client.call {
             put(
-                urlString = "/api/orders",
+                urlString = "/api/orders/${order.documento}",
                 headers = mapOf("Authorization" to "Bearer $token"),
                 body = order
             )
