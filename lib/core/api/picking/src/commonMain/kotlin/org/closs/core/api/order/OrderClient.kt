@@ -34,7 +34,7 @@ class OrderClient(
     suspend fun updateCartId(token: String, order: UpdateOrderCartDto): ApiOperation<OrderDto?> {
         return client.call {
             patch(
-                urlString = "/api/orders/${order.documento}",
+                urlString = "/api/orders",
                 headers = mapOf("Authorization" to "Bearer $token"),
                 body = order
             )
@@ -44,7 +44,7 @@ class OrderClient(
     suspend fun updateOrder(token: String, order: UpdateOrderDto): ApiOperation<OrderDto?> {
         return client.call {
             put(
-                urlString = "/api/orders/${order.documento}",
+                urlString = "/api/orders",
                 headers = mapOf("Authorization" to "Bearer $token"),
                 body = order
             )

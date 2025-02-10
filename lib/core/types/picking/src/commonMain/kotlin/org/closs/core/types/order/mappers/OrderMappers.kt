@@ -54,8 +54,6 @@ fun Order.toUpdateDto(): UpdateOrderDto = UpdateOrderDto(
     documento = documento,
     upickup = upickup,
     idcarrito = idcarrito,
-    pickStartedAt = pickStartedAt,
-    pickEndedAt = pickEndedAt,
     almacen = almacen,
     lines = lines.toUpdateLineDto()
 )
