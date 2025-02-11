@@ -57,12 +57,7 @@ class DefaultSignInViewModel(
                                 errorMessage = Res.string.unexpected_error
                             )
                         }
-                        messages.sendMessage(
-                            ResponseMessage(
-                                message = Res.string.unexpected_error,
-                                description = call.error
-                            )
-                        )
+                        messages.sendMessage(call.error)
                     }
                     is RequestState.Success -> {
                         _state.update { state ->

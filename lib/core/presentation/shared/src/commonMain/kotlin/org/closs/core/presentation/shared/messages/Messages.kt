@@ -5,6 +5,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.receiveAsFlow
 import org.closs.core.types.shared.state.ResponseMessage
 
+// todo: make this global in ui
 interface Messages {
     val messages: Flow<ResponseMessage>
 

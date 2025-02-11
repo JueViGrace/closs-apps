@@ -29,7 +29,6 @@ import org.closs.shared.home.presentation.events.HomeEvents
 import org.closs.shared.home.presentation.state.HomeState
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
-import java.util.Collections.rotate
 
 @Composable
 fun PickingHomeDialog(

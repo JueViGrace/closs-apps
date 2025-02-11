@@ -32,7 +32,7 @@ import org.closs.core.presentation.shared.ui.components.layout.loading.LinearLoa
 import org.closs.core.presentation.shared.ui.components.navigation.BackHandlerComponent
 import org.closs.core.presentation.shared.utils.calculateFABSize
 import org.closs.order.presentation.components.OrderDetailListItem
-import org.closs.order.presentation.components.OrderHeadComponent
+import org.closs.order.presentation.components.OrderDetailHead
 import org.closs.order.presentation.detail.events.OrderDetailEvents
 import org.closs.order.presentation.detail.viewmodel.OrderDetailViewModel
 import org.jetbrains.compose.resources.getString
@@ -105,7 +105,7 @@ fun OrderDetailScreen(
                 false -> {
                     state.order?.let { order ->
                         item {
-                            OrderHeadComponent(order)
+                            OrderDetailHead(order)
                         }
 
                         item {

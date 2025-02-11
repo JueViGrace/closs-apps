@@ -24,6 +24,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import org.closs.core.presentation.shared.ui.components.display.TextComponent
+import org.closs.core.presentation.shared.ui.components.layout.loading.LinearLoadingComponent
 import org.closs.core.presentation.shared.utils.calculateLabelFontSize
 import org.closs.core.presentation.shared.utils.calculateLabelFontWeight
 import org.closs.core.presentation.shared.utils.calculateLargeFontSize
@@ -47,6 +48,8 @@ fun SetIdCartDialog(
     onValueChange: (String) -> Unit,
     errorMessage: StringResource?,
     isError: Boolean,
+    submitEnabled: Boolean,
+    cartLoading: Boolean,
     onSubmit: () -> Unit
 ) {
     val focusManager = LocalFocusManager.current
@@ -139,12 +142,16 @@ fun SetIdCartDialog(
 
                 ElevatedButton(
                     onClick = onSubmit,
-                    enabled = !isError
+                    enabled = submitEnabled,
                 ) {
                     TextComponent(
                         text = stringResource(Res.string.ok)
                     )
                 }
+            }
+
+            if (cartLoading) {
+                LinearLoadingComponent()
             }
         }
     }

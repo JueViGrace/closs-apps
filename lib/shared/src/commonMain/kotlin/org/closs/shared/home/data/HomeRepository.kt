@@ -9,6 +9,6 @@ import org.closs.core.types.shared.state.RequestState
 interface HomeRepository : Repository {
     fun getSession(): Flow<RequestState<Session>>
     fun getOrdersCount(): Flow<Int> = emptyFlow()
-    fun sync()
+    fun sync(): Flow<RequestState<Boolean>>
     suspend fun logOut()
 }

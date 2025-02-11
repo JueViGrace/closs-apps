@@ -97,7 +97,7 @@ class DefaultAppViewModel(
         }
     }.stateIn(
         viewModelScope,
-        SharingStarted.WhileSubscribed(5_000),
+        SharingStarted.Lazily,
         _state.value
     )
 }

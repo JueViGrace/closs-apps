@@ -1,7 +1,7 @@
 package org.closs.core.types.order.mappers
 
 import org.closs.core.database.FindOrder
-import org.closs.core.database.FindOrders
+import org.closs.core.database.FindPendingOrders
 import org.closs.core.types.order.Order
 import org.closs.core.types.order.OrderLine
 import org.closs.core.types.order.dto.OrderDto
@@ -52,7 +52,6 @@ fun Order.toUpdateDto(): UpdateOrderDto = UpdateOrderDto(
     agencia = agencia,
     tipodoc = tipodoc,
     documento = documento,
-    upickup = upickup,
     idcarrito = idcarrito,
     almacen = almacen,
     lines = lines.toUpdateLineDto()
@@ -77,12 +76,11 @@ fun List<OrderLine>.toUpdateLineDto(): List<UpdateOrderLineDto> {
 
 fun Order.toUpdateCartDto(): UpdateOrderCartDto = UpdateOrderCartDto(
     documento = documento,
-    upickup = upickup,
     idcarrito = idcarrito
 )
 
-fun List<FindOrders>.findOrdersToOrder(): List<Order> {
-    val group: Map<Order, List<FindOrders>> = this.groupBy { row ->
+fun List<FindPendingOrders>.findOrdersToOrder(): List<Order> {
+    val group: Map<Order, List<FindPendingOrders>> = this.groupBy { row ->
         Order(
             userId = row.user_id,
             agencia = row.agencia,
@@ -102,7 +100,7 @@ fun List<FindOrders>.findOrdersToOrder(): List<Order> {
         )
     }
 
-    val order: List<Order> = group.map { (key: Order, rows: List<FindOrders>) ->
+    val order: List<Order> = group.map { (key: Order, rows: List<FindPendingOrders>) ->
         return@map Order(
             userId = key.userId,
             agencia = key.agencia,
@@ -125,7 +123,7 @@ fun List<FindOrders>.findOrdersToOrder(): List<Order> {
     return order
 }
 
-fun List<FindOrders>.findOrdersToOrderLines(): List<OrderLine> {
+fun List<FindPendingOrders>.findOrdersToOrderLines(): List<OrderLine> {
     if (this.any { row -> row.documento_ == null }) return emptyList()
 
     val details: List<OrderLine> = this.map { row ->

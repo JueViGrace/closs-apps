@@ -51,7 +51,7 @@ fun OrderProductItem(
     line: OrderLine,
 ) {
     Box(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = modifier,
         contentAlignment = Alignment.Center
     ) {
         // todo:create component and observer state to avoid using this composable

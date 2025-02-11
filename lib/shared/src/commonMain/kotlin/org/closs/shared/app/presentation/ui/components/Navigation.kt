@@ -21,6 +21,12 @@ fun Navigation(
     val navController: NavHostController = rememberNavController()
     val navigator = koinInject<Navigator>()
 
+    /*ObserveAsEvents(
+        flow = navigator.stack
+    ) { stack ->
+        println(stack)
+    }*/
+
     ObserveAsEvents(
         flow = navigator.navigationActions,
     ) { action ->

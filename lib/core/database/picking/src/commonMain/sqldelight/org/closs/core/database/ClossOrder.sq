@@ -23,13 +23,15 @@ SELECT COUNT(*)
 FROM closs_order
 WHERE user_id = :id;
 
-findOrders:
+findPendingOrders:
 SELECT *
 FROM closs_order
 LEFT JOIN closs_order_line
     ON closs_order.documento = closs_order_line.documento
     AND closs_order.user_id = closs_order_line.user_id
-WHERE closs_order.user_id = :id AND closs_order.idcarrito = ''
+WHERE
+    closs_order.user_id = :id
+    AND closs_order.idcarrito = ''
 ORDER BY closs_order.emision ASC, closs_order.documento ASC, closs_order.almacen ASC;
 
 findOrder:

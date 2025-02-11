@@ -13,12 +13,9 @@ import kotlinx.coroutines.launch
 import org.closs.core.presentation.shared.messages.Messages
 import org.closs.core.presentation.shared.navigation.Destination
 import org.closs.core.presentation.shared.navigation.Navigator
-import org.closs.core.resources.resources.generated.resources.Res
-import org.closs.core.resources.resources.generated.resources.unknown_error
 import org.closs.core.types.shared.common.Constants.REFRESH_ORDERS_KEY
 import org.closs.core.types.shared.common.Constants.REFRESH_ORDER_KEY
 import org.closs.core.types.shared.state.RequestState
-import org.closs.core.types.shared.state.ResponseMessage
 import org.closs.order.data.OrderRepository
 import org.closs.order.presentation.orders.events.OrdersEvents
 import org.closs.order.presentation.orders.state.OrdersState
@@ -54,12 +51,7 @@ class OrdersViewModel(
         if (reload.isLoading) {
             repository.fetchOrders().collect { result ->
                 if (result is RequestState.Error) {
-                    messages.sendMessage(
-                        ResponseMessage(
-                            message = Res.string.unknown_error,
-                            description = result.error
-                        )
-                    )
+                    messages.sendMessage(result.error)
                 }
             }
         }
@@ -72,12 +64,7 @@ class OrdersViewModel(
     ) { state, orders ->
         when (orders) {
             is RequestState.Error -> {
-                messages.sendMessage(
-                    ResponseMessage(
-                        message = Res.string.unknown_error,
-                        description = orders.error
-                    )
-                )
+                messages.sendMessage(orders.error)
                 handle[REFRESH_ORDERS_KEY] = false
                 state.copy(
                     isLoading = false

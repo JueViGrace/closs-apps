@@ -11,8 +11,6 @@ data class UpdateOrderDto(
     val tipodoc: String,
     @SerialName("documento")
     val documento: String,
-    @SerialName("upickup")
-    val upickup: String,
     @SerialName("idcarrito")
     val idcarrito: String,
     @SerialName("almacen")

@@ -11,7 +11,11 @@ import org.closs.core.api.shared.client.ApiOperation
 import org.closs.core.api.user.UserClient
 import org.closs.core.database.helper.PickingDbHelper
 import org.closs.core.resources.resources.generated.resources.Res
+import org.closs.core.resources.resources.generated.resources.invalid_state
 import org.closs.core.resources.resources.generated.resources.please_log_in
+import org.closs.core.resources.resources.generated.resources.unknown_error
+import org.closs.core.resources.resources.generated.resources.user_info_not_found
+import org.closs.core.resources.resources.generated.resources.user_not_found
 import org.closs.core.resources.resources.generated.resources.welcome_back
 import org.closs.core.types.picker.Picker
 import org.closs.core.types.picker.toDbPicker
@@ -44,7 +48,10 @@ class DefaultAuthRepository(
             is ApiOperation.Failure -> {
                 emit(
                     RequestState.Error(
-                        error = call.error.message ?: ""
+                        error = ResponseMessage(
+                            message = Res.string.user_not_found,
+                            description = call.error.message ?: ""
+                        )
                     )
                 )
             }
@@ -52,7 +59,10 @@ class DefaultAuthRepository(
                 val data = call.value.data
                     ?: return@flow emit(
                         RequestState.Error(
-                            error = ""
+                            error = ResponseMessage(
+                                message = Res.string.user_not_found,
+                                description = call.value.message ?: ""
+                            )
                         )
                     )
                 val session = data.dtoToDomain()
@@ -94,13 +104,19 @@ class DefaultAuthRepository(
         return when (val call = authClient.forgotPassword(forgotPasswordDto, baseUrl)) {
             is ApiOperation.Failure -> {
                 RequestState.Error(
-                    error = call.error.message ?: ""
+                    error = ResponseMessage(
+                        message = Res.string.unknown_error,
+                        description = call.error.message ?: ""
+                    )
                 )
             }
             is ApiOperation.Success -> {
                 if (call.value.data == null) {
                     return RequestState.Error(
-                        error = call.value.message ?: ""
+                        error = ResponseMessage(
+                            message = Res.string.unknown_error,
+                            description = call.value.message ?: ""
+                        )
                     )
                 }
 
@@ -120,26 +136,38 @@ class DefaultAuthRepository(
         return when (val call = userClient.getUserById(session.accessToken)) {
             is ApiOperation.Failure -> {
                 RequestState.Error(
-                    error = call.error.message ?: ""
+                    error = ResponseMessage(
+                        message = Res.string.user_not_found,
+                        description = call.error.message ?: ""
+                    )
                 )
             }
             is ApiOperation.Success -> {
                 if (call.value.data == null) {
                     return RequestState.Error(
-                        error = call.value.message ?: ""
+                        error = ResponseMessage(
+                            message = Res.string.user_not_found,
+                            description = call.value.message ?: ""
+                        )
                     )
                 }
 
                 when (val infoCall = userClient.getUserInfo(session.accessToken)) {
                     is ApiOperation.Failure -> {
                         RequestState.Error(
-                            error = infoCall.error.message ?: ""
+                            error = ResponseMessage(
+                                message = Res.string.user_info_not_found,
+                                description = infoCall.error.message ?: ""
+                            )
                         )
                     }
                     is ApiOperation.Success -> {
                         if (infoCall.value.data == null) {
                             return RequestState.Error(
-                                error = infoCall.value.message ?: ""
+                                error = ResponseMessage(
+                                    message = Res.string.user_info_not_found,
+                                    description = infoCall.value.message ?: ""
+                                )
                             )
                         }
 
@@ -148,7 +176,9 @@ class DefaultAuthRepository(
                             picker = infoCall.value.data!!.toPicker()
                         )
                             ?: return RequestState.Error(
-                                error = ""
+                                error = ResponseMessage(
+                                    message = Res.string.invalid_state
+                                )
                             )
 
                         RequestState.Success(

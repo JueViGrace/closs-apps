@@ -7,8 +7,6 @@ import kotlinx.serialization.Serializable
 data class UpdateOrderCartDto(
     @SerialName("documento")
     val documento: String,
-    @SerialName("upickup")
-    val upickup: String,
     @SerialName("idcarrito")
     val idcarrito: String,
 )

@@ -32,7 +32,8 @@
     <string name="status">Status</string>
     <string name="order_status_unspecified">Unspecified</string>
     <string name="order_status_ready_to_pick">Ready to pick</string>
-    <string name="order_not_available">Order not available</string>
+    <string name="orders_not_found">Orders not found</string>
+    <string name="order_not_found">Order not found</string>
     <string name="picked_quantity">Picked quantity</string>
     <string name="ordered">Ordered</string>
     <string name="shed">Shed</string>
@@ -53,6 +54,7 @@
     <string name="quantity_exceeds_ordered">Picked quantity must not be more than ordered</string>
     <string name="order_submitted">Order submitted!</string>
     <string name="connection_unavailable">Connection unavailable</string>
+    <string name="token_in_use">Token is already in use</string>
     <!--Descriptions-->
     <string name="app_logo">App logo</string>
     <string name="company_logo">Company logo</string>
@@ -68,6 +70,9 @@
     <string name="picking_dash_image">Picking image</string>
     <string name="product_image">Product image</string>
     <!--Error messages-->
+    <string name="invalid_state">Invalid state</string>
+    <string name="user_not_found">User not found</string>
+    <string name="user_info_not_found">User information not found</string>
     <string name="auth_no_data">No data found for this user.</string>
     <string name="company_invalid_input">Company must only contain numbers</string>
     <string name="session_expired">Your session has expired, please log in.</string>

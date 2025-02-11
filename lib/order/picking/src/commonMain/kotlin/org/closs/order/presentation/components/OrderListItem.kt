@@ -31,6 +31,7 @@ import org.closs.core.resources.resources.generated.resources.customer
 import org.closs.core.resources.resources.generated.resources.ic_basket
 import org.closs.core.resources.resources.generated.resources.items_quantity
 import org.closs.core.resources.resources.generated.resources.route
+import org.closs.core.resources.resources.generated.resources.shed
 import org.closs.core.resources.resources.generated.resources.status
 import org.closs.core.types.order.Order
 import org.closs.core.types.shared.common.calculateOrderStatus
@@ -117,18 +118,58 @@ fun OrderListItem(
                     horizontalArrangement = Arrangement.SpaceBetween,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    TextComponent(
-                        modifier = Modifier.weight(0.4f),
-                        text = "Nº ${order.documento}",
-                        fontWeight = FontWeight.Bold,
-                        textAlign = TextAlign.Start
-                    )
-                    TextComponent(
-                        modifier = Modifier.weight(0.6f),
-                        text = "${stringResource(Res.string.route)}: ${order.rutaDescrip}",
-                        textAlign = TextAlign.End,
-                        maxLines = 1,
-                    )
+                    Row(
+                        modifier = Modifier.requiredWidth(IntrinsicSize.Max),
+                        horizontalArrangement = Arrangement.spacedBy(2.dp, Alignment.Start),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        TextComponent(
+                            text = "Nº",
+                            maxLines = 1
+                        )
+
+                        TextComponent(
+                            text = order.documento,
+                            fontWeight = FontWeight.Bold,
+                            maxLines = 1
+                        )
+                    }
+
+                    Row(
+                        modifier = Modifier
+                            .requiredWidth(IntrinsicSize.Max)
+                            .padding(horizontal = 4.dp),
+                        horizontalArrangement = Arrangement.spacedBy(2.dp, Alignment.Start),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        TextComponent(
+                            text = "${stringResource(Res.string.shed)}:",
+                            maxLines = 1
+                        )
+
+                        TextComponent(
+                            text = order.almacen,
+                            fontWeight = FontWeight.Bold,
+                            maxLines = 1
+                        )
+                    }
+
+                    Row(
+                        horizontalArrangement = Arrangement.spacedBy(2.dp, Alignment.Start),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        TextComponent(
+                            text = "${stringResource(Res.string.route)}:",
+                            maxLines = 1
+                        )
+
+                        TextComponent(
+                            text = order.rutaDescrip,
+                            fontWeight = FontWeight.Bold,
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis,
+                        )
+                    }
                 }
                 Row(
                     modifier = Modifier

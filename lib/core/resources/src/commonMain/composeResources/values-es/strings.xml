@@ -32,7 +32,8 @@
     <string name="status">Estado</string>
     <string name="order_status_unspecified">No especificado</string>
     <string name="order_status_ready_to_pick">Listo para pickear</string>
-    <string name="order_not_available">Pedido no disponible</string>
+    <string name="orders_not_found">Pedidos no encontrados</string>
+    <string name="order_not_found">Pedido no encontrado</string>
     <string name="picked_quantity">Cantidad recogida</string>
     <string name="stock">Existencia</string>
     <string name="ordered">Pedido</string>
@@ -54,6 +55,7 @@
     <string name="quantity_exceeds_ordered">La cantidad recogida no debe ser mayor a la pedida</string>
     <string name="order_submitted">¡Pedido enviado!</string>
     <string name="connection_unavailable">No tiene conexión a internet</string>
+    <string name="token_in_use">Esta ficha ya esta siendo usada</string>
     <!--Icon descriptions-->
     <string name="app_logo">App logo</string>
     <string name="company_logo">Logo de la empresa</string>
@@ -68,6 +70,9 @@
     <string name="picking_dash_image">Picking imagen</string>
     <string name="product_image">Imagen del producto</string>
     <!--Error messages-->
+    <string name="invalid_state">Estado inválido</string>
+    <string name="user_info_not_found">Información del usuario no encontrada</string>
+    <string name="user_not_found">Este usuario no existe</string>
     <string name="auth_no_data">No se encontraron datos para este usuario.</string>
     <string name="company_invalid_input">Empresa solo puede contener números</string>
     <string name="session_expired">Tu sessión ha expirado, inicia sesión nuevamente.</string>

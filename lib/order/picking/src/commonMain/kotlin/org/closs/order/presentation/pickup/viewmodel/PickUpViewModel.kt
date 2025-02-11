@@ -5,9 +5,7 @@ import androidx.lifecycle.viewModelScope
 import dev.tmapps.konnection.Konnection
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import org.closs.core.presentation.shared.messages.Messages
@@ -19,9 +17,7 @@ import org.closs.core.resources.resources.generated.resources.quantity_empty
 import org.closs.core.resources.resources.generated.resources.quantity_exceeds_ordered
 import org.closs.core.resources.resources.generated.resources.quantity_not_a_number
 import org.closs.core.resources.resources.generated.resources.token_empty
-import org.closs.core.resources.resources.generated.resources.unexpected_error
-import org.closs.core.resources.resources.generated.resources.unknown_error
-import org.closs.core.types.shared.common.Constants
+import org.closs.core.resources.resources.generated.resources.token_in_use
 import org.closs.core.types.shared.state.RequestState
 import org.closs.core.types.shared.state.ResponseMessage
 import org.closs.order.data.OrderRepository
@@ -37,44 +33,44 @@ class PickUpViewModel(
 ) : ViewModel() {
     private val _order = repository.getOrder(id)
 
-    private val _state = MutableStateFlow(PickUpState())
-    val state = combine(
-        _state,
-        _order
-    ) { state, order ->
-        when (order) {
-            is RequestState.Error -> {
-                messages.sendMessage(
-                    ResponseMessage(
-                        message = Res.string.unknown_error,
-                        description = "null"
-                    )
-                )
-                navigator.navigateUp()
-                state.copy(
-                    isLoading = false,
-                    dbOrder = null,
-                )
-            }
-            is RequestState.Success -> {
-                // todo: add filters here
-                state.copy(
-                    isLoading = false,
-                    dbOrder = order.data,
-                )
-            }
-            else -> {
-                state.copy(
-                    isLoading = true,
-                    dbOrder = null,
-                )
+    private val _state = MutableStateFlow(PickUpState(showCartDialog = true))
+    val state = _state.asStateFlow()
+
+    // todo: fix
+    init {
+        viewModelScope.launch {
+            _order.collect { result ->
+                when (result) {
+                    is RequestState.Error -> {
+                        messages.sendMessage(result.error)
+
+                        _state.update { state ->
+                            state.copy(
+                                isLoading = false,
+                                order = null,
+                            )
+                        }
+                    }
+                    is RequestState.Success -> {
+                        _state.update { state ->
+                            state.copy(
+                                isLoading = false,
+                                order = result.data,
+                            )
+                        }
+                    }
+                    else -> {
+                        _state.update { state ->
+                            state.copy(
+                                isLoading = true,
+                                order = null,
+                            )
+                        }
+                    }
+                }
             }
         }
-    }.stateIn(
-        viewModelScope,
-        SharingStarted.WhileSubscribed(5_000),
-        _state.value
-    )
+    }
 
     fun onEvent(event: PickUpEvents) {
         when (event) {
@@ -83,6 +79,7 @@ class PickUpViewModel(
             PickUpEvents.OnSubmitCartId -> submitCartId()
             PickUpEvents.ToggleFilters -> toggleFilters()
             PickUpEvents.ToggleCancelDialog -> toggleCancelDialog()
+            PickUpEvents.CancelPickUp -> cancelPickUp()
             is PickUpEvents.OnQuantityChange -> quantityChange(event.index, event.quantity)
             is PickUpEvents.ToggleCheckProduct -> checkProduct(event.index, event.checked)
             PickUpEvents.OnSubmitPickUp -> submitPickUp()
@@ -97,17 +94,7 @@ class PickUpViewModel(
     }
 
     private fun dismiss() {
-        _state.value.order?.let { order ->
-            viewModelScope.launch {
-                repository.submitCartId(order.copy(idcarrito = ""))
-            }
-        }
-
-        _state.update {
-            PickUpState(
-                showCartDialog = false
-            )
-        }
+        _state.update { PickUpState() }
 
         navigateBack()
     }
@@ -115,18 +102,21 @@ class PickUpViewModel(
     private fun cartChange(cartId: String) {
         when {
             cartId.isEmpty() -> {
-                return _state.update { state ->
+                _state.update { state ->
                     state.copy(
                         cartIdValue = cartId,
                         cartIdError = Res.string.token_empty,
+                        cartSubmitEnabled = false
                     )
                 }
+                return
             }
             else -> {
                 _state.update { state ->
                     state.copy(
                         cartIdValue = cartId,
                         cartIdError = null,
+                        cartSubmitEnabled = true
                     )
                 }
             }
@@ -144,35 +134,41 @@ class PickUpViewModel(
             }
             return
         }
-        _state.value.dbOrder?.let { order ->
+
+        _state.value.order?.let { order ->
+            val updatedOrder = order.copy(idcarrito = _state.value.cartIdValue)
             viewModelScope.launch {
                 repository.submitCartId(
-                    order = order.copy(idcarrito = _state.value.cartIdValue)
+                    order = updatedOrder
                 ).collect { result ->
                     when (result) {
-                        // todo: handle response
                         is RequestState.Error -> {
-                            messages.sendMessage(
-                                ResponseMessage(
-                                    message = Res.string.unexpected_error,
-                                    description = result.error
-                                )
-                            )
                             _state.update { state ->
-                                state
+                                state.copy(
+                                    cartLoading = false,
+                                    cartIdError = Res.string.token_in_use,
+                                    cartSubmitEnabled = false,
+                                )
                             }
                         }
                         is RequestState.Success -> {
                             _state.update { state ->
                                 state.copy(
-                                    order = order,
+                                    cartLoading = false,
+                                    cartIdError = null,
+                                    cartSubmitEnabled = false,
+                                    order = updatedOrder,
                                     showCartDialog = !state.showCartDialog
                                 )
                             }
                         }
                         else -> {
                             _state.update { state ->
-                                state
+                                state.copy(
+                                    cartLoading = true,
+                                    cartIdError = null,
+                                    cartSubmitEnabled = false,
+                                )
                             }
                         }
                     }
@@ -195,6 +191,16 @@ class PickUpViewModel(
                 showCancelDialog = !state.showCancelDialog
             )
         }
+    }
+
+    private fun cancelPickUp() {
+        _state.value.order?.let { order ->
+            viewModelScope.launch {
+                repository.submitCartId(order.copy(idcarrito = "")).collect { _ -> }
+            }
+        }
+
+        dismiss()
     }
 
     private fun quantityChange(index: Int, quantity: String) {
@@ -290,13 +296,7 @@ class PickUpViewModel(
                 ).collect { result ->
                     when (result) {
                         is RequestState.Error -> {
-                            messages.sendMessage(
-                                ResponseMessage(
-                                    message = Res.string.unexpected_error,
-                                    description = result.error
-                                )
-                            )
-
+                            messages.sendMessage(result.error)
                             _state.update { state ->
                                 state.copy(
                                     updateLoading = false,
@@ -310,7 +310,7 @@ class PickUpViewModel(
                                 )
                             )
 
-                            // todo: fix navigation
+                            delay(500)
                             dismiss()
                         }
                         else -> {

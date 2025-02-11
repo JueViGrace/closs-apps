@@ -1,6 +1,5 @@
 package org.closs.picking.home.data
 
-import dev.tmapps.konnection.Konnection
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.Flow
@@ -8,15 +7,17 @@ import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import org.closs.core.database.helper.PickingDbHelper
+import org.closs.core.resources.resources.generated.resources.Res
+import org.closs.core.resources.resources.generated.resources.invalid_state
 import org.closs.core.types.auth.dbActiveToDomain
 import org.closs.core.types.shared.auth.Session
 import org.closs.core.types.shared.state.RequestState
+import org.closs.core.types.shared.state.ResponseMessage
 import org.closs.shared.home.data.HomeRepository
 import kotlin.coroutines.CoroutineContext
 
 class DefaultHomeRepository(
     private val dbHelper: PickingDbHelper,
-    private val konnection: Konnection,
     override val coroutineContext: CoroutineContext,
     override val scope: CoroutineScope,
 ) : HomeRepository {
@@ -30,14 +31,18 @@ class DefaultHomeRepository(
         }.catch { e ->
             emit(
                 RequestState.Error(
-                    error = e.message ?: ""
+                    error = ResponseMessage(
+                        description = e.message ?: ""
+                    )
                 )
             )
         }.collect { session ->
             if (session == null) {
                 return@collect emit(
                     RequestState.Error(
-                        error = ""
+                        error = ResponseMessage(
+                            message = Res.string.invalid_state,
+                        )
                     )
                 )
             }
@@ -66,10 +71,24 @@ class DefaultHomeRepository(
         }
     }.flowOn(coroutineContext)
 
-    override fun sync() {
+    override fun sync(): Flow<RequestState<Boolean>> = flow {
+        emit(RequestState.Loading)
+
+        val session = dbHelper.withDatabase { db ->
+            executeOne(
+                query = db.sessionQueries.findActiveAccount()
+            )
+        } ?: return@flow emit(
+            RequestState.Error(
+                error = ResponseMessage(
+                    message = Res.string.invalid_state
+                )
+            )
+        )
+
+        // todo: sync data
     }
 
-    // Todo: should this invalidate server session?
     override suspend fun logOut() {
         scope.async {
             dbHelper.withDatabase { db ->

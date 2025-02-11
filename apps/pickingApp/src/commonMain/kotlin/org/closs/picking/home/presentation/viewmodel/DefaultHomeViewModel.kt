@@ -3,6 +3,7 @@ package org.closs.picking.home.presentation.viewmodel
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavOptions
+import dev.tmapps.konnection.Konnection
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -10,9 +11,13 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import org.closs.core.presentation.shared.messages.Messages
 import org.closs.core.presentation.shared.navigation.Destination
 import org.closs.core.presentation.shared.navigation.Navigator
+import org.closs.core.resources.resources.generated.resources.Res
+import org.closs.core.resources.resources.generated.resources.connection_unavailable
 import org.closs.core.types.shared.state.RequestState
+import org.closs.core.types.shared.state.ResponseMessage
 import org.closs.shared.home.data.HomeRepository
 import org.closs.shared.home.presentation.events.HomeEvents
 import org.closs.shared.home.presentation.state.HomeState
@@ -21,11 +26,14 @@ import org.closs.shared.home.presentation.viewmodel.HomeViewModel
 class DefaultHomeViewModel(
     override val repository: HomeRepository,
     override val navigator: Navigator,
-    override val handle: SavedStateHandle
+    override val handle: SavedStateHandle,
+    override val messages: Messages,
+    private val konnection: Konnection,
 ) : HomeViewModel(
     repository = repository,
     navigator = navigator,
-    handle = handle
+    handle = handle,
+    messages = messages,
 ) {
     private val _session = repository.getSession()
     private val _orderCount = repository.getOrdersCount()
@@ -119,6 +127,49 @@ class DefaultHomeViewModel(
     }
 
     override fun sync() {
+        if (!konnection.isConnected()) {
+            viewModelScope.launch {
+                messages.sendMessage(
+                    ResponseMessage(
+                        message = Res.string.connection_unavailable,
+                    )
+                )
+            }
+            return
+        }
+        _state.update { state ->
+            state.copy(
+                isSyncing = true
+            )
+        }
+        viewModelScope.launch {
+            repository.sync().collect { result ->
+                when (result) {
+                    is RequestState.Error -> {
+                        _state.update { state ->
+                            state.copy(
+                                isSyncing = false
+                            )
+                        }
+                        messages.sendMessage(result.error)
+                    }
+                    is RequestState.Success -> {
+                        _state.update { state ->
+                            state.copy(
+                                isSyncing = false
+                            )
+                        }
+                    }
+                    else -> {
+                        _state.update { state ->
+                            state.copy(
+                                isSyncing = true
+                            )
+                        }
+                    }
+                }
+            }
+        }
     }
 
     override fun logOut() {

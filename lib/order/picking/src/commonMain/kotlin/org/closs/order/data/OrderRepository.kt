@@ -8,6 +8,11 @@ import kotlinx.coroutines.flow.flowOn
 import org.closs.core.api.order.OrderClient
 import org.closs.core.api.shared.client.ApiOperation
 import org.closs.core.database.helper.PickingDbHelper
+import org.closs.core.resources.resources.generated.resources.Res
+import org.closs.core.resources.resources.generated.resources.invalid_state
+import org.closs.core.resources.resources.generated.resources.order_not_found
+import org.closs.core.resources.resources.generated.resources.orders_not_found
+import org.closs.core.resources.resources.generated.resources.token_in_use
 import org.closs.core.types.auth.dbActiveToDomain
 import org.closs.core.types.order.Order
 import org.closs.core.types.order.dto.OrderDto
@@ -20,11 +25,12 @@ import org.closs.core.types.order.mappers.toUpdateDto
 import org.closs.core.types.shared.auth.Session
 import org.closs.core.types.shared.product.mappers.toDbProduct
 import org.closs.core.types.shared.state.RequestState
+import org.closs.core.types.shared.state.ResponseMessage
 import kotlin.coroutines.CoroutineContext
 
 interface OrderRepository {
     fun getOrders(): Flow<RequestState<List<Order>>>
-    fun getOrder(orderId: String): Flow<RequestState<Order?>>
+    fun getOrder(orderId: String): Flow<RequestState<Order>>
     fun fetchOrders(): Flow<RequestState<Boolean>>
     fun fetchOrder(orderId: String): Flow<RequestState<Boolean>>
     fun submitCartId(order: Order): Flow<RequestState<String>>
@@ -32,33 +38,38 @@ interface OrderRepository {
     suspend fun deleteOrder(orderId: String, userId: String)
 }
 
-// todo: move konnection to viewmodels better
 class DefaultOrderRepository(
     private val client: OrderClient,
     private val dbHelper: PickingDbHelper,
     private val coroutineContext: CoroutineContext,
     private val scope: CoroutineScope,
 ) : OrderRepository {
+
+    // todo: websocket connection
     override fun getOrders(): Flow<RequestState<List<Order>>> = flow {
         emit(RequestState.Loading)
         val session = dbHelper.withDatabase { db ->
             executeOne(db.sessionQueries.findActiveAccount())?.dbActiveToDomain()
         } ?: return@flow emit(
             RequestState.Error(
-                error = ""
+                error = ResponseMessage(
+                    message = Res.string.invalid_state,
+                )
             )
         )
         if (session.user == null) {
             return@flow emit(
                 RequestState.Error(
-                    error = "invalid state"
+                    error = ResponseMessage(
+                        message = Res.string.invalid_state,
+                    )
                 )
             )
         }
 
         dbHelper.withDatabase { db ->
             executeListAsFlow(
-                query = db.clossOrderQueries.findOrders(session.user!!.id)
+                query = db.clossOrderQueries.findPendingOrders(session.user!!.id)
             )
         }.collect { orders ->
             emit(
@@ -69,19 +80,23 @@ class DefaultOrderRepository(
         }
     }.flowOn(coroutineContext)
 
-    override fun getOrder(orderId: String): Flow<RequestState<Order?>> = flow {
+    override fun getOrder(orderId: String): Flow<RequestState<Order>> = flow {
         emit(RequestState.Loading)
         val session = dbHelper.withDatabase { db ->
             executeOne(db.sessionQueries.findActiveAccount())?.dbActiveToDomain()
         } ?: return@flow emit(
             RequestState.Error(
-                error = ""
+                error = ResponseMessage(
+                    message = Res.string.invalid_state,
+                )
             )
         )
         if (session.user == null) {
             return@flow emit(
                 RequestState.Error(
-                    error = "invalid state"
+                    error = ResponseMessage(
+                        message = Res.string.invalid_state,
+                    )
                 )
             )
         }
@@ -91,9 +106,18 @@ class DefaultOrderRepository(
                 query = db.clossOrderQueries.findOrder(session.user!!.id, orderId)
             )
         }.collect { rows ->
+            val order = rows.findOrderToOrder()
+                ?: return@collect emit(
+                    RequestState.Error(
+                        error = ResponseMessage(
+                            message = Res.string.order_not_found
+                        )
+                    )
+                )
+
             emit(
                 RequestState.Success(
-                    data = rows.findOrderToOrder()
+                    data = order
                 )
             )
         }
@@ -104,13 +128,17 @@ class DefaultOrderRepository(
             executeOne(db.sessionQueries.findActiveAccount())?.dbActiveToDomain()
         } ?: return@flow emit(
             RequestState.Error(
-                error = ""
+                error = ResponseMessage(
+                    message = Res.string.invalid_state
+                )
             )
         )
         if (session.user == null) {
             return@flow emit(
                 RequestState.Error(
-                    error = "invalid state"
+                    error = ResponseMessage(
+                        message = Res.string.invalid_state
+                    )
                 )
             )
         }
@@ -119,7 +147,10 @@ class DefaultOrderRepository(
             is ApiOperation.Failure -> {
                 emit(
                     RequestState.Error(
-                        error = response.error.message ?: ""
+                        error = ResponseMessage(
+                            message = Res.string.orders_not_found,
+                            description = response.error.message ?: ""
+                        )
                     )
                 )
             }
@@ -127,7 +158,10 @@ class DefaultOrderRepository(
                 val orders = response.value.data
                     ?: return@flow emit(
                         RequestState.Error(
-                            error = response.value.message ?: ""
+                            error = ResponseMessage(
+                                message = Res.string.orders_not_found,
+                                description = response.value.message ?: ""
+                            )
                         )
                     )
 
@@ -166,13 +200,17 @@ class DefaultOrderRepository(
             executeOne(db.sessionQueries.findActiveAccount())?.dbActiveToDomain()
         } ?: return@flow emit(
             RequestState.Error(
-                error = ""
+                error = ResponseMessage(
+                    message = Res.string.invalid_state,
+                )
             )
         )
         if (session.user == null) {
             return@flow emit(
                 RequestState.Error(
-                    error = "invalid state"
+                    error = ResponseMessage(
+                        message = Res.string.invalid_state,
+                    )
                 )
             )
         }
@@ -181,7 +219,10 @@ class DefaultOrderRepository(
             is ApiOperation.Failure -> {
                 emit(
                     RequestState.Error(
-                        error = response.error.message ?: ""
+                        error = ResponseMessage(
+                            message = Res.string.order_not_found,
+                            description = response.error.message ?: ""
+                        )
                     )
                 )
             }
@@ -189,7 +230,10 @@ class DefaultOrderRepository(
                 val order = response.value.data
                     ?: return@flow emit(
                         RequestState.Error(
-                            error = response.value.message ?: ""
+                            error = ResponseMessage(
+                                message = Res.string.order_not_found,
+                                description = response.value.message ?: ""
+                            )
                         )
                     )
 
@@ -201,7 +245,6 @@ class DefaultOrderRepository(
         }
     }
 
-    // todo: websocket connection
     override fun submitCartId(order: Order): Flow<RequestState<String>> = flow {
         emit(RequestState.Loading)
 
@@ -210,23 +253,44 @@ class DefaultOrderRepository(
         }?.dbActiveToDomain()
             ?: return@flow emit(
                 RequestState.Error(
-                    error = ""
+                    error = ResponseMessage(
+                        message = Res.string.invalid_state
+                    )
                 )
             )
 
         when (val call = client.updateCartId(session.accessToken, order.toUpdateCartDto())) {
             is ApiOperation.Failure -> {
-                emit(
-                    RequestState.Error(
-                        error = call.error.message ?: ""
-                    )
-                )
+                when (call.error.status) {
+                    409 -> {
+                        emit(
+                            RequestState.Error(
+                                error = ResponseMessage(
+                                    message = Res.string.token_in_use
+                                )
+                            )
+                        )
+                    }
+                    else -> {
+                        emit(
+                            RequestState.Error(
+                                error = ResponseMessage(
+                                    message = Res.string.order_not_found,
+                                    description = call.error.message ?: ""
+                                )
+                            )
+                        )
+                    }
+                }
             }
             is ApiOperation.Success -> {
                 val data = call.value.data
                     ?: return@flow emit(
                         RequestState.Error(
-                            error = call.value.message ?: ""
+                            error = ResponseMessage(
+                                message = Res.string.order_not_found,
+                                description = call.value.message ?: ""
+                            )
                         )
                     )
 
@@ -249,7 +313,9 @@ class DefaultOrderRepository(
         }?.dbActiveToDomain()
             ?: return@flow emit(
                 RequestState.Error(
-                    error = ""
+                    error = ResponseMessage(
+                        message = Res.string.invalid_state
+                    )
                 )
             )
 
@@ -257,7 +323,10 @@ class DefaultOrderRepository(
             is ApiOperation.Failure -> {
                 emit(
                     RequestState.Error(
-                        error = call.error.message ?: ""
+                        error = ResponseMessage(
+                            message = Res.string.order_not_found,
+                            description = call.error.message ?: ""
+                        )
                     )
                 )
             }
@@ -265,7 +334,10 @@ class DefaultOrderRepository(
                 val data = call.value.data
                     ?: return@flow emit(
                         RequestState.Error(
-                            error = call.value.message ?: ""
+                            error = ResponseMessage(
+                                message = Res.string.order_not_found,
+                                description = call.value.message ?: ""
+                            )
                         )
                     )
 

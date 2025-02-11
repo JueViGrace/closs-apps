@@ -30,7 +30,7 @@ import org.closs.core.types.shared.common.calculateOrderStatus
 import org.jetbrains.compose.resources.stringResource
 
 @Composable
-fun OrderHeadComponent(
+fun OrderDetailHead(
     order: Order
 ) {
     Column(

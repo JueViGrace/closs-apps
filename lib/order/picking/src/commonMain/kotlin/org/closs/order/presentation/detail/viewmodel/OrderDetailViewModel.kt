@@ -16,11 +16,8 @@ import org.closs.core.presentation.shared.actions.FABActions
 import org.closs.core.presentation.shared.messages.Messages
 import org.closs.core.presentation.shared.navigation.Destination
 import org.closs.core.presentation.shared.navigation.Navigator
-import org.closs.core.resources.resources.generated.resources.Res
-import org.closs.core.resources.resources.generated.resources.unknown_error
 import org.closs.core.types.shared.common.Constants.REFRESH_ORDER_KEY
 import org.closs.core.types.shared.state.RequestState
-import org.closs.core.types.shared.state.ResponseMessage
 import org.closs.order.data.OrderRepository
 import org.closs.order.presentation.detail.events.OrderDetailEvents
 import org.closs.order.presentation.detail.state.OrderDetailsState
@@ -58,12 +55,7 @@ class OrderDetailViewModel(
         if (reload.isLoading) {
             repository.fetchOrder(id).collect { result ->
                 if (result is RequestState.Error) {
-                    messages.sendMessage(
-                        ResponseMessage(
-                            message = Res.string.unknown_error,
-                            description = result.error
-                        )
-                    )
+                    messages.sendMessage(result.error)
                 }
             }
         }
@@ -76,12 +68,7 @@ class OrderDetailViewModel(
     ) { state, order ->
         when (order) {
             is RequestState.Error -> {
-                messages.sendMessage(
-                    ResponseMessage(
-                        message = Res.string.unknown_error,
-                        description = order.error
-                    )
-                )
+                messages.sendMessage(order.error)
                 handle[REFRESH_ORDER_KEY] = false
                 state.copy(
                     order = null,

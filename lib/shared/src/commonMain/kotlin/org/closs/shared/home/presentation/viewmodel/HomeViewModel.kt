@@ -9,6 +9,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import org.closs.core.presentation.shared.messages.Messages
 import org.closs.core.presentation.shared.navigation.Destination
 import org.closs.core.presentation.shared.navigation.Navigator
 import org.closs.shared.home.data.HomeRepository
@@ -18,7 +19,8 @@ import org.closs.shared.home.presentation.state.HomeState
 abstract class HomeViewModel(
     protected open val repository: HomeRepository,
     protected open val navigator: Navigator,
-    protected open val handle: SavedStateHandle
+    protected open val handle: SavedStateHandle,
+    open val messages: Messages
 ) : ViewModel() {
     open val state: StateFlow<HomeState> = MutableStateFlow(HomeState()).asStateFlow()
 

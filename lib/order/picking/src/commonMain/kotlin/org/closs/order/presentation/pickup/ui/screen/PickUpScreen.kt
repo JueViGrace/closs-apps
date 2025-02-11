@@ -37,6 +37,7 @@ import org.closs.core.presentation.shared.utils.calculateFABSize
 import org.closs.core.resources.resources.generated.resources.Res
 import org.closs.core.resources.resources.generated.resources.ic_check
 import org.closs.order.presentation.components.PickUpCancelDialog
+import org.closs.order.presentation.components.PickUpHead
 import org.closs.order.presentation.components.PickUpListItem
 import org.closs.order.presentation.components.SetIdCartDialog
 import org.closs.order.presentation.pickup.events.PickUpEvents
@@ -68,6 +69,17 @@ fun PickUpScreen(
         }
     }
 
+    BackHandlerComponent(
+        navigator = viewModel.navigator,
+        callBack = {
+            if (state.showCartDialog) {
+                viewModel.onEvent(PickUpEvents.Dismiss)
+            } else {
+                viewModel.onEvent(PickUpEvents.ToggleCancelDialog)
+            }
+        }
+    )
+
     if (state.showCartDialog) {
         SetIdCartDialog(
             onDismiss = {
@@ -79,124 +91,114 @@ fun PickUpScreen(
             },
             errorMessage = state.cartIdError,
             isError = state.cartIdError != null,
+            submitEnabled = state.cartSubmitEnabled,
+            cartLoading = state.cartLoading,
             onSubmit = {
                 viewModel.onEvent(PickUpEvents.OnSubmitCartId)
             }
         )
-        BackHandlerComponent(
-            navigator = viewModel.navigator,
-            callBack = {
-                viewModel.onEvent(PickUpEvents.Dismiss)
+    }
+    if (state.showCancelDialog) {
+        PickUpCancelDialog(
+            onCancel = {
+                viewModel.onEvent(PickUpEvents.ToggleCancelDialog)
+            },
+            onConfirm = {
+                viewModel.onEvent(PickUpEvents.CancelPickUp)
             }
         )
-    } else {
-        if (state.showCancelDialog) {
-            PickUpCancelDialog(
-                onCancel = {
-                    viewModel.onEvent(PickUpEvents.ToggleCancelDialog)
+    }
+
+    Scaffold(
+        topBar = {
+            TopBarComponent(
+                navigationIcon = {
+                    BackArrowButton {
+                        viewModel.onEvent(PickUpEvents.ToggleCancelDialog)
+                    }
                 },
-                onConfirm = {
-                    viewModel.onEvent(PickUpEvents.Dismiss)
+                actions = {
+                    // todo: create filter menu
                 }
             )
-        }
-
-        BackHandlerComponent(
-            navigator = viewModel.navigator,
-            callBack = {
-                viewModel.onEvent(PickUpEvents.ToggleCancelDialog)
-            }
-        )
-        Scaffold(
-            topBar = {
-                TopBarComponent(
-                    navigationIcon = {
-                        BackArrowButton {
-                            viewModel.onEvent(PickUpEvents.ToggleCancelDialog)
-                        }
+        },
+        snackbarHost = {
+            SnackbarHost(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .zIndex(1f),
+                hostState = snackBarHostState
+            )
+        },
+        floatingActionButton = {
+            if (state.showFAB) {
+                FloatingActionButton(
+                    modifier = Modifier.size(calculateFABSize()),
+                    onClick = {
+                        viewModel.onEvent(PickUpEvents.OnSubmitPickUp)
                     },
-                    actions = {
-                        // todo: create filter menu
-                    }
-                )
-            },
-            snackbarHost = {
-                SnackbarHost(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .zIndex(1f),
-                    hostState = snackBarHostState
-                )
-            },
-            floatingActionButton = {
-                if (state.showFAB) {
-                    FloatingActionButton(
-                        modifier = Modifier.size(calculateFABSize()),
-                        onClick = {
-                            viewModel.onEvent(PickUpEvents.OnSubmitPickUp)
-                        },
-                    ) {
-                        if (state.updateLoading) {
-                            CircularProgressIndicator()
-                        } else {
-                            IconComponent(
-                                modifier = Modifier.size(calculateDefaultIconSize()),
-                                painter = painterResource(Res.drawable.ic_check),
-                            )
-                        }
+                ) {
+                    if (state.updateLoading) {
+                        CircularProgressIndicator()
+                    } else {
+                        IconComponent(
+                            modifier = Modifier.size(calculateDefaultIconSize()),
+                            painter = painterResource(Res.drawable.ic_check),
+                        )
                     }
                 }
             }
-        ) { innerPadding ->
-            LazyColumn(
-                modifier = Modifier.padding(innerPadding),
-                verticalArrangement = Arrangement.spacedBy(8.dp, Alignment.Top),
-                horizontalAlignment = Alignment.CenterHorizontally,
-                contentPadding = PaddingValues(8.dp),
-            ) {
-                when (state.isLoading) {
-                    true -> {
-                        item {
-                            LinearLoadingComponent()
-                        }
+        }
+    ) { innerPadding ->
+        LazyColumn(
+            modifier = Modifier.padding(innerPadding),
+            verticalArrangement = Arrangement.spacedBy(8.dp, Alignment.Top),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            contentPadding = PaddingValues(8.dp),
+        ) {
+            when (state.isLoading) {
+                true -> {
+                    item {
+                        LinearLoadingComponent()
                     }
+                }
 
-                    false -> {
-                        state.order?.let { order ->
-                            item {
-                            }
+                false -> {
+                    state.order?.let { order ->
+                        item {
+                            PickUpHead(order)
+                        }
 
-                            item {
-                                HorizontalDivider()
-                            }
+                        item {
+                            HorizontalDivider()
+                        }
 
-                            itemsIndexed(
-                                items = order.lines,
-                                key = { key, line ->
-                                    "$key${line.product.codigo}${line.userId}"
+                        itemsIndexed(
+                            items = order.lines,
+                            key = { key, line ->
+                                "$key${line.product.codigo}${line.userId}"
+                            },
+                            contentType = { _, line -> line.product }
+                        ) { index, line ->
+                            PickUpListItem(
+                                modifier = Modifier.fillMaxWidth(),
+                                line = line,
+                                value = state.quantityValue,
+                                errorMessage = state.quantityError,
+                                isError = state.quantityError != null,
+                                onQuantityChange = { quantity ->
+                                    viewModel.onEvent(PickUpEvents.OnQuantityChange(index, quantity))
                                 },
-                                contentType = { _, line -> line.product }
-                            ) { index, line ->
-                                PickUpListItem(
-                                    modifier = Modifier.fillMaxWidth(),
-                                    line = line,
-                                    value = state.quantityValue,
-                                    errorMessage = state.quantityError,
-                                    isError = state.quantityError != null,
-                                    onQuantityChange = { quantity ->
-                                        viewModel.onEvent(PickUpEvents.OnQuantityChange(index, quantity))
-                                    },
-                                    onCheckedChange = { checked ->
-                                        viewModel.onEvent(PickUpEvents.ToggleCheckProduct(index, checked))
-                                    },
-                                )
-                            }
+                                onCheckedChange = { checked ->
+                                    viewModel.onEvent(PickUpEvents.ToggleCheckProduct(index, checked))
+                                },
+                            )
+                        }
 
-                            item {
-                                Spacer(
-                                    modifier = Modifier.height(calculateFABSize() + 4.dp)
-                                )
-                            }
+                        item {
+                            Spacer(
+                                modifier = Modifier.height(calculateFABSize() + 4.dp)
+                            )
                         }
                     }
                 }
