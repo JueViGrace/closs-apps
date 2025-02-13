@@ -199,6 +199,7 @@ class PickUpViewModel(
         }
     }
 
+    // TODO: if coming from the screen history don't make the update
     private fun cancelPickUp() {
         _state.value.order?.let { order ->
             viewModelScope.launch {
@@ -240,12 +241,18 @@ class PickUpViewModel(
                 quantity.toInt() > order.lines[index].cantref -> {
                     val updatedLine = order.lines[index].copy(cantidad = order.lines[index].cantref)
                     mutableLines[index] = updatedLine
+                    viewModelScope.launch {
+                        messages.sendMessage(
+                            ResponseMessage(
+                                message = Res.string.quantity_exceeds_ordered,
+                            )
+                        )
+                    }
                     _state.update { state ->
                         state.copy(
                             order = order.copy(
                                 lines = mutableLines.toList()
                             ),
-                            quantityError = Res.string.quantity_exceeds_ordered
                         )
                     }
                 }

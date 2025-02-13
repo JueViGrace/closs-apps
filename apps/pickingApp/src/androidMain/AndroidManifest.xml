@@ -17,6 +17,7 @@
         android:theme="@android:style/Theme.Material.Light.NoActionBar"
         tools:targetApi="tiramisu">
         <activity
+            android:windowSoftInputMode="adjustResize"
             android:exported="true"
             android:configChanges="orientation|screenSize|screenLayout|keyboardHidden|mnc|colorMode|density|fontScale|fontWeightAdjustment|keyboard|layoutDirection|locale|mcc|navigation|smallestScreenSize|touchscreen|uiMode"
             android:name="org.closs.picking.MainActivity">
