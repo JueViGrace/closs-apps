@@ -32,7 +32,19 @@ LEFT JOIN closs_order_line
 WHERE
     closs_order.user_id = :id
     AND closs_order.idcarrito = ''
-ORDER BY closs_order.emision ASC, closs_order.documento ASC, closs_order.almacen ASC;
+ORDER BY closs_order.emision DESC , closs_order.documento ASC, closs_order.almacen ASC;
+
+
+findHistoryOrders:
+SELECT *
+FROM closs_order
+LEFT JOIN closs_order_line
+    ON closs_order.documento = closs_order_line.documento
+    AND closs_order.user_id = closs_order_line.user_id
+WHERE
+    closs_order.user_id = :id
+    AND closs_order.idcarrito != ''
+ORDER BY closs_order.emision DESC , closs_order.documento ASC, closs_order.almacen ASC;
 
 findOrder:
 SELECT *

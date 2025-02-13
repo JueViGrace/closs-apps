@@ -55,6 +55,8 @@
     <string name="order_submitted">Order submitted!</string>
     <string name="connection_unavailable">Connection unavailable</string>
     <string name="token_in_use">Token is already in use</string>
+    <string name="today">Today</string>
+    <string name="yesterday">Yesterday</string>
     <!--Descriptions-->
     <string name="app_logo">App logo</string>
     <string name="company_logo">Company logo</string>

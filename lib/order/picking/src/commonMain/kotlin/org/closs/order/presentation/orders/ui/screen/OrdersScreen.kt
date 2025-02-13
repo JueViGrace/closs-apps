@@ -1,12 +1,15 @@
 package org.closs.order.presentation.orders.ui.screen
 
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
@@ -16,15 +19,21 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import kotlinx.coroutines.launch
 import org.closs.core.presentation.shared.navigation.ObserveAsEvents
 import org.closs.core.presentation.shared.ui.components.buttons.BackArrowButton
+import org.closs.core.presentation.shared.ui.components.display.LazyColumnComponent
+import org.closs.core.presentation.shared.ui.components.display.TextComponent
 import org.closs.core.presentation.shared.ui.components.icons.IconComponent
 import org.closs.core.presentation.shared.ui.components.layout.bars.TopBarComponent
 import org.closs.core.presentation.shared.ui.components.layout.loading.LinearLoadingComponent
 import org.closs.core.presentation.shared.ui.components.navigation.BackHandlerComponent
+import org.closs.core.presentation.shared.utils.ScreenSize
 import org.closs.core.presentation.shared.utils.calculateSmallIconSize
+import org.closs.core.presentation.shared.utils.getScreenSize
+import org.closs.core.presentation.shared.utils.toReadableDate
 import org.closs.core.resources.resources.generated.resources.Res
 import org.closs.core.resources.resources.generated.resources.ic_refresh
 import org.closs.order.presentation.components.OrderListItem
@@ -81,25 +90,44 @@ fun OrdersScreen(
             SnackbarHost(snackBarHostState)
         }
     ) { innerPadding ->
-        LazyColumn(
+        LazyColumnComponent(
             modifier = Modifier.fillMaxSize().padding(innerPadding),
             verticalArrangement = Arrangement.Top,
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            when (state.isLoading) {
-                true -> {
-                    item {
-                        LinearLoadingComponent()
+            horizontalAlignment = Alignment.CenterHorizontally,
+            items = state.orders,
+            grouped = state.orders.groupBy { it.emision },
+            stickyHeader = { head ->
+                head?.let { date ->
+                    Row(
+                        modifier = Modifier.fillMaxWidth().padding(top = 8.dp, bottom = 4.dp),
+                    ) {
+                        val cardPadding = when (getScreenSize()) {
+                            ScreenSize.Compact -> 26.dp
+                            ScreenSize.Medium -> 34.dp
+                            ScreenSize.Large -> 44.dp
+                        }
+                        ElevatedCard(
+                            modifier = Modifier.padding(start = cardPadding + 4.dp),
+                            colors = CardDefaults.elevatedCardColors(
+                                containerColor = MaterialTheme.colorScheme.surfaceTint,
+                                contentColor = MaterialTheme.colorScheme.inverseOnSurface
+                            )
+                        ) {
+                            TextComponent(
+                                modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp),
+                                text = date.toReadableDate(),
+                            )
+                        }
                     }
                 }
-                false -> {
-                    // todo: sticky header for dates
-                    items(
-                        items = state.orders,
-                        key = { order ->
-                            "${order.documento}${order.userId}"
-                        },
-                    ) { order ->
+            },
+            content = { order ->
+                when (state.isLoading) {
+                    true -> {
+                        LinearLoadingComponent()
+                    }
+
+                    false -> {
                         OrderListItem(
                             order = order,
                             onClick = {
@@ -109,6 +137,7 @@ fun OrdersScreen(
                     }
                 }
             }
-        }
+
+        )
     }
 }

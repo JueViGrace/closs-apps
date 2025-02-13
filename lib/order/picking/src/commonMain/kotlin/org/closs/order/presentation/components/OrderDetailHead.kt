@@ -15,6 +15,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import kotlinx.datetime.LocalDateTime
 import org.closs.core.presentation.shared.ui.components.display.TextComponent
 import org.closs.core.presentation.shared.utils.calculateLabelFontSize
 import org.closs.core.presentation.shared.utils.calculateLabelFontWeight
@@ -108,8 +109,9 @@ fun OrderDetailHead(
                     text = "${stringResource(Res.string.emitted)}:",
                     maxLines = 1
                 )
+                val dateString = LocalDateTime.parse(order.emision)
                 TextComponent(
-                    text = order.emision,
+                    text = dateString.date.toString(),
                     maxLines = 1
                 )
             }

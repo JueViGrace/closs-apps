@@ -46,7 +46,7 @@ fun OrderListItem(
     modifier: Modifier = Modifier
         .clickable { onClick() }
         .fillMaxWidth()
-        .padding(8.dp),
+        .padding(4.dp),
 ) {
     Box(
         modifier = modifier,

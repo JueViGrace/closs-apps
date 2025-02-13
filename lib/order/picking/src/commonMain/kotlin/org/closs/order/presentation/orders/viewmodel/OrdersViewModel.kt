@@ -42,7 +42,7 @@ class OrdersViewModel(
             isLoading = reload
         )
     }
-    private val _orders = repository.getOrders()
+    private val _orders = repository.getPendingOrders()
 
     private val _reloadOrders = combine(
         _reload,

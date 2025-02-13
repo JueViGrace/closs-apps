@@ -183,7 +183,7 @@ fun PickUpScreen(
                             PickUpListItem(
                                 modifier = Modifier.fillMaxWidth(),
                                 line = line,
-                                value = state.quantityValue,
+                                value = line.cantidad.toString(),
                                 errorMessage = state.quantityError,
                                 isError = state.quantityError != null,
                                 onQuantityChange = { quantity ->

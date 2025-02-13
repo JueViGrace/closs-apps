@@ -16,6 +16,7 @@ import org.closs.core.resources.resources.generated.resources.token_in_use
 import org.closs.core.types.auth.dbActiveToDomain
 import org.closs.core.types.order.Order
 import org.closs.core.types.order.dto.OrderDto
+import org.closs.core.types.order.mappers.findHistoryOrdersToOrder
 import org.closs.core.types.order.mappers.findOrderToOrder
 import org.closs.core.types.order.mappers.findOrdersToOrder
 import org.closs.core.types.order.mappers.toDbOrder
@@ -29,7 +30,8 @@ import org.closs.core.types.shared.state.ResponseMessage
 import kotlin.coroutines.CoroutineContext
 
 interface OrderRepository {
-    fun getOrders(): Flow<RequestState<List<Order>>>
+    fun getPendingOrders(): Flow<RequestState<List<Order>>>
+    fun getHistoryOrders(): Flow<RequestState<List<Order>>>
     fun getOrder(orderId: String): Flow<RequestState<Order>>
     fun fetchOrders(): Flow<RequestState<Boolean>>
     fun fetchOrder(orderId: String): Flow<RequestState<Boolean>>
@@ -46,7 +48,7 @@ class DefaultOrderRepository(
 ) : OrderRepository {
 
     // todo: websocket connection
-    override fun getOrders(): Flow<RequestState<List<Order>>> = flow {
+    override fun getPendingOrders(): Flow<RequestState<List<Order>>> = flow {
         emit(RequestState.Loading)
         val session = dbHelper.withDatabase { db ->
             executeOne(db.sessionQueries.findActiveAccount())?.dbActiveToDomain()
@@ -75,6 +77,40 @@ class DefaultOrderRepository(
             emit(
                 RequestState.Success(
                     data = orders.findOrdersToOrder()
+                )
+            )
+        }
+    }.flowOn(coroutineContext)
+
+    override fun getHistoryOrders(): Flow<RequestState<List<Order>>> = flow {
+        emit(RequestState.Loading)
+        val session = dbHelper.withDatabase { db ->
+            executeOne(db.sessionQueries.findActiveAccount())?.dbActiveToDomain()
+        } ?: return@flow emit(
+            RequestState.Error(
+                error = ResponseMessage(
+                    message = Res.string.invalid_state,
+                )
+            )
+        )
+        if (session.user == null) {
+            return@flow emit(
+                RequestState.Error(
+                    error = ResponseMessage(
+                        message = Res.string.invalid_state,
+                    )
+                )
+            )
+        }
+
+        dbHelper.withDatabase { db ->
+            executeListAsFlow(
+                query = db.clossOrderQueries.findHistoryOrders(session.user!!.id)
+            )
+        }.collect { orders ->
+            emit(
+                RequestState.Success(
+                    data = orders.findHistoryOrdersToOrder()
                 )
             )
         }

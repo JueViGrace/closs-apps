@@ -33,7 +33,7 @@ class PickUpViewModel(
 ) : ViewModel() {
     private val _order = repository.getOrder(id)
 
-    private val _state = MutableStateFlow(PickUpState(showCartDialog = true))
+    private val _state = MutableStateFlow(PickUpState())
     val state = _state.asStateFlow()
 
     // todo: fix
@@ -48,6 +48,8 @@ class PickUpViewModel(
                             state.copy(
                                 isLoading = false,
                                 order = null,
+                                cartIdValue = "",
+                                showCartDialog = true
                             )
                         }
                     }
@@ -56,6 +58,8 @@ class PickUpViewModel(
                             state.copy(
                                 isLoading = false,
                                 order = result.data,
+                                cartIdValue = result.data.idcarrito,
+                                showCartDialog = result.data.idcarrito.isEmpty(),
                             )
                         }
                     }
@@ -64,6 +68,8 @@ class PickUpViewModel(
                             state.copy(
                                 isLoading = true,
                                 order = null,
+                                cartIdValue = "",
+                                showCartDialog = true
                             )
                         }
                     }
@@ -205,33 +211,45 @@ class PickUpViewModel(
 
     private fun quantityChange(index: Int, quantity: String) {
         _state.value.order?.let { order ->
+            val mutableLines = order.lines.toMutableList()
             when {
                 quantity.isEmpty() -> {
+                    val updatedLine = order.lines[index].copy(cantidad = 0)
+                    mutableLines[index] = updatedLine
                     _state.update { state ->
                         state.copy(
-                            quantityValue = quantity,
+                            order = order.copy(
+                                lines = mutableLines.toList()
+                            ),
                             quantityError = Res.string.quantity_empty,
                         )
                     }
                 }
                 quantity.any { !it.isDigit() } -> {
+                    val updatedLine = order.lines[index].copy(cantidad = 0)
+                    mutableLines[index] = updatedLine
                     _state.update { state ->
                         state.copy(
-                            quantityValue = "",
+                            order = order.copy(
+                                lines = mutableLines.toList()
+                            ),
                             quantityError = Res.string.quantity_not_a_number,
                         )
                     }
                 }
                 quantity.toInt() > order.lines[index].cantref -> {
+                    val updatedLine = order.lines[index].copy(cantidad = order.lines[index].cantref)
+                    mutableLines[index] = updatedLine
                     _state.update { state ->
                         state.copy(
-                            quantityValue = quantity,
+                            order = order.copy(
+                                lines = mutableLines.toList()
+                            ),
                             quantityError = Res.string.quantity_exceeds_ordered
                         )
                     }
                 }
                 else -> {
-                    val mutableLines = order.lines.toMutableList()
                     val updatedLine = order.lines[index].copy(cantidad = quantity.toInt())
                     mutableLines[index] = updatedLine
                     _state.update { state ->
@@ -239,7 +257,6 @@ class PickUpViewModel(
                             order = order.copy(
                                 lines = mutableLines.toList()
                             ),
-                            quantityValue = quantity,
                             quantityError = null
                         )
                     }
@@ -249,16 +266,6 @@ class PickUpViewModel(
     }
 
     private fun checkProduct(index: Int, checked: Boolean) {
-        if (_state.value.quantityValue.isEmpty()) {
-            _state.update { state ->
-                state.copy(
-                    quantityValue = "",
-                    quantityError = Res.string.quantity_empty,
-                )
-            }
-            return
-        }
-
         _state.value.order?.let { order ->
             val mutableLines = order.lines.toMutableList()
             val updatedLine = order.lines[index].copy(checked = checked)

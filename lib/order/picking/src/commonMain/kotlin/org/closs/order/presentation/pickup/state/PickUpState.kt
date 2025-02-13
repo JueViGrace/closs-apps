@@ -15,7 +15,6 @@ data class PickUpState(
     val cartIdError: StringResource? = null,
     val cartSubmitEnabled: Boolean = false,
 
-    val quantityValue: String = "",
     val quantityError: StringResource? = null,
 
     val showFilters: Boolean = false,

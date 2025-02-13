@@ -1,0 +1,379 @@
+INSERT OR REPLACE INTO closs_user(
+    id,
+    username,
+    code,
+    last_sync,
+    version,
+    created_at,
+    updated_at
+) VALUES (
+    "1",
+    "01",
+    "",
+    "",
+    "",
+    "",
+    ""
+);
+
+INSERT OR REPLACE INTO closs_session(
+    access_token,
+    refresh_token,
+    user_id,
+    company_host,
+    active
+)
+VALUES (
+    "",
+    "",
+    "1",
+    "",
+    1
+);
+
+INSERT OR REPLACE INTO closs_picker(
+    user_id,
+    name,
+    almacen
+)
+VALUES (
+    "1",
+    "picker 1",
+    "01"
+);
+
+INSERT OR REPLACE INTO closs_product(
+    user_id,
+    agencia,
+    grupo,
+    subgrupo,
+    codigo,
+    nombre,
+    referencia,
+    marca,
+    unidad,
+    discont,
+    existencia,
+    comprometido,
+    images,
+    created_at,
+    updated_at
+)
+VALUES (
+    "1",
+    "01",
+    "",
+    "",
+    "1-0000",
+    "Poceta",
+    "1-0000-Poceta",
+    "Poceta Destroyer",
+    "UND",
+    0,
+    0,
+    0,
+    "http://localhost:5000/images/1-0000.jpg",
+    "",
+    ""
+);
+
+INSERT OR REPLACE INTO closs_product(
+    user_id,
+    agencia,
+    grupo,
+    subgrupo,
+    codigo,
+    nombre,
+    referencia,
+    marca,
+    unidad,
+    discont,
+    existencia,
+    comprometido,
+    images,
+    created_at,
+    updated_at
+)
+VALUES (
+    "1",
+    "01",
+    "",
+    "",
+    "1-0001",
+    "Poceta2",
+    "1-0001-Poceta",
+    "Poceta Destroyer",
+    "UND",
+    0,
+    0,
+    0,
+    "http://localhost:5000/images/1-0001.jpg",
+    "",
+    ""
+);
+
+INSERT OR REPLACE INTO closs_product(
+    user_id,
+    agencia,
+    grupo,
+    subgrupo,
+    codigo,
+    nombre,
+    referencia,
+    marca,
+    unidad,
+    discont,
+    existencia,
+    comprometido,
+    images,
+    created_at,
+    updated_at
+)
+VALUES (
+    "1",
+    "01",
+    "",
+    "",
+    "1-0002",
+    "Poceta3",
+    "1-0002-Poceta",
+    "Poceta Destroyer",
+    "UND",
+    0,
+    0,
+    0,
+    "http://localhost:5000/images/1-0002.jpg",
+    "",
+    ""
+);
+
+INSERT OR REPLACE INTO closs_order(
+    agencia,
+    tipodoc,
+    documento,
+    codcliente,
+    nombrecli,
+    emision,
+    upickup,
+    idcarrito,
+    almacen,
+    ruta_codigo,
+    ruta_descrip,
+    ke_pedstatus,
+    user_id
+)
+VALUES (
+    "01",
+    "PED",
+    "0000001",
+    "J000000001",
+    "Pajuo 1",
+    "2025-01-01 00:00:00",
+    "01",
+    "",
+    "01",
+    "01",
+    "CARABOBO",
+    "14",
+    "1"
+);
+
+INSERT OR REPLACE INTO closs_order_line(
+    agencia,
+    tipodoc,
+    documento,
+    codigo,
+    nombre,
+    almacen,
+    cantref,
+    cantidad,
+    user_id
+)
+VALUES (
+    "01",
+    "PED",
+    "0000001",
+    "1-0000",
+    "Poceta",
+    "01",
+    10,
+    0,
+    "1"
+);
+
+INSERT OR REPLACE INTO closs_order_line(
+    agencia,
+    tipodoc,
+    documento,
+    codigo,
+    nombre,
+    almacen,
+    cantref,
+    cantidad,
+    user_id
+)
+VALUES (
+    "01",
+    "PED",
+    "0000001",
+    "1-0001",
+    "Poceta 2",
+    "01",
+    20,
+    0,
+    "1"
+);
+
+INSERT OR REPLACE INTO closs_order(
+    agencia,
+    tipodoc,
+    documento,
+    codcliente,
+    nombrecli,
+    emision,
+    upickup,
+    idcarrito,
+    almacen,
+    ruta_codigo,
+    ruta_descrip,
+    ke_pedstatus,
+    user_id
+)
+VALUES (
+    "01",
+    "PED",
+    "0000002",
+    "J000000002",
+    "Pajuo 2",
+    "2025-01-01 00:00:00",
+    "01",
+    "",
+    "01",
+    "01",
+    "CARABOBO",
+    "14",
+    "1"
+);
+
+INSERT OR REPLACE INTO closs_order_line(
+    agencia,
+    tipodoc,
+    documento,
+    codigo,
+    nombre,
+    almacen,
+    cantref,
+    cantidad,
+    user_id
+)
+VALUES (
+    "01",
+    "PED",
+    "0000002",
+    "1-0000",
+    "Poceta",
+    "01",
+    10,
+    0,
+    "1"
+);
+
+INSERT OR REPLACE INTO closs_order_line(
+    agencia,
+    tipodoc,
+    documento,
+    codigo,
+    nombre,
+    almacen,
+    cantref,
+    cantidad,
+    user_id
+)
+VALUES (
+    "01",
+    "PED",
+    "0000002",
+    "1-0001",
+    "Poceta 2",
+    "01",
+    20,
+    0,
+    "1"
+);
+
+INSERT OR REPLACE INTO closs_order_line(
+    agencia,
+    tipodoc,
+    documento,
+    codigo,
+    nombre,
+    almacen,
+    cantref,
+    cantidad,
+    user_id
+)
+VALUES (
+    "01",
+    "PED",
+    "0000002",
+    "1-0002",
+    "Poceta 3",
+    "01",
+    25,
+    0,
+    "1"
+);
+
+INSERT OR REPLACE INTO closs_order(
+    agencia,
+    tipodoc,
+    documento,
+    codcliente,
+    nombrecli,
+    emision,
+    upickup,
+    idcarrito,
+    almacen,
+    ruta_codigo,
+    ruta_descrip,
+    ke_pedstatus,
+    user_id
+)
+VALUES (
+    "01",
+    "PED",
+    "0000003",
+    "J000000003",
+    "Pajuo 3",
+    "2025-01-01 00:00:00",
+    "01",
+    "",
+    "01",
+    "01",
+    "CARABOBO",
+    "14",
+    "1"
+);
+
+INSERT OR REPLACE INTO closs_order_line(
+    agencia,
+    tipodoc,
+    documento,
+    codigo,
+    nombre,
+    almacen,
+    cantref,
+    cantidad,
+    user_id
+)
+VALUES (
+    "01",
+    "PED",
+    "0000003",
+    "1-0002",
+    "Poceta 3",
+    "01",
+    25,
+    0,
+    "1"
+);

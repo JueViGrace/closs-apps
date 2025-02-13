@@ -56,6 +56,8 @@
     <string name="order_submitted">¡Pedido enviado!</string>
     <string name="connection_unavailable">No tiene conexión a internet</string>
     <string name="token_in_use">Esta ficha ya esta siendo usada</string>
+    <string name="today">Hoy</string>
+    <string name="yesterday">Ayer</string>
     <!--Icon descriptions-->
     <string name="app_logo">App logo</string>
     <string name="company_logo">Logo de la empresa</string>
